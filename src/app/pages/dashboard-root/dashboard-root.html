@@ -1,0 +1,52 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="content">
+
+    <app-header [title]="'Dashboard'"></app-header>
+
+    <app-filters-panel
+      [surveys]="surveys"
+      [departments]="departments"
+      [(selectedSurveyId)]="selectedSurveyId"
+      [(selectedDepartmentId)]="selectedDepartmentId"
+      (filterChanged)="onFilterChange()">
+    </app-filters-panel>
+
+    <!-- Cards -->
+    <app-cards-panel [dashboard]="dashboard"></app-cards-panel>
+
+    <!-- Charts Row -->
+    <div class="charts-row">
+
+      <!-- Department Chart -->
+      <app-department-charts
+        [departmentStats]="dashboard?.departmentStats || []">
+      </app-department-charts>
+
+      <!-- Survey Chart -->
+      <app-survey-charts
+        [surveyStats]="dashboard?.surveyStats">
+      </app-survey-charts>
+
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-col">
+
+      <app-recent-surveys
+        [surveys]="recentSurveys">
+      </app-recent-surveys>
+
+      <app-submitted-table
+        [submitted]="submittedList">
+      </app-submitted-table>
+
+      <app-pending-table
+        [pending]="pendingList">
+      </app-pending-table>
+
+    </div>
+
+  </div>
+</div>

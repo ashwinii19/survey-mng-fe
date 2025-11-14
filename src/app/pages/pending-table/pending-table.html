@@ -1,0 +1,16 @@
+<table class="tbl">
+  <thead>
+    <tr><th>#</th><th>Name</th><th>Employee Id</th></tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of pending; index as i">
+      <!-- avoid 'as' in template; use p.name if exists else show string p -->
+      <td>{{ i + 1 }}</td>
+      <td>{{ (p && (p.name || p.fullName)) ? (p.name || p.fullName) : p }}</td>
+      <td>{{ (p && p.employeeId) ? p.employeeId : '-' }}</td>
+    </tr>
+    <tr *ngIf="pending?.length === 0">
+      <td colspan="3">No pending entries</td>
+    </tr>
+  </tbody>
+</table>

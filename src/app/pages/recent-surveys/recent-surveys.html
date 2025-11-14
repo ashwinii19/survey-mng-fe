@@ -1,0 +1,17 @@
+<div class="recent">
+  <h4>Recent Surveys</h4>
+  <ul>
+    <li *ngFor="let s of surveys">
+      <div class="title">{{ s.title || s.surveyTitle || 'Untitled' }}</div>
+      <div class="meta">
+        <span *ngIf="s.publishedAt">Published: {{ s.publishedAt | date:'mediumDate' }}</span>
+        <span *ngIf="s.targetDepartment"> • Dept: {{ s.targetDepartment.name }}</span>
+      </div>
+      <div class="actions">
+        <a [routerLink]="['/survey', s.id, 'view']" class="link" *ngIf="s.id">View</a>
+        <a [href]="s.formLink" target="_blank" class="link" *ngIf="s.formLink">Open Form</a>
+      </div>
+    </li>
+    <li *ngIf="surveys?.length === 0">No recent surveys</li>
+  </ul>
+</div>

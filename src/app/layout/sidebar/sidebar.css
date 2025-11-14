@@ -1,0 +1,33 @@
+.sidebar {
+    width: 220px;
+    background: #0b3b66;
+    color: #fff;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box
+}
+
+.brand {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 18px
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0
+}
+
+.sidebar li {
+    margin: 10px 0
+}
+
+.sidebar a {
+    color: #fff;
+    text-decoration: none
+}
+
+.sidebar a.active {
+    font-weight: 700;
+    text-decoration: underline
+}

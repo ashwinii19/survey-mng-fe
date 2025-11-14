@@ -1,30 +1,28 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { Auth } from '../../services/auth/auth';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Auth } from '../../services/auth/auth';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css']
 })
 export class Login {
   email = '';
   password = '';
-  errorMessage = '';
+  error = '';
 
   constructor(private auth: Auth, private router: Router) {}
 
   onSubmit() {
+    this.error = '';
     this.auth.login(this.email, this.password).subscribe({
       next: () => this.router.navigate(['/dashboard']),
-      error: (err) => {
-        console.error(err);
-        this.errorMessage = 'Invalid credentials. Please try again.';
-      },
+      error: () => this.error = 'Invalid credentials'
     });
   }
 }

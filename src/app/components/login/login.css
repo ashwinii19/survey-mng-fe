@@ -1,36 +1,84 @@
-.login-container {
-  width: 350px;
-  margin: 100px auto;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* Outer layout */
+.login-wrap {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f7fb;
 }
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #1e293b;
+
+/* Card box */
+.card {
+    width: 360px;
+    padding: 28px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
+
+/* Heading */
+.card h2 {
+    margin-bottom: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-top: 12px;
+    color: #444;
+    font-size: 14px;
+}
+
+/* Inputs */
 input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid #dfe3ea;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
 }
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #14b8a6;
-  color: white;
-  border: none;
-  border-radius: 5px;
+
+input:focus {
+    outline: none;
+    border-color: #004aad;
+}
+
+/* Login Button */
+.login-btn {
+    margin-top: 18px;
+    width: 100%;
+    padding: 10px;
+    background: #22b8a6;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    transition: opacity .2s ease;
+}
+
+.login-btn:hover {
+    opacity: 0.9;
+}
+
+.forgot {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.forgot-link {
+  color: #004aad;
+  font-size: 14px;
   cursor: pointer;
+  text-decoration: none;
+  pointer-events: auto !important; /* SUPER IMPORTANT */
 }
-button:hover {
-  background-color: #0d9488;
-}
-.error {
-  color: red;
-  text-align: center;
+
+.forgot-link:hover {
+  text-decoration: underline;
 }

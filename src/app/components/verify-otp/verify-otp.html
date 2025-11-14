@@ -1,0 +1,15 @@
+<div class="fp-wrap">
+  <div class="card">
+    <h2>Verify OTP</h2>
+
+    <label>Enter OTP</label>
+    <input [(ngModel)]="otp" type="text" />
+
+    <button class="btn" (click)="verify()">Verify OTP</button>
+
+    <div class="msg success" *ngIf="message">{{ message }}</div>
+    <div class="msg error" *ngIf="error">{{ error }}</div>
+
+    <a routerLink="/forgot-password" class="back">Back</a>
+  </div>
+</div>

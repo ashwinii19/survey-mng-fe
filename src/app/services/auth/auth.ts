@@ -1,38 +1,55 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class Auth {
-  private base = 'http://localhost:8080/api/auth';
+  private base = `${environment.apiBaseUrl}/auth`;
   private tokenKey = 'authToken';
-  constructor(private http: HttpClient, private router: Router) {}
 
-  login(email: string, password: string): Observable<any> {
+  constructor(private http: HttpClient) {}
+
+  login(email: string, password: string): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(`${this.base}/login`, { email, password })
-      .pipe(tap(res => {
-        if (this.isBrowser()) localStorage.setItem(this.tokenKey, res.token);
-      }));
+      .pipe(tap(res => this.setToken(res.token)));
   }
 
-  logout(): void {
-    if (this.isBrowser()) localStorage.removeItem(this.tokenKey);
-    this.router.navigate(['/login']);
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.base}/forgot-password`, { email });
+  }
+
+  verifyOtp(email: string, otp: string): Observable<any> {
+    return this.http.post(`${this.base}/verify-otp`, { email, otp });
+  }
+
+  resetPassword(email: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.base}/reset-password`, { email, newPassword });
   }
 
   getToken(): string | null {
-    if (this.isBrowser()) return localStorage.getItem(this.tokenKey);
-    return null;
+    return typeof localStorage !== 'undefined'
+      ? localStorage.getItem(this.tokenKey)
+      : null;
+  }
+
+  setToken(token: string): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(this.tokenKey, token);
+    }
+  }
+
+  clearToken(): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(this.tokenKey);
+    }
+  }
+
+  logout(): void {
+    this.clearToken();
   }
 
   isLoggedIn(): boolean {
-    if (this.isBrowser()) return !!localStorage.getItem(this.tokenKey);
-    return false;
-  }
-
-  private isBrowser(): boolean {
-    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+    return !!this.getToken();
   }
 }

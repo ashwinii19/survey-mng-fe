@@ -1,0 +1,124 @@
+
+
+<div class="container-fluid">
+ 
+  <div class="row mb-4">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">Employee Management</h2>
+        <button class="btn btn-primary" (click)="addEmployee()">
+          <i class="fas fa-plus"></i> Add Employee
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadEmployees()">
+      Retry
+    </button>
+  </div>
+
+ 
+  <div *ngIf="!error" class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Search by name, ID, or email..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()">
+        <span class="input-group-text">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <select 
+        class="form-select" 
+        [(ngModel)]="selectedDepartment"
+        (change)="onDepartmentChange()">
+        <option value="">All Departments</option>
+        <option *ngFor="let dept of departments" [value]="dept.name">
+          {{ dept.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+ 
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading employees...</p>
+  </div>
+
+  
+  <div *ngIf="!isLoading && !error" class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Employee ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Position</th>
+              <th>Department</th>
+              <th>Status</th>
+              <th>Join Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let employee of filteredEmployees">
+              <td class="fw-bold">{{ employee.employeeId }}</td>
+              <td>{{ employee.name }}</td>
+              <td>{{ employee.email }}</td>
+              <td>{{ employee.position }}</td>
+              <td>
+                <span class="badge bg-secondary">{{ employee.department.name }}</span>
+              </td>
+              <td>
+                <span 
+                  class="badge" 
+                  [ngClass]="{
+                    'bg-success': employee.status === 'Active',
+                    'bg-danger': employee.status === 'Inactive'
+                  }">
+                  {{ employee.status }}
+                </span>
+              </td>
+              <td>{{ employee.joinDate | date:'mediumDate' }}</td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button 
+                    class="btn btn-outline-primary"
+                    (click)="editEmployee(employee.employeeId)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button 
+                    class="btn btn-outline-danger"
+                    (click)="deleteEmployee(employee.employeeId)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="filteredEmployees.length === 0 && !isLoading">
+              <td colspan="8" class="text-center text-muted py-4">
+                No employees found matching your criteria.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,3 +1,6 @@
+
+
+
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth-guard';
 
@@ -28,12 +31,61 @@ export const routes: Routes = [
       import('./components/reset-password/reset-password').then(m => (m as any).ResetPassword || (m as any).default)
   },
 
+  // Main app routes with consistent layout (header + sidebar)
   {
-    path: 'dashboard',
+    path: 'app',
     loadComponent: () =>
-      import('./pages/dashboard-root/dashboard-root').then(m => (m as any).DashboardRoot || (m as any).default),
-    canActivate: [AuthGuard]
+      import('./layout/main-layout').then(m => (m as any).MainLayout || (m as any).default),
+    canActivate: [AuthGuard],
+    children: [
+      // Dashboard
+      { 
+        path: 'dashboard', 
+        loadComponent: () =>
+          import('./pages/dashboard-root/dashboard-root').then(m => (m as any).Dashboard || (m as any).default)
+      },
+      
+      // Employees
+      { 
+        path: 'employees', 
+        loadComponent: () =>
+          import('./components/employee/employee-list').then(m => (m as any).EmployeeList || (m as any).default)
+      },
+      { 
+        path: 'employees/add', 
+        loadComponent: () =>
+          import('./components/employee/employee-form').then(m => (m as any).EmployeeForm || (m as any).default)
+      },
+      { 
+        path: 'employees/edit/:id', 
+        loadComponent: () =>
+          import('./components/employee/employee-form').then(m => (m as any).EmployeeForm || (m as any).default)
+      },
+
+      // Surveys
+      { 
+        path: 'surveys', 
+        loadComponent: () =>
+          import('./pages/recent-surveys/recent-surveys').then(m => (m as any).Surveys || (m as any).default)
+      },
+
+      // // Reminders
+      // { 
+      //   path: 'reminders', 
+      //   loadComponent: () =>
+      //     import('./pages/reminders/reminders').then(m => (m as any).Reminders || (m as any).default)
+      // },
+
+      // Default redirect to dashboard
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
   },
 
-  { path: '**', redirectTo: 'login' }
+  // Redirect old routes to new layout routes
+  { path: 'dashboard', redirectTo: 'app/dashboard', pathMatch: 'full' },
+  { path: 'employees', redirectTo: 'app/employees', pathMatch: 'full' },
+  { path: 'employees/add', redirectTo: 'app/employees/add', pathMatch: 'full' },
+
+  // Fallback
+  { path: '**', redirectTo: 'app/dashboard' }
 ];

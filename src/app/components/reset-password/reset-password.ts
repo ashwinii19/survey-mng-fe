@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Auth } from '../../services/auth/auth';
 
 @Component({
@@ -17,18 +17,16 @@ export class ResetPassword {
   newPassword = '';
   message = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private auth: Auth
-  ) {
+  constructor(private route: ActivatedRoute, private router: Router, private auth: Auth) {
     this.email = this.route.snapshot.queryParamMap.get('email') || '';
   }
 
   reset() {
-    this.auth.resetPassword(this.email, this.newPassword).subscribe(() => {
-      this.message = 'Password reset successful!';
-      setTimeout(() => this.router.navigate(['/login']), 1000);
+    this.auth.resetPassword(this.email, this.newPassword).subscribe({
+      next: () => {
+        this.message = "Password reset successful!";
+        setTimeout(() => this.router.navigate(['/login']), 800);
+      }
     });
   }
 }

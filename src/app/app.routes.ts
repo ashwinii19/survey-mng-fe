@@ -2,7 +2,11 @@
 
 
 import { Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth-guard';
+import { Login } from './components/login/login';
+import { ForgotPassword } from './components/forgot-password/forgot-password';
+import { VerifyOtp } from './components/verify-otp/verify-otp';
+import { ResetPassword } from './components/reset-password/reset-password';
+import DashboardRoot from './pages/dashboard-root/dashboard-root';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

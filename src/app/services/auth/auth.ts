@@ -1,55 +1,72 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable, tap } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class Auth {
+
   private base = `${environment.apiBaseUrl}/auth`;
   private tokenKey = 'authToken';
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.base}/login`, { email, password })
-      .pipe(tap(res => this.setToken(res.token)));
+  // ------------------ LOGIN ------------------
+  login(email: string, password: string) {
+    return this.http.post<{ token: string }>(
+      `${this.base}/login`,
+      { email, password }
+    ).pipe(
+      tap(res => this.setToken(res.token))
+    );
   }
 
-  forgotPassword(email: string): Observable<any> {
-    return this.http.post(`${this.base}/forgot-password`, { email });
+  // ------------------ FORGOT PASSWORD ------------------
+  // Accept plain text response because backend returns: "OTP sent to email."
+  forgotPassword(email: string) {
+    return this.http.post(
+      `${this.base}/forgot-password`,
+      { email },
+      { responseType: 'text' }     // ★ FIX: REQUIRED FOR NAVIGATION
+    );
   }
 
-  verifyOtp(email: string, otp: string): Observable<any> {
-    return this.http.post(`${this.base}/verify-otp`, { email, otp });
+  // ------------------ VERIFY OTP ------------------
+  verifyOtp(email: string, otp: string) {
+    return this.http.post(
+      `${this.base}/verify-otp`,
+      { email, otp },
+      { responseType: 'text' }     // ★ FIX
+    );
   }
 
-  resetPassword(email: string, newPassword: string): Observable<any> {
-    return this.http.post(`${this.base}/reset-password`, { email, newPassword });
+  // ------------------ RESET PASSWORD ------------------
+  resetPassword(email: string, newPassword: string) {
+    return this.http.post(
+      `${this.base}/reset-password`,
+      { email, newPassword },
+      { responseType: 'text' }     // ★ FIX
+    );
   }
 
-  getToken(): string | null {
-    return typeof localStorage !== 'undefined'
-      ? localStorage.getItem(this.tokenKey)
-      : null;
+  // ------------------ TOKEN HELPERS ------------------
+  getToken() {
+    return localStorage.getItem(this.tokenKey);
   }
 
-  setToken(token: string): void {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(this.tokenKey, token);
-    }
+  setToken(token: string) {
+    localStorage.setItem(this.tokenKey, token);
   }
 
-  clearToken(): void {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem(this.tokenKey);
-    }
+  clearToken() {
+    localStorage.removeItem(this.tokenKey);
   }
 
-  logout(): void {
+  logout() {
     this.clearToken();
   }
 
-  isLoggedIn(): boolean {
+  isLoggedIn() {
     return !!this.getToken();
   }
 }

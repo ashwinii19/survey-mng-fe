@@ -25,4 +25,8 @@ export class Login {
       error: () => this.error = 'Invalid credentials'
     });
   }
+
+  goToForgot() {
+    this.router.navigate(['/forgot-password']);
+  }
 }

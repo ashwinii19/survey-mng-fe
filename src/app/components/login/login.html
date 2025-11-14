@@ -12,13 +12,13 @@
 
       <button type="submit" class="login-btn">Login</button>
 
-      <!-- FIXED: Make forgot link outside button area -->
-      <div class="forgot">
-        <a routerLink="/forgot-password" class="forgot-link">Forgot Password?</a>
-      </div>
-
       <div class="error" *ngIf="error">{{ error }}</div>
     </form>
+
+    <!-- Must be OUTSIDE FORM -->
+    <div class="forgot">
+      <span class="forgot-link" (click)="goToForgot()">Forgot Password?</span>
+    </div>
 
   </div>
 </div>

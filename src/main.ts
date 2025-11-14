@@ -1,16 +1,13 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-
 import AppComponent from './app/app.component';
+import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
-import { TokenInterceptor } from './app/interceptors/token-interceptor';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([TokenInterceptor])
-    )
+    importProvidersFrom(HttpClientModule)
   ]
 });

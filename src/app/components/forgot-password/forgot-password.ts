@@ -19,19 +19,22 @@ export class ForgotPassword {
   constructor(private auth: Auth, private router: Router) {}
 
   sendOtp() {
-    this.message = '';
-    this.error = '';
+    console.log("SEND OTP:", this.email);
 
     this.auth.forgotPassword(this.email).subscribe({
-      next: () => {
-        this.message = 'OTP sent to your email';
-        setTimeout(() => {
-          this.router.navigate(['/verify-otp'], {
-            queryParams: { email: this.email }
-          });
-        }, 1000);
+      next: (res) => {
+        console.log("OTP SEND SUCCESS:", res);
+        this.message = "OTP Sent Successfully!";
+
+        // IMPORTANT → Navigate to Verify OTP page
+        this.router.navigate(['/verify-otp'], { 
+          queryParams: { email: this.email }
+        });
       },
-      error: () => this.error = 'Email not found'
+      error: (err) => {
+        console.error("OTP SEND ERROR:", err);
+        this.error = "Email not found!";
+      }
     });
   }
 }

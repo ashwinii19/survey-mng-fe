@@ -1,39 +1,18 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth-guard';
+import { Login } from './components/login/login';
+import { ForgotPassword } from './components/forgot-password/forgot-password';
+import { VerifyOtp } from './components/verify-otp/verify-otp';
+import { ResetPassword } from './components/reset-password/reset-password';
+import DashboardRoot from './pages/dashboard-root/dashboard-root';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  {
-    path: 'login',
-    loadComponent: () =>
-      import('./components/login/login').then(m => (m as any).Login || (m as any).default)
-  },
-
-  {
-    path: 'forgot-password',
-    loadComponent: () =>
-      import('./components/forgot-password/forgot-password').then(m => (m as any).ForgotPassword || (m as any).default)
-  },
-
-  {
-    path: 'verify-otp',
-    loadComponent: () =>
-      import('./components/verify-otp/verify-otp').then(m => (m as any).VerifyOtp || (m as any).default)
-  },
-
-  {
-    path: 'reset-password',
-    loadComponent: () =>
-      import('./components/reset-password/reset-password').then(m => (m as any).ResetPassword || (m as any).default)
-  },
-
-  {
-    path: 'dashboard',
-    loadComponent: () =>
-      import('./pages/dashboard-root/dashboard-root').then(m => (m as any).DashboardRoot || (m as any).default),
-    canActivate: [AuthGuard]
-  },
+  { path: 'login', component: Login },
+  { path: 'forgot-password', component: ForgotPassword },
+{ path: 'verify-otp', component: VerifyOtp },
+{ path: 'reset-password', component: ResetPassword },
+  { path: 'dashboard', component: DashboardRoot },
 
   { path: '**', redirectTo: 'login' }
 ];

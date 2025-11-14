@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Auth } from '../../services/auth/auth';
 
 @Component({
@@ -18,28 +18,21 @@ export class VerifyOtp {
   error = '';
   message = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private auth: Auth
-  ) {
+  constructor(private route: ActivatedRoute, private router: Router, private auth: Auth) {
     this.email = this.route.snapshot.queryParamMap.get('email') || '';
   }
 
   verify() {
-    this.error = '';
-    this.message = '';
-
     this.auth.verifyOtp(this.email, this.otp).subscribe({
       next: () => {
-        this.message = 'OTP Verified!';
-        setTimeout(() => {
-          this.router.navigate(['/reset-password'], {
-            queryParams: { email: this.email }
-          });
-        }, 1000);
+        this.message = "OTP Verified! Redirecting...";
+        this.router.navigate(['/reset-password'], {
+          queryParams: { email: this.email }
+        });
       },
-      error: () => this.error = 'Invalid or expired OTP'
+      error: () => {
+        this.error = "Invalid or expired OTP";
+      }
     });
   }
 }

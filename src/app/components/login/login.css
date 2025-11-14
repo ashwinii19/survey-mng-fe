@@ -66,8 +66,9 @@ input:focus {
     opacity: 0.9;
 }
 
+/* Forgot Password */
 .forgot {
-  margin-top: 10px;
+  margin-top: 12px;
   text-align: right;
 }
 
@@ -76,9 +77,16 @@ input:focus {
   font-size: 14px;
   cursor: pointer;
   text-decoration: none;
-  pointer-events: auto !important; /* SUPER IMPORTANT */
+  pointer-events: auto; /* ensures clicking always works */
 }
 
 .forgot-link:hover {
   text-decoration: underline;
+}
+
+/* Error */
+.error {
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
 }

@@ -7,6 +7,7 @@ import { ForgotPassword } from './components/forgot-password/forgot-password';
 import { VerifyOtp } from './components/verify-otp/verify-otp';
 import { ResetPassword } from './components/reset-password/reset-password';
 import DashboardRoot from './pages/dashboard-root/dashboard-root';
+import { AuthGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

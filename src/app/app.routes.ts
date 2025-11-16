@@ -76,8 +76,8 @@ export const routes: Routes = [
           {
             path: '',
             loadComponent: () =>
-              import('./pages/recent-surveys/recent-surveys')
-                .then(m => m.RecentSurveys)
+              import('./components/create-survey.component/create-survey.component')
+                .then(m => m.CreateSurveyComponent)
           },
           {
             path: 'create',

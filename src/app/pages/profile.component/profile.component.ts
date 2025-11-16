@@ -39,9 +39,10 @@ export class ProfileComponent implements OnInit {
   }
 
   saveProfile() {
-    this.auth.updateProfile({ name: this.name, email: this.email })
-      .subscribe(() => alert("Profile Updated!"));
+  this.auth.updateProfile({ name: this.name, email: this.email })
+    .subscribe(() => alert("Profile Updated!"));
   }
+
 
   changePass() {
     this.auth.changePassword({
@@ -58,9 +59,10 @@ export class ProfileComponent implements OnInit {
   }
 
   uploadPhoto(event: any) {
-    const file = event.target.files[0];
-    this.auth.uploadImage(file).subscribe((res: any) => {
-      this.profileImage = res.image;
+  const file = event.target.files[0];
+
+  this.auth.uploadImage(file).subscribe((res: any) => {
+    this.profileImage = res.image; 
     });
   }
 }

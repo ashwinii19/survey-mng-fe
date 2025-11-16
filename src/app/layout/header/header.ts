@@ -24,9 +24,21 @@ export default class Header {
 
   constructor(private auth: Auth, private router: Router) {}
 
-  ngOnInit() {
-    this.loadHeaderUser();
-  }
+ ngOnInit() {
+  this.auth.user$.subscribe(user => {
+    if (user) {
+      this.admin = {
+        name: user.name,
+        profileImage: user.profileImage
+          ? `${this.baseUrl}/uploads/${user.profileImage}`
+          : 'assets/images/default-user.png'
+      };
+    }
+  });
+
+  this.auth.refreshUser(); // Load initial user
+}
+
 
   loadHeaderUser() {
     this.auth.getLoggedInUser().subscribe({

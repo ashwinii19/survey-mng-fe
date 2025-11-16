@@ -1,235 +1,105 @@
-<!-- 
-
-<div class="container-fluid">
- 
-  <div class="row mb-4">
-    <div class="col">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2 class="mb-0">Employee Management</h2>
-        <button class="btn btn-primary" (click)="addEmployee()">
-          <i class="fas fa-plus"></i> Add Employee
-        </button>
-      </div>
-    </div>
-  </div>
-
-  
-  <div *ngIf="error" class="alert alert-danger">
-    {{ error }}
-    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadEmployees()">
-      Retry
-    </button>
-  </div>
-
- 
-  <div *ngIf="!error" class="row mb-3">
-    <div class="col-md-6">
-      <div class="input-group">
-        <input 
-          type="text" 
-          class="form-control" 
-          placeholder="Search by name, ID, or email..."
-          [(ngModel)]="searchTerm"
-          (input)="onSearchChange()">
-        <span class="input-group-text">
-          <i class="fas fa-search"></i>
-        </span>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <select 
-        class="form-select" 
-        [(ngModel)]="selectedDepartment"
-        (change)="onDepartmentChange()">
-        <option value="">All Departments</option>
-        <option *ngFor="let dept of departments" [value]="dept.name">
-          {{ dept.name }}
-        </option>
-      </select>
-    </div>
-  </div>
-
- 
-  <div *ngIf="isLoading" class="text-center py-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="mt-2">Loading employees...</p>
-  </div>
-
-  
-  <div *ngIf="!isLoading && !error" class="card">
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead class="table-light">
-            <tr>
-              <th>Employee ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Position</th>
-              <th>Department</th>
-              <th>Status</th>
-              <th>Join Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let employee of filteredEmployees">
-              <td class="fw-bold">{{ employee.employeeId }}</td>
-              <td>{{ employee.name }}</td>
-              <td>{{ employee.email }}</td>
-              <td>{{ employee.position }}</td>
-              <td>
-                <span class="badge bg-secondary">{{ employee.department.name }}</span>
-              </td>
-              <td>
-                <span 
-                  class="badge" 
-                  [ngClass]="{
-                    'bg-success': employee.status === 'Active',
-                    'bg-danger': employee.status === 'Inactive'
-                  }">
-                  {{ employee.status }}
-                </span>
-              </td>
-              <td>{{ employee.joinDate | date:'mediumDate' }}</td>
-              <td>
-                <div class="btn-group btn-group-sm">
-                  <button 
-                    class="btn btn-outline-primary"
-                    (click)="editEmployee(employee.employeeId)">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button 
-                    class="btn btn-outline-danger"
-                    (click)="deleteEmployee(employee.employeeId)">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr *ngIf="filteredEmployees.length === 0 && !isLoading">
-              <td colspan="8" class="text-center text-muted py-4">
-                No employees found matching your criteria.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
- -->
-
-
-
-
-
-
-
-
-
 
 
 <div class="container-fluid px-4">
+  
   <!-- Header Section -->
-  <div class="row mb-4">
+  <div class="row mb-5">
     <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center py-3">
+      <div class="d-flex justify-content-between align-items-center py-4">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <div>
-          <h1 class="h2 mb-1 text-dark fw-bold">
-            <i class="fas fa-users me-2 text-primary"></i>Employee Management
+          <h1 class="display-6 fw-bold text-dark mb-2">
+            <i class="fas fa-users me-3 text-primary"></i>Employee Management
           </h1>
-          <p class="text-muted mb-0">Manage your organization's workforce efficiently</p>
+          <p class="text-muted fs-5 mb-0">Manage your organization's workforce efficiently</p>
         </div>
-        <button class="btn btn-primary btn-lg shadow-sm" (click)="addEmployee()">
-          <i class="fas fa-plus-circle me-2"></i>Add New Employee
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Error Alert -->
-  <div *ngIf="error" class="row mb-4">
-    <div class="col-12">
-      <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-        <div class="d-flex align-items-center">
-          <i class="fas fa-exclamation-triangle me-3 fs-5"></i>
-          <div class="flex-grow-1">
-            <h5 class="alert-heading mb-1">Oops! Something went wrong</h5>
-            <p class="mb-0">{{ error }}</p>
-          </div>
-        </div>
-        <div class="mt-3">
-          <button class="btn btn-danger btn-sm" (click)="loadEmployees()">
-            <i class="fas fa-redo me-2"></i>Try Again
+        <div class="d-flex gap-3">
+          <button class="btn btn-success btn-lg px-4 py-3 shadow" (click)="importBatch()">
+            <i class="fas fa-upload me-2"></i>Batch Import
+          </button>
+          <button class="btn btn-primary btn-lg px-4 py-3 shadow" (click)="addEmployee()">
+            <i class="fas fa-plus-circle me-2"></i>Add Employee
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Stats Cards -->
-  <div *ngIf="!error && !isLoading" class="row mb-4">
+  <!-- Statistics Cards -->
+  <div *ngIf="!error && !isLoading" class="row mb-5">
+    <!-- Total Employees Card -->
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-primary border-4 shadow-sm h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs fw-bold text-primary text-uppercase mb-1">Total Employees</div>
-              <div class="h5 mb-0 fw-bold text-gray-800">{{ totalEmployees }}</div>
+      <div class="card border-0 shadow-lg h-100 bg-white rounded-4">
+        <div class="card-body p-4 position-relative">
+          <!-- Gradient accent bar -->
+          <div class="position-absolute top-0 start-0 end-0 bg-primary rounded-top-4" style="height: 4px;"></div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-muted mb-2 fw-semibold small text-uppercase">TOTAL EMPLOYEES</h6>
+              <h2 class="fw-bold text-dark display-6 mb-0">{{ totalEmployees }}</h2>
+              <span class="badge bg-primary bg-opacity-10 text-primary mt-2">+5% this month</span>
             </div>
-            <div class="col-auto">
-              <i class="fas fa-users fa-2x text-gray-300"></i>
+            <div class="bg-primary bg-opacity-10 rounded-3 p-3">
+              <i class="fas fa-users fa-2x text-primary"></i>
             </div>
           </div>
         </div>
       </div>
     </div>
+    
+    <!-- Active Employees Card -->
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-success border-4 shadow-sm h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs fw-bold text-success text-uppercase mb-1">Active Employees</div>
-              <div class="h5 mb-0 fw-bold text-gray-800">
-                {{ activeEmployeesCount }}
-              </div>
+      <div class="card border-0 shadow-lg h-100 bg-white rounded-4">
+        <div class="card-body p-4 position-relative">
+          <div class="position-absolute top-0 start-0 end-0 bg-success rounded-top-4" style="height: 4px;"></div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-muted mb-2 fw-semibold small text-uppercase">ACTIVE EMPLOYEES</h6>
+              <h2 class="fw-bold text-dark display-6 mb-0">{{ activeEmployeesCount }}</h2>
+              <span class="badge bg-success bg-opacity-10 text-success mt-2">
+                {{ (activeEmployeesCount/totalEmployees*100).toFixed(1) }}% active
+              </span>
             </div>
-            <div class="col-auto">
-              <i class="fas fa-user-check fa-2x text-gray-300"></i>
+            <div class="bg-success bg-opacity-10 rounded-3 p-3">
+              <i class="fas fa-user-check fa-2x text-success"></i>
             </div>
           </div>
         </div>
       </div>
     </div>
+    
+    <!-- Departments Card -->
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-warning border-4 shadow-sm h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs fw-bold text-warning text-uppercase mb-1">Departments</div>
-              <div class="h5 mb-0 fw-bold text-gray-800">{{ departmentsCount }}</div>
+      <div class="card border-0 shadow-lg h-100 bg-white rounded-4">
+        <div class="card-body p-4 position-relative">
+          <div class="position-absolute top-0 start-0 end-0 bg-warning rounded-top-4" style="height: 4px;"></div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-muted mb-2 fw-semibold small text-uppercase">DEPARTMENTS</h6>
+              <h2 class="fw-bold text-dark display-6 mb-0">{{ departmentsCount }}</h2>
+              <span class="badge bg-warning bg-opacity-10 text-warning mt-2">+2 new</span>
             </div>
-            <div class="col-auto">
-              <i class="fas fa-building fa-2x text-gray-300"></i>
+            <div class="bg-warning bg-opacity-10 rounded-3 p-3">
+              <i class="fas fa-building fa-2x text-warning"></i>
             </div>
           </div>
         </div>
       </div>
     </div>
+    
+    <!-- Showing Card -->
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-start border-info border-4 shadow-sm h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs fw-bold text-info text-uppercase mb-1">Showing</div>
-              <div class="h5 mb-0 fw-bold text-gray-800">{{ showingEmployeesCount }} employees</div>
+      <div class="card border-0 shadow-lg h-100 bg-white rounded-4">
+        <div class="card-body p-4 position-relative">
+          <div class="position-absolute top-0 start-0 end-0 bg-info rounded-top-4" style="height: 4px;"></div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-muted mb-2 fw-semibold small text-uppercase">SHOWING</h6>
+              <h2 class="fw-bold text-dark display-6 mb-0">{{ showingEmployeesCount }}</h2>
+              <span class="badge bg-info bg-opacity-10 text-info mt-2">filtered results</span>
             </div>
-            <div class="col-auto">
-              <i class="fas fa-filter fa-2x text-gray-300"></i>
+            <div class="bg-info bg-opacity-10 rounded-3 p-3">
+              <i class="fas fa-filter fa-2x text-info"></i>
             </div>
           </div>
         </div>
@@ -237,35 +107,36 @@
     </div>
   </div>
 
-  <!-- Filters Card -->
+  <!-- Rest of your HTML remains the same -->
+  <!-- Search & Filters Section -->
   <div *ngIf="!error" class="row mb-4">
     <div class="col-12">
-      <div class="card shadow-sm border-0">
-        <div class="card-header bg-light py-3">
-          <h5 class="mb-0 text-dark">
-            <i class="fas fa-filter me-2 text-primary"></i>Filters & Search
-          </h5>
+      <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-header bg-transparent border-0 py-4">
+          <h4 class="mb-0 text-dark fw-bold">
+            <i class="fas fa-search me-2 text-primary"></i>Search & Filters
+          </h4>
         </div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-lg-6 col-md-12">
-              <label class="form-label fw-semibold">Search Employees</label>
-              <div class="input-group">
-                <span class="input-group-text bg-light border-end-0">
+        <div class="card-body pt-0">
+          <div class="row g-4">
+            <div class="col-lg-5 col-md-12">
+              <label class="form-label fw-semibold fs-6 text-dark">Search Employees</label>
+              <div class="input-group input-group-lg shadow-sm">
+                <span class="input-group-text bg-white border-end-0 py-3 px-4">
                   <i class="fas fa-search text-muted"></i>
                 </span>
                 <input 
                   type="text" 
-                  class="form-control border-start-0 ps-0" 
+                  class="form-control border-start-0 ps-0 py-3 fs-6" 
                   placeholder="Search by name, ID, email, or position..."
                   [(ngModel)]="searchTerm"
                   (input)="onSearchChange()">
               </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-              <label class="form-label fw-semibold">Filter by Department</label>
+            <div class="col-lg-5 col-md-8">
+              <label class="form-label fw-semibold fs-6 text-dark">Filter by Department</label>
               <select 
-                class="form-select" 
+                class="form-select form-select-lg shadow-sm py-3 fs-6" 
                 [(ngModel)]="selectedDepartment"
                 (change)="onDepartmentChange()">
                 <option value="">All Departments</option>
@@ -274,9 +145,9 @@
                 </option>
               </select>
             </div>
-            <div class="col-lg-2 col-md-6 d-flex align-items-end">
-              <button class="btn btn-secondary w-100" (click)="clearFilters()">
-                <i class="fas fa-times me-2"></i>Clear All
+            <div class="col-lg-2 col-md-4 d-flex align-items-end">
+              <button class="btn btn-outline-secondary w-100 py-3 shadow-sm fs-6" (click)="clearFilters()">
+                <i class="fas fa-eraser me-2"></i>Clear
               </button>
             </div>
           </div>
@@ -288,131 +159,196 @@
   <!-- Loading State -->
   <div *ngIf="isLoading" class="row">
     <div class="col-12">
-      <div class="card shadow-sm border-0">
-        <div class="card-body text-center py-5">
-          <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+      <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-body text-center py-5 my-4">
+          <div class="spinner-grow text-primary mb-4" style="width: 4rem; height: 4rem;" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
-          <h4 class="text-dark mb-2">Loading Employees</h4>
-          <p class="text-muted">Please wait while we fetch the latest data...</p>
+          <h3 class="text-dark mb-3 fw-bold">Loading Employee Data</h3>
+          <p class="text-muted fs-5">Please wait while we fetch the latest information...</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Employees Table -->
+  <!-- Employee Table -->
   <div *ngIf="!isLoading && !error" class="row">
     <div class="col-12">
-      <div class="card shadow-sm border-0">
-        <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
-          <h5 class="mb-0 text-dark">
-            <i class="fas fa-list me-2 text-primary"></i>Employee List
-          </h5>
-          <span class="badge bg-primary fs-6">{{ showingEmployeesCount }} employees</span>
+      <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-header bg-transparent border-0 py-4 d-flex justify-content-between align-items-center">
+          <div>
+            <h4 class="mb-0 text-dark fw-bold">
+              <i class="fas fa-list me-2 text-primary"></i>Employee List
+            </h4>
+            <p class="text-muted mb-0 mt-1">Showing {{ showingEmployeesCount }} of {{ totalEmployees }} employees</p>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-primary fs-6 px-3 py-2">{{ showingEmployeesCount }} employees</span>
+            <button class="btn btn-outline-primary px-4 py-2" (click)="loadEmployees()">
+              <i class="fas fa-sync-alt me-2"></i>Refresh
+            </button>
+          </div>
         </div>
         <div class="card-body p-0">
-          <div class="table-responsive">
+          <div class="table-responsive rounded-4">
             <table class="table table-hover align-middle mb-0">
-              <thead class="table-light">
+              <thead class="table-dark">
                 <tr>
-                  <th class="ps-4">
-                    <i class="fas fa-id-card me-1 text-muted"></i>Employee ID
+                  <th class="ps-4 py-3 fw-semibold border-0">
+                    <i class="fas fa-id-card me-2"></i>Employee ID
                   </th>
-                  <th>
-                    <i class="fas fa-user me-1 text-muted"></i>Name
+                  <th class="py-3 fw-semibold border-0">
+                    <i class="fas fa-user me-2"></i>Name & Position
                   </th>
-                  <th>
-                    <i class="fas fa-envelope me-1 text-muted"></i>Email
+                  <th class="py-3 fw-semibold border-0">
+                    <i class="fas fa-envelope me-2"></i>Email
                   </th>
-                  <th>
-                    <i class="fas fa-briefcase me-1 text-muted"></i>Position
+                  <th class="py-3 fw-semibold border-0">
+                    <i class="fas fa-building me-2"></i>Department
                   </th>
-                  <th>
-                    <i class="fas fa-building me-1 text-muted"></i>Department
+                  <th class="text-center py-3 fw-semibold border-0">
+                    <i class="fas fa-chart-line me-2"></i>Status
                   </th>
-                  <th>
-                    <i class="fas fa-circle me-1 text-muted"></i>Status
+                  <th class="py-3 fw-semibold border-0">
+                    <i class="fas fa-calendar me-2"></i>Join Date
                   </th>
-                  <th>
-                    <i class="fas fa-calendar me-1 text-muted"></i>Join Date
-                  </th>
-                  <th class="text-end pe-4">Actions</th>
+                  <th class="text-end pe-4 py-3 fw-semibold border-0">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let employee of filteredEmployees" class="border-bottom">
-                  <td class="ps-4">
-                    <span class="fw-bold text-primary">{{ employee.employeeId }}</span>
+                <tr *ngFor="let employee of getPaginatedEmployees()" class="border-bottom">
+                  <td class="ps-4 py-3">
+                    <span class="fw-bold text-primary fs-6">{{ employee.employeeId }}</span>
                   </td>
-                  <td>
+                  <td class="py-3">
                     <div class="d-flex align-items-center">
-                      <div class="avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-                        <i class="fas fa-user text-primary fs-6"></i>
+                      <div class="bg-primary bg-opacity-10 rounded-3 p-3 me-3">
+                        <i class="fas fa-user text-primary fs-5"></i>
                       </div>
                       <div>
-                        <h6 class="mb-0 fw-semibold">{{ employee.name }}</h6>
+                        <h6 class="mb-1 fw-bold text-dark">{{ employee.name }}</h6>
+                        <small class="text-muted">{{ employee.position }}</small>
                       </div>
                     </div>
                   </td>
-                  <td>
-                    <span class="text-muted">{{ employee.email }}</span>
+                  <td class="py-3">
+                    <div class="d-flex align-items-center">
+                      <i class="fas fa-envelope text-muted me-2"></i>
+                      <span class="text-dark">{{ employee.email }}</span>
+                    </div>
                   </td>
-                  <td>
-                    <span class="fw-semibold">{{ employee.position }}</span>
-                  </td>
-                  <td>
-                    <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 py-2 px-3">
-                      {{ employee.department.name }}
+                  <td class="py-3">
+                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 py-2 px-3 fs-6">
+                      <i class="fas fa-building me-1"></i>{{ employee.department.name }}
                     </span>
                   </td>
-                  <td>
+                  <td class="text-center py-3">
                     <span 
-                      class="badge py-2 px-3 fw-semibold" 
+                      class="badge py-2 px-3 fw-bold fs-6"
                       [ngClass]="{
-                        'bg-success bg-opacity-10 text-success border border-success border-opacity-25': employee.status === 'Active',
-                        'bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25': employee.status === 'Inactive'
+                        'bg-success': employee.status === 'Active',
+                        'bg-danger': employee.status === 'Inactive',
+                        'bg-warning text-dark': employee.status === 'Pending',
+                        'bg-info': employee.status === 'On Leave',
+                        'bg-secondary': !employee.status || (employee.status !== 'Active' && employee.status !== 'Inactive' && employee.status !== 'Pending' && employee.status !== 'On Leave')
                       }">
-                      <i class="fas fa-circle me-1" [ngClass]="{
-                        'text-success': employee.status === 'Active',
-                        'text-danger': employee.status === 'Inactive'
-                      }" style="font-size: 6px;"></i>
-                      {{ employee.status }}
+                      <i class="fas fa-circle me-2" style="font-size: 8px;"></i>
+                      {{ employee.status || 'Unknown' }}
                     </span>
                   </td>
-                  <td>
-                    <span class="text-muted">{{ employee.joinDate | date:'MMM dd, yyyy' }}</span>
+                  <td class="py-3">
+                    <div class="d-flex align-items-center">
+                      <i class="fas fa-calendar text-muted me-2"></i>
+                      <span class="text-dark fw-semibold">{{ employee.joinDate | date:'MMM dd, yyyy' }}</span>
+                    </div>
                   </td>
-                  <td class="text-end pe-4">
-                    <div class="btn-group">
+                  <td class="text-end pe-4 py-3">
+                    <div class="btn-group shadow-sm">
                       <button 
-                        class="btn btn-primary btn-sm me-2 px-3"
+                        class="btn btn-primary px-4 py-2 fw-semibold"
                         (click)="editEmployee(employee.employeeId)"
                         title="Edit Employee">
-                        <i class="fas fa-edit me-1"></i>Edit
+                        <i class="fas fa-edit me-2"></i>Edit
                       </button>
                       <button 
-                        class="btn btn-danger btn-sm px-3"
+                        class="btn btn-danger px-4 py-2 fw-semibold"
                         (click)="deleteEmployee(employee.employeeId)"
                         title="Delete Employee">
-                        <i class="fas fa-trash me-1"></i>Delete
+                        <i class="fas fa-trash me-2"></i>Delete
                       </button>
                     </div>
                   </td>
                 </tr>
                 <tr *ngIf="filteredEmployees.length === 0">
-                  <td colspan="8" class="text-center py-5">
-                    <div class="py-4">
-                      <i class="fas fa-users fs-1 text-muted mb-3"></i>
-                      <h4 class="text-muted">No employees found</h4>
-                      <p class="text-muted mb-3">Try adjusting your search criteria or filters</p>
-                      <button class="btn btn-primary" (click)="clearFilters()">
-                        <i class="fas fa-times me-2"></i>Clear Filters
-                      </button>
+                  <td colspan="7" class="text-center py-5">
+                    <div class="py-5">
+                      <i class="fas fa-users fs-1 text-muted mb-4 opacity-50"></i>
+                      <h3 class="text-muted fw-bold mb-3">No employees found</h3>
+                      <p class="text-muted fs-5 mb-4">Try adjusting your search criteria or filters</p>
+                      <div class="d-flex gap-3 justify-content-center">
+                        <button class="btn btn-primary px-4 py-2 fw-semibold" (click)="clearFilters()">
+                          <i class="fas fa-times me-2"></i>Clear Filters
+                        </button>
+                        <button class="btn btn-success px-4 py-2 fw-semibold" (click)="addEmployee()">
+                          <i class="fas fa-plus me-2"></i>Add Employee
+                        </button>
+                      </div>
                     </div>
                   </td>
                 </tr>
               </tbody>
             </table>
+          </div>
+          
+          <!-- Pagination -->
+          <div *ngIf="filteredEmployees.length > 0" class="card-footer bg-transparent border-0 py-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="text-muted fs-6">
+                Showing <strong class="text-dark">{{ getStartIndex() + 1 }} to {{ getEndIndex() }}</strong> of 
+                <strong class="text-dark">{{ filteredEmployees.length }}</strong> entries
+              </div>
+              <div class="d-flex align-items-center gap-4">
+                <div>
+                  <select class="form-select shadow-sm" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+                    <option value="5">5 per page</option>
+                    <option value="10">10 per page</option>
+                    <option value="20">20 per page</option>
+                    <option value="50">50 per page</option>
+                  </select>
+                </div>
+                <nav>
+                  <ul class="pagination pagination-lg mb-0">
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                      <button class="page-link px-3 py-2" (click)="goToPage(1)" [disabled]="currentPage === 1">
+                        <i class="fas fa-angle-double-left"></i>
+                      </button>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                      <button class="page-link px-3 py-2" (click)="previousPage()" [disabled]="currentPage === 1">
+                        <i class="fas fa-angle-left"></i>
+                      </button>
+                    </li>
+                    
+                    <li *ngFor="let page of getVisiblePages()" class="page-item" [class.active]="page === currentPage">
+                      <button class="page-link px-3 py-2" (click)="goToPage(page)">
+                        {{ page }}
+                      </button>
+                    </li>
+                    
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                      <button class="page-link px-3 py-2" (click)="nextPage()" [disabled]="currentPage === totalPages">
+                        <i class="fas fa-angle-right"></i>
+                      </button>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                      <button class="page-link px-3 py-2" (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
+                        <i class="fas fa-angle-double-right"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
           </div>
         </div>
       </div>

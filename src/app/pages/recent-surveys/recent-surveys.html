@@ -1,17 +1,76 @@
-<div class="recent">
-  <h4>Recent Surveys</h4>
-  <ul>
-    <li *ngFor="let s of surveys">
-      <div class="title">{{ s.title || s.surveyTitle || 'Untitled' }}</div>
-      <div class="meta">
-        <span *ngIf="s.publishedAt">Published: {{ s.publishedAt | date:'mediumDate' }}</span>
-        <span *ngIf="s.targetDepartment"> • Dept: {{ s.targetDepartment.name }}</span>
-      </div>
-      <div class="actions">
-        <a [routerLink]="['/survey', s.id, 'view']" class="link" *ngIf="s.id">View</a>
-        <a [href]="s.formLink" target="_blank" class="link" *ngIf="s.formLink">Open Form</a>
-      </div>
-    </li>
-    <li *ngIf="surveys?.length === 0">No recent surveys</li>
-  </ul>
+<div class="recent-wrapper">
+
+  <h2>Recent Surveys</h2>
+
+  <div *ngIf="surveys.length === 0" class="empty">No surveys created yet.</div>
+
+  <table class="survey-table" *ngIf="surveys.length > 0">
+    <thead>
+      <tr>
+        <th>Survey Title</th>
+        <th>Department</th>
+        <th>Questions</th>
+        <th>Created Date</th>
+        <th>Status</th>
+        <th style="width: 260px;">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let s of surveys">
+        
+        <td>{{ s.title }}</td>
+
+        <td>{{ s.targetDepartment?.name || '-' }}</td>
+
+        <td>{{ s.questions?.length }}</td>
+
+        <td>{{ s.createdAt | date:'dd MMM yyyy, hh:mm a' }}</td>
+
+        <td>
+          <span class="status-badge"
+            [ngClass]="s.published ? 'published' : (s.editable ? 'draft' : 'created')">
+            {{ s.published ? 'Published' : (s.editable ? 'Draft' : 'Created') }}
+          </span>
+        </td>
+
+        <!-- ACTION BUTTONS -->
+        <td class="action-col">
+
+          <!-- Draft -->
+          <button
+            *ngIf="s.editable === true && s.published === false"
+            class="btn edit-btn"
+            (click)="editSurvey(s.id)">
+            Edit
+          </button>
+
+          <!-- Created (Not Draft, Not Published) -->
+          <ng-container *ngIf="s.editable === false && s.published === false">
+            <button class="btn publish-btn" (click)="publishSurvey(s.id)">
+              Publish
+            </button>
+
+            <a class="btn view-btn" [href]="openForm(s.formLink)" target="_blank">
+              View
+            </a>
+          </ng-container>
+
+          <!-- Published -->
+          <ng-container *ngIf="s.published === true">
+            <a class="btn view-btn" [href]="openForm(s.formLink)" target="_blank">
+              View
+            </a>
+          </ng-container>
+
+          <!-- DELETE -->
+          <button class="btn delete-btn" (click)="deleteSurvey(s.id)">
+            Delete
+          </button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
 </div>

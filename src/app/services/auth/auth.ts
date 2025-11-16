@@ -50,9 +50,15 @@ export class Auth {
   }
 
   // ------------------ TOKEN HELPERS ------------------
+  // getToken() {
+  //   return localStorage.getItem(this.tokenKey);
+  // }
   getToken() {
-    return localStorage.getItem(this.tokenKey);
-  }
+  const t = localStorage.getItem(this.tokenKey);
+  console.log("Auth.getToken() =", t);
+  return t;
+}
+
 
   setToken(token: string) {
     localStorage.setItem(this.tokenKey, token);

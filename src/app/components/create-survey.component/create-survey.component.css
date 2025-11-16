@@ -1,0 +1,244 @@
+/* =======================================================================
+   CREATE SURVEY PAGE - PROFESSIONAL ENTERPRISE UI
+   ======================================================================= */
+
+/* Page Wrapper */
+.create-survey-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  padding: 48px 64px;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: #f5f7fa;
+  box-sizing: border-box;
+}
+
+/* Title */
+h2 {
+  font-size: 36px;
+  text-align: center;
+  color: #0f172a;
+  margin-bottom: 40px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+/* Section Headings */
+h3 {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 18px;
+}
+
+h4 {
+  color: #1e293b;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+/* Labels */
+label {
+  display: block;
+  color: #475569;
+  font-size: 15px;
+  margin: 14px 0 6px;
+  font-weight: 500;
+}
+
+/* Inputs & Dropdown */
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 15px;
+  transition: all 0.25s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.2);
+  outline: none;
+}
+
+/* Dropdown arrow */
+select {
+  appearance: none;
+  background: #ffffff
+    url("data:image/svg+xml,%3Csvg fill='%236366f1' width='20' height='20' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E")
+    no-repeat right 16px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+/* Card Container */
+.card {
+  background: #ffffff;
+  padding: 32px 36px;
+  margin-bottom: 32px;
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
+  border: 1px solid #e5eaf1;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+}
+
+/* Layout Helpers */
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Questions Box */
+.question-box {
+  padding: 20px 0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.question-box:last-child {
+  border-bottom: none;
+}
+
+.question-box .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Option Row */
+.option-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+/* Delete Button (Icon Only) */
+button.icon-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: #dc2626;
+  padding: 6px;
+  transition: all 0.25s ease;
+}
+
+button.icon-delete:hover {
+  color: #b91c1c;
+  transform: scale(1.12);
+}
+
+/* Required Checkbox */
+.req-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  color: #475569;
+  font-size: 15px;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #6366f1;
+  cursor: pointer;
+}
+
+/* Buttons - Base */
+button {
+  cursor: pointer;
+  padding: 12px 22px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.25s ease;
+}
+
+/* Add Question Button */
+.add-btn {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+}
+
+.add-btn:hover {
+  background: linear-gradient(135deg, #4338ca, #4f46e5);
+  transform: translateY(-2px);
+}
+
+/* Bottom Action Buttons */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+  margin-top: 38px;
+}
+
+/* Draft Button */
+.draft {
+  background: #fff8d6;
+  color: #8a5400;
+  border: 1px solid #f4ca51;
+}
+
+.draft:hover {
+  background: #ffefb0;
+  transform: translateY(-2px);
+}
+
+/* Publish Button */
+.publish {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.publish:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+}
+
+/* Textarea */
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .create-survey-wrapper {
+    padding: 24px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  input, select, textarea {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+
+  .card {
+    padding: 24px;
+  }
+}

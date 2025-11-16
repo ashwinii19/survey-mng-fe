@@ -17,14 +17,11 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let s of surveys">
-        
+      <tr *ngFor="let s of pagedSurveys">
+
         <td>{{ s.title }}</td>
-
         <td>{{ s.targetDepartment?.name || '-' }}</td>
-
         <td>{{ s.questions?.length }}</td>
-
         <td>{{ s.createdAt | date:'dd MMM yyyy, hh:mm a' }}</td>
 
         <td>
@@ -34,18 +31,14 @@
           </span>
         </td>
 
-        <!-- ACTION BUTTONS -->
         <td class="action-col">
 
-          <!-- Draft -->
-          <button
-            *ngIf="s.editable === true && s.published === false"
+          <button *ngIf="s.editable === true && s.published === false"
             class="btn edit-btn"
             (click)="editSurvey(s.id)">
             Edit
           </button>
 
-          <!-- Created (Not Draft, Not Published) -->
           <ng-container *ngIf="s.editable === false && s.published === false">
             <button class="btn publish-btn" (click)="publishSurvey(s.id)">
               Publish
@@ -56,14 +49,12 @@
             </a>
           </ng-container>
 
-          <!-- Published -->
           <ng-container *ngIf="s.published === true">
             <a class="btn view-btn" [href]="openForm(s.formLink)" target="_blank">
               View
             </a>
           </ng-container>
 
-          <!-- DELETE -->
           <button class="btn delete-btn" (click)="deleteSurvey(s.id)">
             Delete
           </button>
@@ -73,4 +64,28 @@
     </tbody>
   </table>
 
+  <!-- Pagination Controls -->
+  <div class="pagination-controls" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="btn">Previous</button>
+
+    <button
+      *ngFor="let page of pages"
+      (click)="goToPage(page)"
+      [class.active]="page === currentPage"
+      class="btn page-btn">
+      {{ page }}
+    </button>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="btn">Next</button>
+  </div>
+
+</div>
+
+
+<!-- 🔵 FULL SCREEN LOADER ADDED BELOW -->
+<div class="loader-overlay" *ngIf="loading">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <p>Publishing the survey…</p>
+  </div>
 </div>

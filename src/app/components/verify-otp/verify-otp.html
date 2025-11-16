@@ -3,11 +3,20 @@
     <h2>Verify OTP</h2>
 
     <label>Enter OTP</label>
-    <input [(ngModel)]="otp" type="text" maxlength="6" />
+    <input [(ngModel)]="otp" type="text" maxlength="6" placeholder="Enter 6-digit OTP" />
 
     <button class="btn" (click)="verify()">Verify OTP</button>
+
+    <!-- Same UI button as Back to Login -->
+    <button class="back-link" (click)="goBack()">Back to Forgot Password</button>
+
 
     <div class="msg success" *ngIf="message">{{ message }}</div>
     <div class="msg error" *ngIf="error">{{ error }}</div>
   </div>
+</div>
+
+<!-- Toast Popup -->
+<div class="toast" *ngIf="toast.show" [ngClass]="toast.type">
+  {{ toast.text }}
 </div>

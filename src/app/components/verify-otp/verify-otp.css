@@ -1,39 +1,124 @@
+/* Page Wrapper */
 .fp-wrap {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #f5f7fb;
+  position: relative;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
+/* Card */
 .card {
   width: 360px;
-  padding: 25px;
+  padding: 25px 32px;
   border-radius: 12px;
   background: #fff;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
 }
 
-input, button {
+/* Input */
+input[type="text"] {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-top: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  font-size: 15px;
+  box-sizing: border-box;
 }
 
-.btn {
+/* Main button */
+button.btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
   background: #22b8a6;
   color: white;
-  border: none;
+  transition: background 0.25s ease;
 }
 
-.msg.success { color: #27ae60; margin-top: 10px; }
-.msg.error { color: #c0392b; margin-top: 10px; }
+button.btn:hover {
+  background: #18897d;
+}
 
-.back {
-  margin-top: 15px;
+button.back-link {
+  background: none;
+  border: none;
+  margin-top: 18px;
+  color: #004aad;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 16px;
+  padding: 10px 0;
+  width: 100%;
   text-align: center;
   display: block;
-  color: #004aad;
+  border-radius: 6px;            
+  transition: 
+    color 0.25s ease,
+    background-color 0.25s ease; 
+}
+
+button.back-link:hover {
+  color: #002f6c;
+  background-color: #22b8a6; 
+}
+
+
+
+/* Toast Messages */
+.msg.success {
+  color: #27ae60;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.msg.error {
+  color: #c0392b;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+/* Toast Box */
+.toast {
+  position: fixed;
+  top: 28px;
+  right: 28px;
+  min-width: 240px;
+  background: #fff;
+  color: #174f4f;
+  padding: 16px 26px;
+  border-radius: 9px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 24px rgba(22,36,48,0.10);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(-16px);
+  animation: toast-in 0.3s forwards;
+}
+
+.toast.success {
+  border-left: 5px solid #27ae60;
+}
+
+.toast.error {
+  border-left: 5px solid #c0392b;
+}
+
+@keyframes toast-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

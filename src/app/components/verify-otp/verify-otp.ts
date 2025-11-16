@@ -18,21 +18,45 @@ export class VerifyOtp {
   error = '';
   message = '';
 
+  toast = {
+    type: '',
+    text: '',
+    show: false
+  };
+
   constructor(private route: ActivatedRoute, private router: Router, private auth: Auth) {
     this.email = this.route.snapshot.queryParamMap.get('email') || '';
   }
 
+  showToast(type: string, text: string) {
+    this.toast = { type, text, show: true };
+    setTimeout(() => {
+      this.toast.show = false;
+    }, 3000);
+  }
+
   verify() {
+    if (!this.otp || this.otp.length < 4) {
+      this.showToast("error", "Enter valid OTP!");
+      return;
+    }
+
     this.auth.verifyOtp(this.email, this.otp).subscribe({
       next: () => {
-        this.message = "OTP Verified! Redirecting...";
-        this.router.navigate(['/reset-password'], {
-          queryParams: { email: this.email }
-        });
+        this.showToast("success", "OTP Verified!");
+        setTimeout(() => {
+          this.router.navigate(['/reset-password'], {
+            queryParams: { email: this.email }
+          });
+        }, 800);
       },
       error: () => {
-        this.error = "Invalid or expired OTP";
+        this.showToast("error", "Invalid or expired OTP");
       }
     });
+  }
+
+  goBack() {
+    this.router.navigate(['/forgot-password']);
   }
 }

@@ -1,0 +1,83 @@
+<div class="create-survey-wrapper">
+
+  <h2>Create Survey</h2>
+
+  <form [formGroup]="surveyForm">
+
+    <div class="card">
+      <label>Survey Title</label>
+      <input type="text" formControlName="title">
+
+      <label>Description</label>
+      <textarea formControlName="description"></textarea>
+
+      <label>Target Department</label>
+      <select formControlName="targetDepartmentName">
+        <option value="" disabled>Select department</option>
+        <option *ngFor="let d of departments" [value]="d.name">{{ d.name }}</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <div class="row-between">
+        <h3>Questions</h3>
+        <button type="button" class="add-btn" (click)="addQuestion()">+ Add Question</button>
+      </div>
+
+      <div formArrayName="questions">
+
+        <div class="question-box" *ngFor="let q of questions.controls; let i = index" [formGroupName]="i">
+
+          <div class="head">
+            <h4>Question {{ i + 1 }}</h4>
+            <button type="button" (click)="deleteQuestion(i)">🗑</button>
+          </div>
+
+          <label>Question Text</label>
+          <input type="text" formControlName="text">
+
+          <label>Question Type</label>
+          <select formControlName="type" (change)="handleTypeChange(i)">
+            <option *ngFor="let t of questionTypes" [value]="t">{{ t }}</option>
+          </select>
+
+          <div class="req-check">
+            <input type="checkbox" formControlName="required">
+            <span>Required</span>
+          </div>
+
+          <div class="options-section" *ngIf="showOptions(i)">
+            <label>Options</label>
+
+            <div formArrayName="options">
+              <div class="option-row" *ngFor="let opt of getOptions(i).controls; let j=index">
+                <input [formControlName]="j" placeholder="Option text...">
+                <button type="button" (click)="removeOption(i,j)">❌</button>
+              </div>
+            </div>
+
+            <button type="button" (click)="addOption(i)">+ Add Option</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button type="button" class="draft" (click)="saveAsDraft()">Save as Draft</button>
+      <button type="button" class="publish" (click)="createSurveyFinal()">Create Survey</button>
+    </div>
+
+  </form>
+
+</div>
+
+<!-- ⭐ ADDED RECENT SURVEYS BELOW (NO LOGIC CHANGE) ⭐ -->
+<hr style="margin:40px 0; opacity:0.3;">
+
+<h2>Recent Surveys</h2>
+
+<app-recent-surveys></app-recent-surveys>

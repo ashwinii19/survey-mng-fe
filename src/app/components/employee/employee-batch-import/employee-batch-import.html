@@ -1,0 +1,172 @@
+
+
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-header bg-transparent border-0 py-4 d-flex justify-content-between align-items-center">
+          <h4 class="mb-0 text-dark fw-bold">
+            <i class="fas fa-upload me-2 text-primary"></i>Batch Import Employees
+          </h4>
+          <button class="btn btn-outline-primary btn-sm" routerLink="/app/employees">
+            <i class="fas fa-list me-1"></i>View Employees
+          </button>
+        </div>
+        <div class="card-body">
+          <!-- File Selection -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold text-dark">Select CSV File</label>
+            <div class="input-group input-group-lg">
+              <input 
+                type="file" 
+                class="form-control" 
+                accept=".csv"
+                (change)="onFileSelected($event)"
+                [disabled]="isUploading">
+              <button 
+                *ngIf="selectedFile"
+                class="btn btn-outline-danger" 
+                type="button"
+                (click)="clearFile()"
+                [disabled]="isUploading">
+                <i class="fas fa-times"></i> Clear
+              </button>
+            </div>
+            
+            <!-- Selected File Display -->
+            <div *ngIf="selectedFile" class="mt-3">
+              <div class="alert alert-warning border-0 rounded-3 d-flex align-items-center">
+                <i class="fas fa-file-csv text-warning me-3 fs-4"></i>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1 fw-bold text-dark">{{ selectedFile.name }}</h6>
+                  <small class="text-muted">{{ (selectedFile.size / 1024).toFixed(2) }} KB • CSV File</small>
+                </div>
+                <button 
+                  class="btn btn-sm btn-outline-warning"
+                  (click)="clearFile()"
+                  [disabled]="isUploading">
+                  Change
+                </button>
+              </div>
+            </div>
+            
+            <div class="form-text text-muted">
+              <i class="fas fa-info-circle me-1"></i>
+              Only CSV files are supported (max 10MB)
+            </div>
+          </div>
+
+          <!-- Upload Progress -->
+          <div *ngIf="isUploading" class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-semibold text-dark">Uploading...</span>
+              <span class="badge bg-primary fs-6">{{ uploadProgress }}%</span>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div 
+                class="progress-bar progress-bar-striped progress-bar-animated bg-warning" 
+                [style.width]="uploadProgress + '%'"
+                role="progressbar">
+              </div>
+            </div>
+          </div>
+
+          <!-- Status Message -->
+          <div *ngIf="uploadMessage" class="mb-4">
+            <div class="alert border-0 rounded-3" 
+                 [class.alert-success]="uploadSuccess" 
+                 [class.alert-danger]="!uploadSuccess && uploadMessage"
+                 [class.alert-info]="!uploadMessage && !uploadSuccess">
+              <div class="d-flex align-items-center">
+                <i class="fas" 
+                   [class.fa-check-circle]="uploadSuccess"
+                   [class.fa-exclamation-circle]="!uploadSuccess"
+                   [class.fa-info-circle]="!uploadMessage && !uploadSuccess"
+                   class="me-3 fs-5"></i>
+                <div class="flex-grow-1">
+                  <div class="fw-bold mb-1">{{ uploadMessage }}</div>
+                  <div *ngIf="batchLogId" class="small">
+                    <strong>Batch ID:</strong> {{ batchLogId }}
+                  </div>
+                  <div *ngIf="totalRecords > 0" class="small">
+                    <strong>Total Records:</strong> {{ totalRecords }}
+                  </div>
+                  <div *ngIf="uploadSuccess && batchLogId" class="small text-muted mt-2">
+                    <i class="fas fa-clock me-1"></i>
+                    Redirecting to batch status page...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="d-flex gap-3">
+            <button 
+              class="btn btn-success px-4 py-3 fw-semibold flex-fill"
+              (click)="onUpload()" 
+              [disabled]="!canUpload()"
+              [class.btn-lg]="!isUploading">
+              <i class="fas fa-upload me-2"></i> 
+              {{ isUploading ? 'Uploading...' : 'Upload & Process' }}
+            </button>
+
+            <button 
+              class="btn btn-outline-primary px-4 py-3 fw-semibold"
+              (click)="downloadTemplate()"
+              [disabled]="isUploading">
+              <i class="fas fa-download me-2"></i> Template
+            </button>
+
+            <button 
+              class="btn btn-outline-secondary px-4 py-3 fw-semibold"
+              (click)="onCancel()"
+              [disabled]="isUploading">
+              <i class="fas fa-arrow-left me-2"></i> Back
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructions -->
+      <div class="card border-0 shadow-lg rounded-4 mt-4">
+        <div class="card-header bg-transparent border-0 py-4">
+          <h5 class="mb-0 text-dark fw-bold">
+            <i class="fas fa-info-circle me-2 text-primary"></i>Instructions
+          </h5>
+        </div>
+        <div class="card-body">
+          <ol class="list-group list-group-flush">
+            <li class="list-group-item bg-transparent px-0 py-2">
+              <strong>Download</strong> the template CSV file using the "Template" button
+            </li>
+            <li class="list-group-item bg-transparent px-0 py-2">
+              <strong>Fill in</strong> employee data following the template format exactly
+            </li>
+            <li class="list-group-item bg-transparent px-0 py-2">
+              <strong>Ensure</strong> all required fields are filled and valid
+            </li>
+            <li class="list-group-item bg-transparent px-0 py-2">
+              <strong>Upload</strong> the completed CSV file using the form above
+            </li>
+            <li class="list-group-item bg-transparent px-0 py-2">
+              <strong>Monitor</strong> the import progress and review results
+            </li>
+          </ol>
+          <div class="alert alert-warning border-0 rounded-3 mt-3">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-exclamation-triangle text-warning me-3 fs-5"></i>
+              <div>
+                <strong class="text-dark">Important:</strong> 
+                <span class="text-dark ms-1">
+                  The import process may take several minutes depending on the file size. 
+                  Do not close this page until the process is complete.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

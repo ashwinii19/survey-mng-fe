@@ -69,55 +69,33 @@ export const routes: Routes = [
           import('./components/employee/employee-batch-status/employee-batch-status').then(m => m.EmployeeBatchStatusComponent)
       },
 
-      
-      {
+
+{
         path: 'surveys',
         children: [
           {
             path: '',
             loadComponent: () =>
-              import('./pages/recent-surveys/recent-surveys').then(m => m.RecentSurveys)
+              import('./pages/recent-surveys/recent-surveys')
+                .then(m => m.RecentSurveys)
           },
           {
             path: 'create',
             loadComponent: () =>
-              import('./components/create-survey.component/create-survey.component').then(m => m.CreateSurveyComponent)
+              import('./components/create-survey.component/create-survey.component')
+                .then(m => m.CreateSurveyComponent)
           },
           {
             path: 'edit/:id',
             loadComponent: () =>
-              import('./components/create-survey.component/create-survey.component').then(m => m.CreateSurveyComponent)
+              import('./components/create-survey.component/create-survey.component')
+                .then(m => m.CreateSurveyComponent)
           }
         ]
       },
 
-      /** SURVEYS */
-      // inside children for path 'app' ...
-{
-  path: 'surveys',
-  children: [
-    {
-      path: 'create',
-      loadComponent: () =>
-        import('./components/create-survey.component/create-survey.component')
-          .then(m => m.CreateSurveyComponent)
-    },
-    {
-      path: 'edit/:id',
-      loadComponent: () =>
-        import('./components/create-survey.component/create-survey.component')
-          .then(m => m.CreateSurveyComponent)
-    },
-    {
-      path: '',
-      loadComponent: () =>
-        import('./pages/recent-surveys/recent-surveys')
-          .then(m => m.RecentSurveys)   // ✅ FIX
-    }
-  ]
-},
-
- {
+      // PROFILE PAGE
+      {
         path: 'profile',
         loadComponent: () =>
           import('./pages/profile.component/profile.component')
@@ -125,6 +103,7 @@ export const routes: Routes = [
       },
 
       /** DEFAULT INSIDE APP */
+      
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

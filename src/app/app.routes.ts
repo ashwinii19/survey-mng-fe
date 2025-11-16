@@ -91,6 +91,14 @@ export const routes: Routes = [
         ]
       },
 
+ {
+        path: 'profile',
+        loadComponent: () =>
+          import('./pages/profile.component/profile.component')
+            .then(m => m.ProfileComponent)
+      },
+
+      /** DEFAULT INSIDE APP */
       
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

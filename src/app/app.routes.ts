@@ -69,29 +69,33 @@ export const routes: Routes = [
           import('./components/employee/employee-batch-status/employee-batch-status').then(m => m.EmployeeBatchStatusComponent)
       },
 
-      
-      {
+
+{
         path: 'surveys',
         children: [
           {
             path: '',
             loadComponent: () =>
-              import('./pages/recent-surveys/recent-surveys').then(m => m.RecentSurveys)
+              import('./pages/recent-surveys/recent-surveys')
+                .then(m => m.RecentSurveys)
           },
           {
             path: 'create',
             loadComponent: () =>
-              import('./components/create-survey.component/create-survey.component').then(m => m.CreateSurveyComponent)
+              import('./components/create-survey.component/create-survey.component')
+                .then(m => m.CreateSurveyComponent)
           },
           {
             path: 'edit/:id',
             loadComponent: () =>
-              import('./components/create-survey.component/create-survey.component').then(m => m.CreateSurveyComponent)
+              import('./components/create-survey.component/create-survey.component')
+                .then(m => m.CreateSurveyComponent)
           }
         ]
       },
 
- {
+      // PROFILE PAGE
+      {
         path: 'profile',
         loadComponent: () =>
           import('./pages/profile.component/profile.component')

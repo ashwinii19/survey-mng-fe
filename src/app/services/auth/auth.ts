@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -8,6 +9,9 @@ export class Auth {
 
   private base = `${environment.apiBaseUrl}/auth`;
   private tokenKey = 'authToken';
+
+  private userSubject = new BehaviorSubject<any>(null);
+  user$ = this.userSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -17,8 +21,15 @@ export class Auth {
       `${this.base}/login`,
       { email, password }
     ).pipe(
-      tap(res => this.setToken(res.token))
+      tap(res => this.setToken(res.token)),
+      tap(() => this.refreshUser())
     );
+  }
+
+  refreshUser() {
+    this.getLoggedInUser().subscribe(user => {
+      this.userSubject.next(user);
+    });
   }
 
   // ------------------ FORGOT PASSWORD ------------------
@@ -76,14 +87,19 @@ export class Auth {
 
   // ------------------ UPDATE PROFILE ------------------
   updateProfile(payload: { name: string; email: string }) {
-    return this.http.put<any>(`${this.base}/update-profile`, payload);
+    return this.http.put<any>(`${this.base}/update-profile`, payload).pipe(
+      tap(() => this.refreshUser())  // 🔥 Notify header immediately
+    );
   }
 
   // ------------------ UPLOAD IMAGE ------------------
   uploadImage(file: File) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<any>(`${this.base}/upload-image`, formData);
+
+    return this.http.post<any>(`${this.base}/upload-image`, formData).pipe(
+      tap(() => this.refreshUser()) // 🔥 Header will update instantly
+    );
   }
 
   // ------------------ CHANGE PASSWORD ------------------

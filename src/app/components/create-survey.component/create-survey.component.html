@@ -6,7 +6,7 @@
 
     <div class="card">
       <label>Survey Title</label>
-      <input type="text" formControlName="title">
+      <input type="text" formControlName="title" />
 
       <label>Description</label>
       <textarea formControlName="description"></textarea>
@@ -14,8 +14,16 @@
       <label>Target Department</label>
       <select formControlName="targetDepartmentName">
         <option value="" disabled>Select department</option>
-        <option *ngFor="let d of departments" [value]="d.name">{{ d.name }}</option>
+
+        <!-- NEW: ALL departments option -->
+        <option value="ALL">All Departments</option>
+
+        <!-- Existing departments -->
+        <option *ngFor="let d of departments" [value]="d.name">
+          {{ d.name }}
+        </option>
       </select>
+
     </div>
 
     <div class="card">
@@ -30,11 +38,19 @@
 
           <div class="head">
             <h4>Question {{ i + 1 }}</h4>
-            <button type="button" (click)="deleteQuestion(i)">🗑</button>
+            <button type="button" class="icon-delete" aria-label="Delete Question" title="Delete Question"
+              (click)="deleteQuestion(i)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0A.5.5 0 0 1 8.5 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                <path fill-rule="evenodd"
+                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3h11V2h-11v1z" />
+              </svg>
+            </button>
           </div>
 
           <label>Question Text</label>
-          <input type="text" formControlName="text">
+          <input type="text" formControlName="text" />
 
           <label>Question Type</label>
           <select formControlName="type" (change)="handleTypeChange(i)">
@@ -42,7 +58,7 @@
           </select>
 
           <div class="req-check">
-            <input type="checkbox" formControlName="required">
+            <input type="checkbox" formControlName="required" />
             <span>Required</span>
           </div>
 
@@ -50,33 +66,29 @@
             <label>Options</label>
 
             <div formArrayName="options">
-              <div class="option-row" *ngFor="let opt of getOptions(i).controls; let j=index">
-                <input [formControlName]="j" placeholder="Option text...">
-                <button type="button" (click)="removeOption(i,j)">❌</button>
+              <div class="option-row" *ngFor="let opt of getOptions(i).controls; let j = index">
+                <input [formControlName]="j" placeholder="Option text..." />
+                <button type="button" (click)="removeOption(i, j)">❌</button>
               </div>
             </div>
 
             <button type="button" (click)="addOption(i)">+ Add Option</button>
-
           </div>
-
         </div>
 
       </div>
-
     </div>
 
     <div class="actions">
       <button type="button" class="draft" (click)="saveAsDraft()">Save as Draft</button>
-      <button type="button" class="publish" (click)="createSurveyFinal()">Create Survey</button>
+      <button type="button" class="publish" (click)="createSurveyFinal()">
+        Create Survey
+      </button>
     </div>
-
   </form>
-
 </div>
 
-<!-- ⭐ ADDED RECENT SURVEYS BELOW (NO LOGIC CHANGE) ⭐ -->
-<hr style="margin:40px 0; opacity:0.3;">
+<hr style="margin: 40px 0; opacity: 0.3" />
 
 <h2>Recent Surveys</h2>
 

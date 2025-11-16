@@ -170,6 +170,12 @@ export class CreateSurveyComponent implements OnInit {
       required: !!q.required,
       options: q.options || []
     }));
+
+    // If ALL selected → send null
+    if (payload.targetDepartmentName === "ALL") {
+      payload.targetDepartmentName = null;
+    }
+
     return payload;
   }
 
@@ -190,7 +196,6 @@ export class CreateSurveyComponent implements OnInit {
     if (this.isEditMode && this.currentSurveyId) {
       this.surveyService.updateSurvey(this.currentSurveyId, payload).subscribe({
         next: () => {
-          alert('Draft updated');
           this.router.navigate(['/app/surveys']);
         }
       });
@@ -199,7 +204,6 @@ export class CreateSurveyComponent implements OnInit {
 
     this.surveyService.createSurvey(payload).subscribe({
       next: () => {
-        alert('Draft Saved');
         this.router.navigate(['/app/surveys']);
       }
     });
@@ -207,7 +211,6 @@ export class CreateSurveyComponent implements OnInit {
 
   createSurveyFinal() {
     if (this.surveyForm.invalid) {
-      alert('Please fill all required fields.');
       return;
     }
 
@@ -219,7 +222,6 @@ export class CreateSurveyComponent implements OnInit {
     if (this.isEditMode && this.currentSurveyId) {
       this.surveyService.updateSurvey(this.currentSurveyId, payload).subscribe({
         next: () => {
-          alert('Survey Updated');
           this.router.navigate(['/app/surveys']);
         }
       });
@@ -228,7 +230,6 @@ export class CreateSurveyComponent implements OnInit {
 
     this.surveyService.createSurvey(payload).subscribe({
       next: () => {
-        alert('Survey Created');
         this.router.navigate(['/app/surveys']);
       }
     });

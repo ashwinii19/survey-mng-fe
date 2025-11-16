@@ -1,8 +1,3 @@
-/* =======================================================================
-   CREATE SURVEY PAGE - PROFESSIONAL ENTERPRISE UI
-   ======================================================================= */
-
-/* Page Wrapper */
 .create-survey-wrapper {
   width: 100%;
   min-height: 100vh;
@@ -12,7 +7,6 @@
   box-sizing: border-box;
 }
 
-/* Title */
 h2 {
   font-size: 36px;
   text-align: center;
@@ -22,7 +16,6 @@ h2 {
   letter-spacing: 0.4px;
 }
 
-/* Section Headings */
 h3 {
   color: #1e293b;
   font-weight: 600;
@@ -36,7 +29,6 @@ h4 {
   font-size: 18px;
 }
 
-/* Labels */
 label {
   display: block;
   color: #475569;
@@ -45,7 +37,6 @@ label {
   font-weight: 500;
 }
 
-/* Inputs & Dropdown */
 input[type="text"],
 textarea,
 select {
@@ -66,7 +57,6 @@ select:focus {
   outline: none;
 }
 
-/* Dropdown arrow */
 select {
   appearance: none;
   background: #ffffff
@@ -76,7 +66,6 @@ select {
   cursor: pointer;
 }
 
-/* Card Container */
 .card {
   background: #ffffff;
   padding: 32px 36px;
@@ -92,7 +81,6 @@ select {
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
 }
 
-/* Layout Helpers */
 .row-between {
   display: flex;
   justify-content: space-between;
@@ -100,7 +88,6 @@ select {
   margin-bottom: 16px;
 }
 
-/* Questions Box */
 .question-box {
   padding: 20px 0;
   border-bottom: 1px dashed #e2e8f0;
@@ -116,7 +103,25 @@ select {
   align-items: center;
 }
 
-/* Option Row */
+/* Delete Button with Trash Icon */
+button.icon-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: #dc2626;
+  padding: 4px;
+  transition: all 0.25s ease;
+  line-height: 1;
+}
+
+button.icon-delete:hover,
+button.icon-delete:focus {
+  color: #b91c1c;
+  transform: scale(1.12);
+  outline: none;
+}
+
 .option-row {
   display: flex;
   gap: 14px;
@@ -125,23 +130,6 @@ select {
   flex-wrap: wrap;
 }
 
-/* Delete Button (Icon Only) */
-button.icon-delete {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 22px;
-  color: #dc2626;
-  padding: 6px;
-  transition: all 0.25s ease;
-}
-
-button.icon-delete:hover {
-  color: #b91c1c;
-  transform: scale(1.12);
-}
-
-/* Required Checkbox */
 .req-check {
   display: flex;
   align-items: center;
@@ -158,7 +146,6 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-/* Buttons - Base */
 button {
   cursor: pointer;
   padding: 12px 22px;
@@ -169,7 +156,6 @@ button {
   transition: all 0.25s ease;
 }
 
-/* Add Question Button */
 .add-btn {
   background: linear-gradient(135deg, #4f46e5, #6366f1);
   color: white;
@@ -181,7 +167,6 @@ button {
   transform: translateY(-2px);
 }
 
-/* Bottom Action Buttons */
 .actions {
   display: flex;
   justify-content: flex-end;
@@ -189,7 +174,6 @@ button {
   margin-top: 38px;
 }
 
-/* Draft Button */
 .draft {
   background: #fff8d6;
   color: #8a5400;
@@ -201,7 +185,6 @@ button {
   transform: translateY(-2px);
 }
 
-/* Publish Button */
 .publish {
   background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
@@ -214,30 +197,26 @@ button {
   box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
 }
 
-/* Textarea */
 textarea {
   min-height: 120px;
   resize: vertical;
 }
 
-/* Responsive */
 @media (max-width: 900px) {
   .create-survey-wrapper {
     padding: 24px;
   }
-
   h2 {
     font-size: 28px;
   }
-
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     font-size: 14px;
   }
-
   button {
     font-size: 14px;
   }
-
   .card {
     padding: 24px;
   }

@@ -22,12 +22,11 @@ export class Auth {
   }
 
   // ------------------ FORGOT PASSWORD ------------------
-  // Accept plain text response because backend returns: "OTP sent to email."
   forgotPassword(email: string) {
     return this.http.post(
       `${this.base}/forgot-password`,
       { email },
-      { responseType: 'text' }     // ★ FIX: REQUIRED FOR NAVIGATION
+      { responseType: 'text' }
     );
   }
 
@@ -36,7 +35,7 @@ export class Auth {
     return this.http.post(
       `${this.base}/verify-otp`,
       { email, otp },
-      { responseType: 'text' }     // ★ FIX
+      { responseType: 'text' }
     );
   }
 
@@ -45,20 +44,14 @@ export class Auth {
     return this.http.post(
       `${this.base}/reset-password`,
       { email, newPassword },
-      { responseType: 'text' }     // ★ FIX
+      { responseType: 'text' }
     );
   }
 
   // ------------------ TOKEN HELPERS ------------------
-  // getToken() {
-  //   return localStorage.getItem(this.tokenKey);
-  // }
   getToken() {
-  const t = localStorage.getItem(this.tokenKey);
-  console.log("Auth.getToken() =", t);
-  return t;
-}
-
+    return localStorage.getItem(this.tokenKey);
+  }
 
   setToken(token: string) {
     localStorage.setItem(this.tokenKey, token);
@@ -74,5 +67,27 @@ export class Auth {
 
   isLoggedIn() {
     return !!this.getToken();
+  }
+
+  // ------------------ GET LOGGED-IN ADMIN ------------------
+  getLoggedInUser() {
+    return this.http.get<any>(`${this.base}/me`);
+  }
+
+  // ------------------ UPDATE PROFILE ------------------
+  updateProfile(payload: { name: string; email: string }) {
+    return this.http.put<any>(`${this.base}/update-profile`, payload);
+  }
+
+  // ------------------ UPLOAD IMAGE ------------------
+  uploadImage(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>(`${this.base}/upload-image`, formData);
+  }
+
+  // ------------------ CHANGE PASSWORD ------------------
+  changePassword(payload: { oldPassword: string; newPassword: string }) {
+    return this.http.post<any>(`${this.base}/change-password`, payload);
   }
 }

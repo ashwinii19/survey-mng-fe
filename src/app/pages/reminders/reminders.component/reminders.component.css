@@ -1,0 +1,143 @@
+.reminder-wrapper {
+  padding: 20px 50px;
+}
+
+.subtitle {
+  margin-top: -10px;
+  color: #64748b;
+}
+
+.card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  margin-bottom: 40px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: 600;
+  color: #475569;
+}
+
+textarea, select, input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-row {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.schedule, .run-now {
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.schedule {
+  background: #2563eb;
+}
+
+.run-now {
+  background: #0ea5e9;
+}
+
+.reminder-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.reminder-table th, .reminder-table td {
+  padding: 12px 15px;
+}
+
+.status.active {
+  color: #2563eb;
+  font-weight: bold;
+}
+.status.completed {
+  color: #16a34a;
+  font-weight: bold;
+}
+
+.send-btn {
+  background: #22c55e;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  margin-left: 10px;
+}
+
+/* Loader Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 999;
+}
+
+.loader-box {
+  background:white;
+  padding:30px 40px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.spinner {
+  width:40px;
+  height:40px;
+  border:4px solid #cbd5e1;
+  border-top-color:#2563eb;
+  border-radius:50%;
+  animation: spin 0.9s linear infinite;
+  margin:auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #2563eb;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  z-index: 99999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

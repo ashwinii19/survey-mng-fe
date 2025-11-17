@@ -1,12 +1,19 @@
 
+
+
+
+
+
+
+
+
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
 import { Sidebar } from '../../layout/sidebar/sidebar';
 import Header from '../../layout/header/header';
-
 
 import { CardsPanel } from '../cards-panel/cards-panel';
 import { FiltersPanel } from '../filters-panel/filters-panel';
@@ -15,7 +22,6 @@ import SurveyCharts from '../survey-charts/survey-charts';
 
 import { DashboardService } from '../../services/dashboard.service';
 import { DashboardResponse } from '../../models/dashboard-response';
-
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -35,6 +41,7 @@ import html2canvas from 'html2canvas';
 export default class DashboardRoot implements OnInit {
 
   dashboard?: DashboardResponse;
+  filteredDashboard?: DashboardResponse; // ADDED: For filtered data
 
   surveys: any[] = [];
   departments: any[] = [];
@@ -44,6 +51,8 @@ export default class DashboardRoot implements OnInit {
 
   
   showFilteredData: boolean = false;
+  showUnassignedAlert: boolean = false;
+  hasAssignedFeedback: boolean = false;
   totalEmployees: number = 0;
   submittedCount: number = 0;
   remainingCount: number = 0;
@@ -65,49 +74,267 @@ export default class DashboardRoot implements OnInit {
       if (localStorage.getItem("authToken")) {
         clearInterval(timer);
         this.loadFilters();
-        this.loadDashboard();
       }
     }, 300);
   }
 
  
   loadFilters() {
-    this.svc.getSurveys().subscribe(res => this.surveys = res);
-    this.svc.getDepartments().subscribe(res => this.departments = res);
+    this.svc.getSurveys().subscribe(res => {
+      this.surveys = res;
+      
+      // Auto-select the first survey by default
+      if (this.surveys.length > 0 && !this.selectedSurveyId) {
+        this.selectedSurveyId = this.surveys[0].id || this.surveys[0].surveyId;
+        console.log('Auto-selected first survey:', this.selectedSurveyId);
+        
+        // Set showFilteredData to true since we have a survey selected
+        this.showFilteredData = true;
+      }
+      
+      // Load dashboard after surveys are loaded and default is set
+      this.loadDashboard();
+    });
+    
+    this.svc.getDepartments().subscribe(res => {
+      this.departments = res;
+      console.log('=== LOADED DEPARTMENTS ===', res);
+    });
   }
 
  
   loadDashboard() {
+    console.log('=== LOADING DASHBOARD ===');
+    console.log('Calling API with - Survey ID:', this.selectedSurveyId, 'Department ID:', this.selectedDepartmentId);
+    
     this.svc.getDashboard(this.selectedSurveyId, this.selectedDepartmentId)
-      .subscribe(res => {
-        this.dashboard = res;
-        console.log('Dashboard data:', res); // Debug log to check actual data structure
-        console.log('Department stats:', res.departmentStats); // Debug log
-        this.calculateSubmissionStats();
+      .subscribe({
+        next: (res) => {
+          this.dashboard = res;
+          console.log('=== DASHBOARD API RESPONSE ===');
+          
+          // FILTER DATA FOR "ALL DEPARTMENTS" CASE
+          this.filterDashboardData();
+          
+          // Check if survey is assigned to the selected department
+          this.checkSurveyAssignment();
+          this.calculateSubmissionStats();
+        },
+        error: (error) => {
+          console.error('=== DASHBOARD API ERROR ===', error);
+        }
       });
+  }
+
+  // NEW METHOD: Filter dashboard data for "All Departments"
+  private filterDashboardData() {
+    if (!this.dashboard) return;
+
+    // Reset filtered dashboard
+    this.filteredDashboard = undefined;
+
+    // If specific department is selected OR no survey selected, use original data
+    if (this.selectedDepartmentId || !this.selectedSurveyId) {
+      return;
+    }
+
+    // For "All Departments" case - filter data to show only assigned departments
+    const selectedSurvey = this.surveys.find(s => 
+      s.id === this.selectedSurveyId || s.surveyId === this.selectedSurveyId
+    );
+
+    if (!selectedSurvey || !selectedSurvey.targetDepartment || !selectedSurvey.targetDepartment.name) {
+      return;
+    }
+
+    const assignedDeptName = selectedSurvey.targetDepartment.name;
+    console.log('=== FILTERING DATA FOR ALL DEPARTMENTS ===');
+    console.log('Assigned department:', assignedDeptName);
+
+    // Create filtered dashboard data
+    this.filteredDashboard = { ...this.dashboard };
+
+    // Filter departmentStats to only show assigned department
+    if (this.filteredDashboard.departmentStats) {
+      this.filteredDashboard.departmentStats = this.filteredDashboard.departmentStats.filter(
+        (dept: any) => {
+          const deptName = dept.name || dept.departmentName || dept.department || '';
+          const matches = deptName.toLowerCase() === assignedDeptName.toLowerCase();
+          console.log('Checking department:', deptName, 'matches assigned:', matches);
+          return matches;
+        }
+      );
+    }
+
+    // Recalculate totals based on filtered department stats
+    if (this.filteredDashboard.departmentStats && this.filteredDashboard.departmentStats.length > 0) {
+      const assignedDeptData = this.filteredDashboard.departmentStats[0];
+      this.filteredDashboard.totalEmployees = assignedDeptData.totalEmployees || 0;
+      this.filteredDashboard.totalSubmitted = assignedDeptData.submittedCount || 0;
+      this.filteredDashboard.totalPending = assignedDeptData.pendingCount || 0;
+    } else {
+      // If no matching department found in stats, set totals to zero
+      this.filteredDashboard.totalEmployees = 0;
+      this.filteredDashboard.totalSubmitted = 0;
+      this.filteredDashboard.totalPending = 0;
+    }
+
+    console.log('Filtered dashboard:', this.filteredDashboard);
+  }
+
+  // Get the dashboard data to display (original or filtered)
+  private getDisplayDashboard(): DashboardResponse | undefined {
+    return this.filteredDashboard || this.dashboard;
   }
 
   onFilterChange() {
     this.showFilteredData = !!this.selectedSurveyId || !!this.selectedDepartmentId;
+    this.showUnassignedAlert = false;
     this.loadDashboard();
   }
 
+  private checkSurveyAssignment() {
+    const displayDashboard = this.getDisplayDashboard();
+    
+    if (!displayDashboard) {
+      this.hasAssignedFeedback = false;
+      if (this.showFilteredData) {
+        this.showUnassignedAlert = true;
+      }
+      return;
+    }
+
+    // Check if survey is actually assigned to the selected department
+    const isSurveyAssigned = this.isSurveyAssignedToDepartment();
+    
+    console.log('=== SURVEY ASSIGNMENT RESULT ===');
+    console.log('Is survey assigned?', isSurveyAssigned);
+    console.log('Show filtered data?', this.showFilteredData);
+    
+    if (!isSurveyAssigned && this.showFilteredData) {
+      this.hasAssignedFeedback = false;
+      this.showUnassignedAlert = true;
+      console.log('=== SHOWING UNASSIGNED ALERT ===');
+    } else {
+      this.hasAssignedFeedback = true;
+      this.showUnassignedAlert = false;
+      console.log('=== SHOWING ANALYTICS DATA ===');
+    }
+  }
+private isSurveyAssignedToDepartment(): boolean {
+  const displayDashboard = this.getDisplayDashboard();
+  
+  if (!displayDashboard) {
+    console.log('No dashboard data available');
+    return false;
+  }
+
+  console.log('=== DEBUG: Checking Survey Assignment ===');
+  console.log('Selected Department ID:', this.selectedDepartmentId);
+  console.log('Selected Department Name:', this.getSelectedDepartmentName());
+  console.log('Dashboard Data:', displayDashboard);
+
+  // Get the selected survey
+  const selectedSurvey = this.surveys.find(s => 
+    s.id === this.selectedSurveyId || s.surveyId === this.selectedSurveyId
+  );
+
+  // If no department is selected ("All Departments" case)
+  if (!this.selectedDepartmentId) {
+    console.log('=== ALL DEPARTMENTS SELECTED ===');
+    
+    // For "All Departments", check if we have filtered data (meaning assigned department has data)
+    const hasFilteredData = !!(this.filteredDashboard && 
+      this.filteredDashboard.departmentStats && 
+      this.filteredDashboard.departmentStats.length > 0);
+    
+    console.log('Has filtered data for assigned department:', hasFilteredData);
+    return hasFilteredData;
+  }
+
+  // Specific department is selected
+  const selectedDeptName = this.getSelectedDepartmentName();
+  
+  if (!selectedDeptName) {
+    console.log('Could not find department name for selected ID:', this.selectedDepartmentId);
+    return false;
+  }
+
+  // Check if survey belongs to selected department (same as RemindersComponent logic)
+  if (selectedSurvey && selectedSurvey.targetDepartment && selectedSurvey.targetDepartment.name) {
+    const assignedDept = selectedSurvey.targetDepartment.name;
+    
+    // If the selected department doesn't match the survey's assigned department, return false
+    if (selectedDeptName !== assignedDept) {
+      console.log(`❌ Survey belongs to department: ${assignedDept}, but selected: ${selectedDeptName}`);
+      return false;
+    }
+    
+    console.log(`✅ Survey belongs to selected department: ${selectedDeptName}`);
+    return true;
+  }
+
+  // Fallback to department stats check if targetDepartment is not available
+  return this.checkDepartmentStatsFallback(selectedDeptName, displayDashboard);
+}
+  private checkDepartmentStatsFallback(selectedDeptName: string, displayDashboard: DashboardResponse): boolean {
+    // If departmentStats is empty, it means NO departments have this survey assigned
+    if (!displayDashboard.departmentStats || displayDashboard.departmentStats.length === 0) {
+      console.log('❌ No department stats available - survey not assigned to any department');
+      return false;
+    }
+
+    // Check if selected department exists in departmentStats
+    const departmentData = displayDashboard.departmentStats.find(
+      (dept: any) => {
+        const deptAny = dept as any;
+        const deptName = deptAny.name || deptAny.departmentName || deptAny.department || '';
+        const matches = deptName.toLowerCase() === selectedDeptName.toLowerCase();
+        return matches;
+      }
+    );
+    
+    if (departmentData) {
+      console.log('✅ Department found in departmentStats - survey IS assigned');
+      return true;
+    } else {
+      console.log('❌ Department NOT found in departmentStats - survey NOT assigned');
+      return false;
+    }
+  }
+
+  private getSelectedDepartmentName(): string {
+    if (!this.selectedDepartmentId) return '';
+    
+    const department = this.departments.find(dept => 
+      dept.id == this.selectedDepartmentId || 
+      dept.departmentId == this.selectedDepartmentId
+    );
+    
+    return department ? (department.name || department.departmentName || '') : '';
+  }
+
   private calculateSubmissionStats() {
-    if (this.dashboard) {
-      
-      this.submittedCount = this.dashboard.totalSubmitted || 0;
-      this.remainingCount = this.dashboard.totalPending || 0;
+    const displayDashboard = this.getDisplayDashboard();
+    
+    if (displayDashboard && this.hasAssignedFeedback) {
+      this.submittedCount = displayDashboard.totalSubmitted || 0;
+      this.remainingCount = displayDashboard.totalPending || 0;
       this.totalEmployees = this.submittedCount + this.remainingCount;
       this.submissionRate = this.totalEmployees > 0 
         ? Math.round((this.submittedCount / this.totalEmployees) * 100) 
         : 0;
+    } else {
+      this.submittedCount = 0;
+      this.remainingCount = 0;
+      this.totalEmployees = 0;
+      this.submissionRate = 0;
     }
   }
 
-
   async exportPDF() {
-    if (!this.showFilteredData) {
-      this.exportMessage = 'Please apply filters first to export data';
+    if (!this.showFilteredData || !this.hasAssignedFeedback) {
+      this.exportMessage = 'Please select a survey that is assigned to this department to export data';
       this.exportSuccess = false;
       return;
     }
@@ -115,7 +342,6 @@ export default class DashboardRoot implements OnInit {
     this.isExporting = true;
     
     try {
-    
       const element = document.querySelector('.content') as HTMLElement;
       
       if (!element) {
@@ -131,7 +357,6 @@ export default class DashboardRoot implements OnInit {
 
       const imgData = canvas.toDataURL('image/png');
       
-     
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgWidth = 210; 
       const pageHeight = 295; 
@@ -142,7 +367,6 @@ export default class DashboardRoot implements OnInit {
       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
-      
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
@@ -150,10 +374,8 @@ export default class DashboardRoot implements OnInit {
         heightLeft -= pageHeight;
       }
 
-     
       const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
       const filename = `Survey-Dashboard-${timestamp}.pdf`;
-      
       
       pdf.save(filename);
       
@@ -173,10 +395,9 @@ export default class DashboardRoot implements OnInit {
     }
   }
 
-
-  exportPPT() {
-    if (!this.showFilteredData) {
-      this.exportMessage = 'Please apply filters first to export data';
+  async exportPPT() {
+    if (!this.showFilteredData || !this.hasAssignedFeedback) {
+      this.exportMessage = 'Please select a survey that is assigned to this department to export data';
       this.exportSuccess = false;
       return;
     }
@@ -184,27 +405,34 @@ export default class DashboardRoot implements OnInit {
     this.isExporting = true;
     
     try {
-     
-      this.exportPDF();
+      // Simple PPT implementation without external library for now
+      this.exportMessage = 'PPT export is temporarily unavailable. Please use PDF or CSV export.';
+      this.exportSuccess = false;
       
     } catch (error) {
       console.error('PPT export error:', error);
       this.exportSuccess = false;
-      this.exportMessage = 'PPT export is not available yet. PDF exported instead.';
+      this.exportMessage = 'Failed to export PowerPoint. Please try PDF export instead.';
+    } finally {
       this.isExporting = false;
+      setTimeout(() => {
+        this.exportSuccess = false;
+        this.exportMessage = '';
+      }, 5000);
     }
   }
 
   
   exportCSV() {
-    if (!this.dashboard) {
-      this.exportMessage = 'No data available to export';
+    const displayDashboard = this.getDisplayDashboard();
+    
+    if (!displayDashboard || !this.hasAssignedFeedback) {
+      this.exportMessage = 'No survey data available for the selected department';
       this.exportSuccess = false;
       return;
     }
 
     try {
-     
       let csvContent = 'Survey Dashboard Export\n\n';
       csvContent += 'Metric,Value\n';
       csvContent += `Total Employees,${this.totalEmployees}\n`;
@@ -212,18 +440,16 @@ export default class DashboardRoot implements OnInit {
       csvContent += `Remaining,${this.remainingCount}\n`;
       csvContent += `Submission Rate,${this.submissionRate}%\n\n`;
       
-      
-      if (this.dashboard.departmentStats?.length) {
+      if (displayDashboard.departmentStats?.length) {
         csvContent += 'Department,Response Rate\n';
-        this.dashboard.departmentStats.forEach(dept => {
-        
-          const deptName = (dept as any).name || (dept as any).departmentName || (dept as any).department || 'Unknown Department';
-          const responseRate = (dept as any).responseRate || (dept as any).rate || (dept as any).percentage || 0;
+        displayDashboard.departmentStats.forEach((dept: any) => {
+          const deptAny = dept as any;
+          const deptName = deptAny.name || deptAny.departmentName || deptAny.department || 'Unknown Department';
+          const responseRate = deptAny.responseRate || deptAny.rate || deptAny.percentage || 0;
           csvContent += `${deptName},${responseRate}%\n`;
         });
       }
 
-      
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -250,3 +476,405 @@ export default class DashboardRoot implements OnInit {
     }
   }
 }
+
+
+
+
+// import { Component, OnInit } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
+
+// import { Sidebar } from '../../layout/sidebar/sidebar';
+// import Header from '../../layout/header/header';
+
+// import { CardsPanel } from '../cards-panel/cards-panel';
+// import { FiltersPanel } from '../filters-panel/filters-panel';
+// import DepartmentCharts from '../department-charts/department-charts';
+// import SurveyCharts from '../survey-charts/survey-charts';
+
+// import { DashboardService } from '../../services/dashboard.service';
+// import { DashboardResponse } from '../../models/dashboard-response';
+
+// import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+
+// @Component({
+//   selector: 'app-dashboard-root',
+//   standalone: true,
+//   imports: [
+//     CommonModule, FormsModule,
+//     Sidebar, Header,
+//     CardsPanel, FiltersPanel,
+//     DepartmentCharts, SurveyCharts
+//   ],
+//   templateUrl: './dashboard-root.html',
+//   styleUrls: ['./dashboard-root.css']
+// })
+// export default class DashboardRoot implements OnInit {
+
+//   dashboard?: DashboardResponse;
+
+//   surveys: any[] = [];
+//   departments: any[] = [];
+
+//   selectedSurveyId?: number;
+//   selectedDepartmentId?: number;
+
+  
+//   showFilteredData: boolean = false;
+//   showUnassignedAlert: boolean = false;
+//   hasAssignedFeedback: boolean = false;
+//   totalEmployees: number = 0;
+//   submittedCount: number = 0;
+//   remainingCount: number = 0;
+//   submissionRate: number = 0;
+  
+  
+//   exportSuccess: boolean = false;
+//   exportMessage: string = '';
+//   isExporting: boolean = false;
+
+//   constructor(private svc: DashboardService) {}
+
+//   ngOnInit(): void {
+//     this.waitForAuth();
+//   }
+
+//   private waitForAuth() {
+//     const timer = setInterval(() => {
+//       if (localStorage.getItem("authToken")) {
+//         clearInterval(timer);
+//         this.loadFilters();
+//       }
+//     }, 300);
+//   }
+
+ 
+//   loadFilters() {
+//     this.svc.getSurveys().subscribe(res => {
+//       this.surveys = res;
+      
+//       // Auto-select the first survey by default
+//       if (this.surveys.length > 0 && !this.selectedSurveyId) {
+//         this.selectedSurveyId = this.surveys[0].id || this.surveys[0].surveyId;
+//         console.log('Auto-selected first survey:', this.selectedSurveyId);
+        
+//         // Set showFilteredData to true since we have a survey selected
+//         this.showFilteredData = true;
+//       }
+      
+//       // Load dashboard after surveys are loaded and default is set
+//       this.loadDashboard();
+//     });
+    
+//     this.svc.getDepartments().subscribe(res => {
+//       this.departments = res;
+//       console.log('=== LOADED DEPARTMENTS ===', res);
+//     });
+//   }
+
+ 
+//   loadDashboard() {
+//     console.log('=== LOADING DASHBOARD ===');
+//     console.log('Calling API with - Survey ID:', this.selectedSurveyId, 'Department ID:', this.selectedDepartmentId);
+    
+//     this.svc.getDashboard(this.selectedSurveyId, this.selectedDepartmentId)
+//       .subscribe({
+//         next: (res) => {
+//           this.dashboard = res;
+//           console.log('=== DASHBOARD API RESPONSE ===');
+          
+//           // Check if survey is assigned to the selected department
+//           this.checkSurveyAssignment();
+//           this.calculateSubmissionStats();
+//         },
+//         error: (error) => {
+//           console.error('=== DASHBOARD API ERROR ===', error);
+//         }
+//       });
+//   }
+
+//   onFilterChange() {
+//     this.showFilteredData = !!this.selectedSurveyId || !!this.selectedDepartmentId;
+//     this.showUnassignedAlert = false;
+//     this.loadDashboard();
+//   }
+
+//   private checkSurveyAssignment() {
+//     if (!this.dashboard) {
+//       this.hasAssignedFeedback = false;
+//       if (this.showFilteredData) {
+//         this.showUnassignedAlert = true;
+//       }
+//       return;
+//     }
+
+//     // Check if survey is actually assigned to the selected department
+//     const isSurveyAssigned = this.isSurveyAssignedToDepartment();
+    
+//     console.log('=== SURVEY ASSIGNMENT RESULT ===');
+//     console.log('Is survey assigned?', isSurveyAssigned);
+//     console.log('Show filtered data?', this.showFilteredData);
+    
+//     if (!isSurveyAssigned && this.showFilteredData) {
+//       this.hasAssignedFeedback = false;
+//       this.showUnassignedAlert = true;
+//       console.log('=== SHOWING UNASSIGNED ALERT ===');
+//     } else {
+//       this.hasAssignedFeedback = true;
+//       this.showUnassignedAlert = false;
+//       console.log('=== SHOWING ANALYTICS DATA ===');
+//     }
+//   }
+
+//   private isSurveyAssignedToDepartment(): boolean {
+//     if (!this.dashboard) {
+//       console.log('No dashboard data available');
+//       return false;
+//     }
+
+//     console.log('=== DEBUG: Checking Survey Assignment ===');
+//     console.log('Selected Department ID:', this.selectedDepartmentId);
+//     console.log('Selected Department Name:', this.getSelectedDepartmentName());
+
+//     // Get the selected survey
+//     const selectedSurvey = this.surveys.find(s => 
+//       s.id === this.selectedSurveyId || s.surveyId === this.selectedSurveyId
+//     );
+
+//     // If no department is selected ("All Departments" case)
+//     if (!this.selectedDepartmentId) {
+//       console.log('=== ALL DEPARTMENTS SELECTED ===');
+      
+//       // For "All Departments", return TRUE if survey is assigned to ANY department
+//       // This allows analytics to show (the backend will handle filtering by assigned departments)
+//       if (selectedSurvey && selectedSurvey.targetDepartment && selectedSurvey.targetDepartment.name) {
+//         console.log('✅ Survey is assigned to department:', selectedSurvey.targetDepartment.name);
+//         return true;
+//       } else {
+//         console.log('❌ Survey is not assigned to any department');
+//         return false;
+//       }
+//     }
+
+//     // Specific department is selected
+//     const selectedDeptName = this.getSelectedDepartmentName();
+    
+//     if (!selectedDeptName) {
+//       console.log('Could not find department name for selected ID:', this.selectedDepartmentId);
+//       return false;
+//     }
+
+//     // Check if survey belongs to selected department
+//     if (selectedSurvey && selectedSurvey.targetDepartment && selectedSurvey.targetDepartment.name) {
+//       const assignedDept = selectedSurvey.targetDepartment.name;
+      
+//       // If the selected department doesn't match the survey's assigned department, return false
+//       if (selectedDeptName !== assignedDept) {
+//         console.log(`❌ Survey belongs to department: ${assignedDept}, but selected: ${selectedDeptName}`);
+//         return false;
+//       }
+      
+//       console.log(`✅ Survey belongs to selected department: ${selectedDeptName}`);
+//       return true;
+//     }
+
+//     // Fallback to department stats check if targetDepartment is not available
+//     return this.checkDepartmentStatsFallback(selectedDeptName);
+//   }
+
+//   private checkDepartmentStatsFallback(selectedDeptName: string): boolean {
+//     // If departmentStats is empty, it means NO departments have this survey assigned
+//     if (!this.dashboard!.departmentStats || this.dashboard!.departmentStats.length === 0) {
+//       console.log('❌ No department stats available - survey not assigned to any department');
+//       return false;
+//     }
+
+//     // Check if selected department exists in departmentStats
+//     const departmentData = this.dashboard!.departmentStats!.find(
+//       (dept: any) => {
+//         const deptAny = dept as any;
+//         const deptName = deptAny.name || deptAny.departmentName || deptAny.department || '';
+//         const matches = deptName.toLowerCase() === selectedDeptName.toLowerCase();
+//         return matches;
+//       }
+//     );
+    
+//     if (departmentData) {
+//       console.log('✅ Department found in departmentStats - survey IS assigned');
+//       return true;
+//     } else {
+//       console.log('❌ Department NOT found in departmentStats - survey NOT assigned');
+//       return false;
+//     }
+//   }
+
+//   private getSelectedDepartmentName(): string {
+//     if (!this.selectedDepartmentId) return '';
+    
+//     const department = this.departments.find(dept => 
+//       dept.id == this.selectedDepartmentId || 
+//       dept.departmentId == this.selectedDepartmentId
+//     );
+    
+//     return department ? (department.name || department.departmentName || '') : '';
+//   }
+
+//   private calculateSubmissionStats() {
+//     if (this.dashboard && this.hasAssignedFeedback) {
+//       this.submittedCount = this.dashboard.totalSubmitted || 0;
+//       this.remainingCount = this.dashboard.totalPending || 0;
+//       this.totalEmployees = this.submittedCount + this.remainingCount;
+//       this.submissionRate = this.totalEmployees > 0 
+//         ? Math.round((this.submittedCount / this.totalEmployees) * 100) 
+//         : 0;
+//     } else {
+//       this.submittedCount = 0;
+//       this.remainingCount = 0;
+//       this.totalEmployees = 0;
+//       this.submissionRate = 0;
+//     }
+//   }
+
+//   async exportPDF() {
+//     if (!this.showFilteredData || !this.hasAssignedFeedback) {
+//       this.exportMessage = 'Please select a survey that is assigned to this department to export data';
+//       this.exportSuccess = false;
+//       return;
+//     }
+
+//     this.isExporting = true;
+    
+//     try {
+//       const element = document.querySelector('.content') as HTMLElement;
+      
+//       if (!element) {
+//         throw new Error('Could not find dashboard content');
+//       }
+
+//       const canvas = await html2canvas(element, {
+//         scale: 2, 
+//         useCORS: true,
+//         logging: false,
+//         backgroundColor: '#ffffff'
+//       });
+
+//       const imgData = canvas.toDataURL('image/png');
+      
+//       const pdf = new jsPDF('p', 'mm', 'a4');
+//       const imgWidth = 210; 
+//       const pageHeight = 295; 
+//       const imgHeight = (canvas.height * imgWidth) / canvas.width;
+//       let heightLeft = imgHeight;
+//       let position = 0;
+
+//       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+//       heightLeft -= pageHeight;
+
+//       while (heightLeft >= 0) {
+//         position = heightLeft - imgHeight;
+//         pdf.addPage();
+//         pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+//         heightLeft -= pageHeight;
+//       }
+
+//       const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+//       const filename = `Survey-Dashboard-${timestamp}.pdf`;
+      
+//       pdf.save(filename);
+      
+//       this.exportSuccess = true;
+//       this.exportMessage = 'PDF downloaded successfully!';
+      
+//     } catch (error) {
+//       console.error('PDF export error:', error);
+//       this.exportSuccess = false;
+//       this.exportMessage = 'Failed to export PDF. Please try again.';
+//     } finally {
+//       this.isExporting = false;
+//       setTimeout(() => {
+//         this.exportSuccess = false;
+//         this.exportMessage = '';
+//       }, 5000);
+//     }
+//   }
+
+//   async exportPPT() {
+//     if (!this.showFilteredData || !this.hasAssignedFeedback) {
+//       this.exportMessage = 'Please select a survey that is assigned to this department to export data';
+//       this.exportSuccess = false;
+//       return;
+//     }
+
+//     this.isExporting = true;
+    
+//     try {
+//       // Simple PPT implementation without external library for now
+//       this.exportMessage = 'PPT export is temporarily unavailable. Please use PDF or CSV export.';
+//       this.exportSuccess = false;
+      
+//     } catch (error) {
+//       console.error('PPT export error:', error);
+//       this.exportSuccess = false;
+//       this.exportMessage = 'Failed to export PowerPoint. Please try PDF export instead.';
+//     } finally {
+//       this.isExporting = false;
+//       setTimeout(() => {
+//         this.exportSuccess = false;
+//         this.exportMessage = '';
+//       }, 5000);
+//     }
+//   }
+
+  
+//   exportCSV() {
+//     if (!this.dashboard || !this.hasAssignedFeedback) {
+//       this.exportMessage = 'No survey data available for the selected department';
+//       this.exportSuccess = false;
+//       return;
+//     }
+
+//     try {
+//       let csvContent = 'Survey Dashboard Export\n\n';
+//       csvContent += 'Metric,Value\n';
+//       csvContent += `Total Employees,${this.totalEmployees}\n`;
+//       csvContent += `Submitted,${this.submittedCount}\n`;
+//       csvContent += `Remaining,${this.remainingCount}\n`;
+//       csvContent += `Submission Rate,${this.submissionRate}%\n\n`;
+      
+//       if (this.dashboard.departmentStats?.length) {
+//         csvContent += 'Department,Response Rate\n';
+//         this.dashboard.departmentStats.forEach((dept: any) => {
+//           const deptAny = dept as any;
+//           const deptName = deptAny.name || deptAny.departmentName || deptAny.department || 'Unknown Department';
+//           const responseRate = deptAny.responseRate || deptAny.rate || deptAny.percentage || 0;
+//           csvContent += `${deptName},${responseRate}%\n`;
+//         });
+//       }
+
+//       const blob = new Blob([csvContent], { type: 'text/csv' });
+//       const url = window.URL.createObjectURL(blob);
+//       const link = document.createElement('a');
+//       const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+      
+//       link.href = url;
+//       link.download = `Survey-Data-${timestamp}.csv`;
+//       link.click();
+      
+//       window.URL.revokeObjectURL(url);
+      
+//       this.exportSuccess = true;
+//       this.exportMessage = 'CSV downloaded successfully!';
+      
+//     } catch (error) {
+//       console.error('CSV export error:', error);
+//       this.exportSuccess = false;
+//       this.exportMessage = 'Failed to export CSV. Please try again.';
+//     } finally {
+//       setTimeout(() => {
+//         this.exportSuccess = false;
+//         this.exportMessage = '';
+//       }, 5000);
+//     }
+//   }
+// }

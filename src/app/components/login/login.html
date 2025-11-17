@@ -1,4 +1,4 @@
-<div class="login-wrap">
+<!-- <div class="login-wrap">
   <div class="card">
     <h2>Survey Admin - Login</h2>
 
@@ -15,10 +15,151 @@
       <div class="error" *ngIf="error">{{ error }}</div>
     </form>
 
-    <!-- Must be OUTSIDE FORM -->
+    
     <div class="forgot">
       <span class="forgot-link" (click)="goToForgot()">Forgot Password?</span>
     </div>
 
   </div>
+</div> -->
+
+
+
+
+<div class="login-container">
+    <div class="container">
+        <div class="row min-vh-100 align-items-center justify-content-center">
+            <div class="col-lg-10">
+                <div class="row g-0 shadow-lg rounded-4 overflow-hidden">
+
+                    
+                    <div class="col-lg-6 d-none d-lg-flex bg-gradient-primary text-white p-5 flex-column justify-content-between">
+
+                        <div>
+                            <a routerLink="/" class="d-flex align-items-center text-white text-decoration-none mb-4">
+                                <i class="bi bi-people-fill fs-2 me-2"></i>
+                                <h3 class="mb-0 fw-bold">AurionSync</h3>
+                            </a>
+
+                            <h2 class="display-5 fw-bold mb-4">Welcome Admin!</h2>
+                            <p class="lead mb-4">
+                                Manage HR feedback surveys & synchronize employee insights easily.
+                            </p>
+                        </div>
+
+                        <div class="features-list">
+                            <div class="feature-item d-flex align-items-center mb-3">
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle p-3 me-3">
+                                    <i class="bi bi-shield-check fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-semibold">Secure Access</h6>
+                                    <small class="opacity-75">Protected HR login system</small>
+                                </div>
+                            </div>
+
+                            <div class="feature-item d-flex align-items-center mb-3">
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle p-3 me-3">
+                                    <i class="bi bi-bar-chart-line fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-semibold">Smart Survey Sync</h6>
+                                    <small class="opacity-75">Connect surveys across departments</small>
+                                </div>
+                            </div>
+
+                            <div class="feature-item d-flex align-items-center">
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle p-3 me-3">
+                                    <i class="bi bi-clock-history fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-semibold">24/7 Availability</h6>
+                                    <small class="opacity-75">Manage anytime, anywhere</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="col-lg-6 bg-white p-5">
+                        <div class="login-form-container">
+
+                            <div class="text-center mb-4">
+                                <h4 class="fw-bold mb-2">Admin Login</h4>
+                                <p class="text-muted">Enter your credentials to access AurionSync</p>
+                            </div>
+
+                            
+                            <div class="alert alert-danger" *ngIf="error">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                {{ error }}
+                            </div>
+
+                            <form (ngSubmit)="onSubmit()">
+
+                               
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="bi bi-envelope"></i>
+                                        </span>
+                                        <input type="email" [(ngModel)]="email" name="email" class="form-control"
+                                            required placeholder="Enter your email" />
+                                    </div>
+                                </div>
+
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="bi bi-lock"></i>
+                                        </span>
+                                        <input [type]="showPassword ? 'text' : 'password'"
+                                            [(ngModel)]="password" name="password" class="form-control"
+                                            required placeholder="Enter your password" />
+                                        <span class="input-group-text bg-light cursor-pointer"
+                                            (click)="showPassword = !showPassword">
+                                            <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                               
+                                <div class="text-end mb-3">
+                                    <span class="text-primary fw-semibold cursor-pointer" (click)="goToForgot()">
+                                        Forgot Password?
+                                    </span>
+                                </div>
+
+                               
+                                <!-- <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                                    Login
+                                </button> -->
+
+                                <button type="submit" class="btn btn-teal w-100 py-3 fw-semibold">
+    <i class="bi bi-box-arrow-in-right me-2"></i>
+    Login
+</button>
+
+
+                            </form>
+
+                            
+                            <div class="text-center mt-4">
+                                <a routerLink="/" class="text-muted text-decoration-none">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Back to Home
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+

@@ -1,20 +1,161 @@
+/* .layout {
+    display: flex;
+}
+
+/* Reduce padding & overall size */
+.content {
+    flex: 1;
+    padding: 10px !important;   /* reduced from 18px */
+    background: #f4f6fb;
+    min-height: 100vh;
+}
+
+/* Charts row spacing reduced */
+.charts-row {
+    display: flex;
+    gap: 10px !important;       /* reduced from 20px */
+    margin-top: 10px !important; /* reduced from 16px */
+}
+
+/* Smaller right column spacing */
+.right-col {
+    margin-top: 10px !important; /* reduced from 20px */
+}
+
+/* Optional: globally reduce card padding */
+.card {
+    padding: 4px !important;
+}
+
+/* Card body small */
+.card-body {
+    padding: 6px !important;
+}
+
+/* Card header tiny */
+.card-header {
+    padding: 4px 6px !important;
+}
+
+/* Typography compact */
+.tiny {
+    font-size: 11px !important;
+} */
+
+
+/* ------------------------------
+   LAYOUT
+------------------------------ */
 .layout {
-    display: flex
+    display: flex;
 }
 
 .content {
     flex: 1;
     padding: 18px;
     background: #f4f6fb;
-    min-height: 100vh
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
+/* ------------------------------
+   GRID & ROWS
+------------------------------ */
 .charts-row {
     display: flex;
     gap: 20px;
-    margin-top: 16px
+    margin-top: 16px;
+    flex-wrap: wrap;
 }
 
 .right-col {
-    margin-top: 20px
+    margin-top: 20px;
+}
+
+/* ------------------------------
+   CARD STYLING
+------------------------------ */
+.card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    width: 100%;
+}
+
+/* Title inside every card */
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+/* ------------------------------
+   RESPONSE RATE BY DEPARTMENT CARD
+------------------------------ */
+.response-rate-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    /* Fixed height for perfect Bar + Pie layout */
+    height: 380px;
+
+    padding: 20px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Left: Bar chart container */
+.response-bar-chart {
+    flex: 2;                    /* Bigger space for bar chart */
+    height: 100%;
+    min-width: 250px;
+}
+
+/* Right: Pie chart container */
+.response-pie-chart {
+    flex: 1;                    /* Smaller width for Pie chart */
+    height: 100%;
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ------------------------------
+   GENERIC CHART BOXES
+------------------------------ */
+.chart-box {
+    width: 100%;
+    height: 320px;
+}
+
+/* ------------------------------
+   RESPONSIVENESS
+------------------------------ */
+@media (max-width: 1100px) {
+    .response-rate-card {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .response-bar-chart,
+    .response-pie-chart {
+        width: 100% !important;
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .charts-row {
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+    }
 }

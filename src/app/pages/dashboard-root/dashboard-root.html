@@ -1,147 +1,34 @@
-<!-- 
-<div class="layout">
-  <div class="content">
-   
-    <div class="page-header mb-3">
-      <h1 class="h3 fw-bold text-dark mb-1">Dashboard</h1>
-      <p class="text-muted small mb-0">Overview of survey analytics and performance</p>
-    </div>
 
-    
-    <app-cards-panel [dashboard]="dashboard"></app-cards-panel>
 
-    
-    <app-filters-panel
-      [surveys]="surveys"
-      [departments]="departments"
-      [(selectedSurveyId)]="selectedSurveyId"
-      [(selectedDepartmentId)]="selectedDepartmentId"
-      (filterChanged)="onFilterChange()">
-    </app-filters-panel>
 
-    
-    
-    <div *ngIf="showUnassignedAlert" class="alert alert-warning alert-dismissible fade show" role="alert">
-      <i class="bi bi-exclamation-triangle me-2"></i>
-      <strong>No Feedback Assigned:</strong> This survey is not assigned to the selected department/branch.
-      <button type="button" class="btn-close" (click)="showUnassignedAlert = false"></button>
-    </div>
 
-    
-    <div *ngIf="showFilteredData && hasAssignedFeedback" class="row g-2 mb-3">
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body text-center py-3">
-            <h6 class="card-title text-muted text-uppercase small mb-1">Total Employees</h6>
-            <h4 class="fw-bold text-primary mb-0">{{totalEmployees}}</h4>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm border-start border-success border-4">
-          <div class="card-body text-center py-3">
-            <h6 class="card-title text-muted text-uppercase small mb-1">Submitted</h6>
-            <h4 class="fw-bold text-success mb-0">
-              {{submittedCount}} 
-              <small class="text-success fs-6">({{submissionRate}}%)</small>
-            </h4>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm border-start border-warning border-4">
-          <div class="card-body text-center py-3">
-            <h6 class="card-title text-muted text-uppercase small mb-1">Remaining</h6>
-            <h4 class="fw-bold text-warning mb-0">{{remainingCount}}</h4>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    
-    <div *ngIf="showFilteredData && hasAssignedFeedback" class="row g-2 mb-0">
-      <div class="col-lg-8">
-        <div class="card border-0 shadow-sm mb-0 h-100">
-          <div class="card-header bg-white border-0 py-2 px-3">
-            <h6 class="card-title mb-0 fw-semibold">Response Rate by Department</h6>
-          </div>
-          <div class="card-body p-2 d-flex align-items-center">
-            <app-department-charts
-              [departmentStats]="dashboard?.departmentStats || []">
-            </app-department-charts>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="card border-0 shadow-sm mb-0 h-100">
-          <div class="card-header bg-white border-0 py-2 px-3">
-            <h6 class="card-title mb-0 fw-semibold">Response Breakdown</h6>
-          </div>
-          <div class="card-body p-2 d-flex align-items-center">
-            <app-survey-charts
-              [surveyStats]="dashboard?.surveyStats">
-            </app-survey-charts>
-          </div>
-        </div>
-      </div>
-    </div>
 
-  
-    <div *ngIf="showFilteredData && hasAssignedFeedback" class="card border-0 shadow-sm mt-2">
-      <div class="card-body py-2">
-        <div class="d-flex gap-2 align-items-center flex-wrap">
-          <span class="fw-semibold small me-2">Export Report:</span>
-          <button class="btn btn-danger btn-sm px-3" (click)="exportPDF()" [disabled]="isExporting">
-            <i class="bi bi-file-earmark-pdf me-1"></i>
-            {{isExporting ? 'Exporting...' : 'PDF'}}
-          </button>
-          <button class="btn btn-warning btn-sm px-3" (click)="exportPPT()" [disabled]="isExporting">
-            <i class="bi bi-file-earmark-ppt me-1"></i>
-            {{isExporting ? 'Exporting...' : 'PPT'}}
-          </button>
-          <button class="btn btn-info btn-sm px-3" (click)="exportCSV()" [disabled]="isExporting">
-            <i class="bi bi-file-earmark-spreadsheet me-1"></i>
-            {{isExporting ? 'Exporting...' : 'CSV'}}
-          </button>
-          
-          <div *ngIf="exportSuccess" class="alert alert-success alert-dismissible fade show py-1 mb-0 ms-2 small" role="alert">
-            <i class="bi bi-check-circle me-1"></i>{{exportMessage}}
-            <button type="button" class="btn-close btn-close-sm" (click)="exportSuccess = false"></button>
-          </div>
-          
-          <div *ngIf="!exportSuccess && exportMessage" class="alert alert-danger alert-dismissible fade show py-1 mb-0 ms-2 small" role="alert">
-            <i class="bi bi-exclamation-circle me-1"></i>{{exportMessage}}
-            <button type="button" class="btn-close btn-close-sm" (click)="exportMessage = ''"></button>
-          </div>
-        </div>
-      </div>
-    </div>
 
-  
-    <div *ngIf="!showFilteredData" class="text-center py-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body py-4">
-          <i class="bi bi-funnel h1 text-muted mb-2"></i>
-          <h5 class="text-muted mb-2">No Filters Applied</h5>
-          <p class="text-muted small mb-3">Apply department or survey filters to view detailed analytics.</p>
-          <div class="text-muted small">
-            <i class="bi bi-info-circle me-1"></i>
-            Select filters and click "Apply" to see data
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div class="layout">
   <div class="content">
 
-    <div class="page-header mb-3">
-      <h1 class="h3 fw-bold text-dark mb-1">Dashboard</h1>
-      <p class="text-muted small mb-0">Overview of survey analytics and performance</p>
+    <div class="page-header mb-2">
+      <h1 class="h5 fw-bold text-dark mb-0">Dashboard</h1>
+      <p class="text-muted tiny mb-1">Survey analytics & performance</p>
     </div>
 
     <app-cards-panel [dashboard]="dashboard"></app-cards-panel>
@@ -154,57 +41,54 @@
       (filterChanged)="onFilterChange()">
     </app-filters-panel>
 
-    <!-- ALERT - NO DATA ASSIGNED -->
     <div *ngIf="showUnassignedAlert"
-         class="alert alert-warning alert-dismissible fade show"
+         class="alert alert-warning py-1 small"
          role="alert">
-      <i class="bi bi-exclamation-triangle me-2"></i>
-      <strong>No Feedback Assigned:</strong> This survey is not assigned to the selected department.
-      <button type="button" class="btn-close" (click)="showUnassignedAlert = false"></button>
+      <strong>Not Assigned:</strong> This survey isn't assigned to this department.
+      <button type="button" class="btn-close btn-sm" (click)="showUnassignedAlert = false"></button>
     </div>
 
-    <!-- MAIN ANALYTICS -->
     <div *ngIf="showFilteredData && hasAssignedFeedback">
 
-      <div class="row g-2 mb-3">
+      <div class="row g-1 mb-2">
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm">
-            <div class="card-body text-center py-3">
-              <h6 class="text-muted text-uppercase small mb-1">Total Employees</h6>
-              <h4 class="fw-bold text-primary mb-0">{{totalEmployees}}</h4>
+          <div class="card shadow-sm small">
+            <div class="card-body text-center py-2">
+              <h6 class="text-muted tiny mb-0">Total Employees</h6>
+              <h5 class="fw-bold text-primary mb-0">{{totalEmployees}}</h5>
             </div>
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm border-start border-success border-4">
-            <div class="card-body text-center py-3">
-              <h6 class="text-muted text-uppercase small mb-1">Submitted</h6>
-              <h4 class="fw-bold text-success mb-0">
+          <div class="card shadow-sm border-start border-success border-3 small">
+            <div class="card-body text-center py-2">
+              <h6 class="text-muted tiny mb-0">Submitted</h6>
+              <h5 class="fw-bold text-success mb-0">
                 {{submittedCount}}
-                <small class="text-success fs-6">({{submissionRate}}%)</small>
-              </h4>
+                <small class="text-success">({{submissionRate}}%)</small>
+              </h5>
             </div>
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm border-start border-warning border-4">
-            <div class="card-body text-center py-3">
-              <h6 class="text-muted text-uppercase small mb-1">Remaining</h6>
-              <h4 class="fw-bold text-warning mb-0">{{remainingCount}}</h4>
+          <div class="card shadow-sm border-start border-warning border-3 small">
+            <div class="card-body text-center py-2">
+              <h6 class="text-muted tiny mb-0">Remaining</h6>
+              <h5 class="fw-bold text-warning mb-0">{{remainingCount}}</h5>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row g-2 mb-0">
+      <div class="row g-1 mb-1">
         <div class="col-lg-8">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-0 py-2">
-              <h6 class="fw-semibold mb-0">Response Rate by Department</h6>
+          <div class="card shadow-sm small h-100">
+            <div class="card-header bg-white border-0 py-1">
+              <h6 class="fw-semibold tiny mb-0">Response Rate by Department</h6>
             </div>
-            <div class="card-body p-2">
+            <div class="card-body p-1">
               <app-department-charts
                 [departmentStats]="dashboard?.departmentStats || []">
               </app-department-charts>
@@ -213,65 +97,57 @@
         </div>
 
         <div class="col-lg-4">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-0 py-2">
-              <h6 class="fw-semibold mb-0">Response Breakdown</h6>
+          <div class="card shadow-sm small h-100">
+            <div class="card-header bg-white border-0 py-1">
+              <h6 class="fw-semibold tiny mb-0">Response Breakdown</h6>
             </div>
-            <div class="card-body p-2">
-              <app-survey-charts
-                [surveyStats]="dashboard?.surveyStats">
-              </app-survey-charts>
+            <div class="card-body p-1">
+              <app-survey-charts [surveyStats]="dashboard?.surveyStats"></app-survey-charts>
             </div>
           </div>
         </div>
       </div>
 
-      
-      <div class="card border-0 shadow-sm mt-2">
-        <div class="card-body py-2">
-          <div class="d-flex gap-2 flex-wrap align-items-center">
-            <span class="fw-semibold small">Export Report:</span>
+      <div class="card shadow-sm mt-1 small">
+        <div class="card-body py-1">
+          <div class="d-flex gap-1 flex-wrap align-items-center">
+            <span class="fw-semibold tiny">Export:</span>
 
-            <button class="btn btn-danger btn-sm px-3"
-                    (click)="exportPDF()" [disabled]="isExporting">
-              <i class="bi bi-file-earmark-pdf me-1"></i>
-              {{isExporting ? 'Exporting...' : 'PDF'}}
+            <button class="btn btn-danger btn-sm" (click)="exportPDF()" [disabled]="isExporting">
+              <i class="bi bi-file-earmark-pdf tiny me-1"></i>
+              {{isExporting ? '...' : 'PDF'}}
             </button>
 
-            <button class="btn btn-warning btn-sm px-3"
-                    (click)="exportPPT()" [disabled]="isExporting">
-              <i class="bi bi-file-earmark-ppt me-1"></i>
-              PPT
+            <button class="btn btn-warning btn-sm" (click)="exportPPT()" [disabled]="isExporting">
+              <i class="bi bi-file-earmark-ppt tiny me-1"></i>PPT
             </button>
 
-            <button class="btn btn-info btn-sm px-3"
-                    (click)="exportCSV()" [disabled]="isExporting">
-              <i class="bi bi-file-earmark-spreadsheet me-1"></i>
-              CSV
+            <button class="btn btn-info btn-sm" (click)="exportCSV()" [disabled]="isExporting">
+              <i class="bi bi-file-earmark-spreadsheet tiny me-1"></i>CSV
             </button>
 
             <div *ngIf="exportSuccess"
-                 class="alert alert-success small py-1 mb-0 ms-2">
-              <i class="bi bi-check-circle me-1"></i>{{exportMessage}}
+                 class="alert alert-success tiny py-1 ms-1 mb-0">
+              ✔ {{exportMessage}}
             </div>
 
             <div *ngIf="!exportSuccess && exportMessage"
-                 class="alert alert-danger small py-1 mb-0 ms-2">
-              <i class="bi bi-exclamation-circle me-1"></i>{{exportMessage}}
+                 class="alert alert-danger tiny py-1 ms-1 mb-0">
+              ⚠ {{exportMessage}}
             </div>
+
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- NO FILTER APPLIED -->
-    <div *ngIf="!showFilteredData" class="text-center py-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body py-4">
-          <i class="bi bi-funnel h1 text-muted"></i>
-          <h5 class="text-muted">No Filters Applied</h5>
-          <p class="text-muted small">Apply department or survey filters to view analytics.</p>
+    <div *ngIf="!showFilteredData" class="text-center py-3">
+      <div class="card shadow-sm small">
+        <div class="card-body py-3">
+          <i class="bi bi-funnel h3 text-muted"></i>
+          <h6 class="text-muted">No Filters Applied</h6>
+          <p class="text-muted tiny">Apply survey/department filters.</p>
         </div>
       </div>
     </div>

@@ -49,6 +49,8 @@ export class Login implements OnInit {
   password = '';
   error = '';
 
+  showPassword: boolean = false;   // ✅ FIX ADDED
+
   constructor(private auth: Auth, private router: Router) {}
 
   ngOnInit() {

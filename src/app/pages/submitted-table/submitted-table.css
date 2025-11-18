@@ -1,4 +1,4 @@
-.table-card {
+/* .table-card {
     background: #fff;
     padding: 10px;
     border-radius: 8px;
@@ -12,4 +12,33 @@ table {
 td {
     padding: 6px;
     border-bottom: 1px solid #f0f0f0
+} */
+
+/* .tbl{width:100%;border-collapse:collapse}
+.tbl td{padding:8px;border-bottom:1px solid #f0f0f0}
+.tbl thead th{background:#f8fafc;padding:8px;text-align:left} */
+.table-wrapper {
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #fff;
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+}
+
+/* optional smooth scroll */
+.table-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.no-data {
+    text-align: center;
+    padding: 20px 0;
+    color: #64748b;
+    font-weight: 500;
 }

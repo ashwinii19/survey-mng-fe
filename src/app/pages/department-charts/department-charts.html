@@ -1,4 +1,4 @@
-<div class="dept-charts">
+<!-- <div class="dept-charts">
   <div class="chart-box">
     <canvas baseChart
             [data]="barData"
@@ -10,5 +10,30 @@
             [data]="donutData"
             [type]="'doughnut'">
     </canvas>
+  </div>
+</div> -->
+
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <h6>Response Rate</h6>
+    <div class="chart-wrapper">
+      <canvas baseChart
+        [data]="barData"
+        [options]="barOptions"
+        chartType="bar">
+      </canvas>
+    </div>
+  </div>
+
+  <div class="chart-card donut">
+    <h6>Response Breakdown</h6>
+    <div class="chart-wrapper small">
+      <canvas baseChart
+        [data]="donutData"
+        [options]="donutOptions"
+        chartType="doughnut">
+      </canvas>
+    </div>
   </div>
 </div>

@@ -28,13 +28,42 @@
 // });
 
 
+// import { bootstrapApplication } from '@angular/platform-browser';
+// import { AppComponent } from './app/app.component';
+// import { provideRouter } from '@angular/router';
+// import { routes } from './app/app.routes';
+
+// import { provideHttpClient, withInterceptors } from '@angular/common/http';
+// import { TokenInterceptor } from './app/interceptors/token-interceptor';
+
+// bootstrapApplication(AppComponent, {
+//   providers: [
+
+//     // Router
+//     provideRouter(routes),
+
+//     // Http + Token Interceptor
+//     provideHttpClient(
+//       withInterceptors([TokenInterceptor])
+//     )
+//   ]
+// });
+
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
+
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TokenInterceptor } from './app/interceptors/token-interceptor';
+
+// Chart.js + DataLabels Plugin
+import { Chart } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+// REGISTER THE PLUGIN GLOBALLY
+Chart.register(ChartDataLabels);
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -42,7 +71,7 @@ bootstrapApplication(AppComponent, {
     // Router
     provideRouter(routes),
 
-    // Http + Token Interceptor
+    // HTTP Client + JWT Interceptor
     provideHttpClient(
       withInterceptors([TokenInterceptor])
     )

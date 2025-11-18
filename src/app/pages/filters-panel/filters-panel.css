@@ -1,4 +1,4 @@
-.filters {
+/* .filters {
     display: flex;
     gap: 12px;
     align-items: center;
@@ -16,4 +16,8 @@ button {
     color: #fff;
     border: none;
     border-radius: 6px
-}
+} */
+
+
+.filters-card { background:#fff; border-radius:8px; }
+.form-label.small { font-weight:600; color:#4b5563; }

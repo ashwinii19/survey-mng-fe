@@ -1,4 +1,4 @@
-<table class="tbl">
+<!-- <table class="tbl">
   <thead>
     <tr><th>#</th><th>Name</th><th>Employee Id</th></tr>
   </thead>
@@ -12,4 +12,27 @@
       <td colspan="3">No submissions</td>
     </tr>
   </tbody>
-</table>
+</table> -->
+
+<div class="table-wrapper">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th style="width: 80px;">Sr. No</th>
+        <th>Submitted Employee</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let s of submitted; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ s }}</td>
+      </tr>
+
+      <tr *ngIf="submitted?.length === 0">
+        <td colspan="2" class="no-data">No submissions</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

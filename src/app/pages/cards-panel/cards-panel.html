@@ -1,4 +1,4 @@
-<div class="cards">
+<!-- <div class="cards">
   <div class="card">
     <div class="label">Employees</div>
     <div class="value">{{ dashboard?.totalEmployees ?? '-' }}</div>
@@ -14,5 +14,21 @@
   <div class="card">
     <div class="label">Pending</div>
     <div class="value">{{ dashboard?.totalPending ?? '-' }}</div>
+  </div>
+</div> -->
+
+
+<div class="cards">
+  <div class="card small">
+    <div class="lbl">Total</div>
+    <div class="val">{{ total }}</div>
+  </div>
+  <div class="card small">
+    <div class="lbl">Submitted</div>
+    <div class="val">{{ submitted }} <small class="pct">({{rate}}%)</small></div>
+  </div>
+  <div class="card small">
+    <div class="lbl">Pending</div>
+    <div class="val">{{ remaining }}</div>
   </div>
 </div>

@@ -1,9 +1,4 @@
-
-
-
-
-
-<div class="container-fluid">
+<!-- <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
@@ -14,7 +9,7 @@
           </span>
         </div>
         <div class="card-body">
-          <!-- Loading -->
+         
           <div *ngIf="isLoading" class="text-center py-4">
             <div class="spinner-border text-primary" role="status">
               <span class="visually-hidden">Loading...</span>
@@ -22,9 +17,9 @@
             <p class="mt-2">Loading batch status...</p>
           </div>
 
-          <!-- Batch Status -->
+          
           <div *ngIf="batchStatus && !isLoading">
-            <!-- Progress Bar -->
+            
             <div class="mb-4">
               <div class="d-flex justify-content-between mb-2">
                 <span>Processing...</span>
@@ -41,7 +36,7 @@
               </div>
             </div>
 
-            <!-- Status Details -->
+           
             <div class="row">
               <div class="col-md-6">
                 <table class="table table-sm">
@@ -90,37 +85,13 @@
               </div>
             </div>
 
-            <!-- Failed Records Warning -->
-            <div *ngIf="hasFailedRecords()" class="alert alert-warning mt-3">
-              <div class="d-flex align-items-center">
-                <i class="fas fa-exclamation-triangle me-2"></i>
-                <div class="flex-grow-1">
-                  <strong class="d-block mb-1">
-                    {{ batchStatus.failedCount }} record(s) failed to import
-                  </strong>
-                  <span class="d-block mb-2">
-                    Some records could not be processed. You can review the details and error messages.
-                  </span>
-                  <button class="btn btn-warning btn-sm" (click)="viewFailedRecords()">
-                    <i class="fas fa-list me-1"></i>View Failed Records
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Success Message -->
-            <div *ngIf="batchStatus.status === 'COMPLETED' && !hasFailedRecords()" class="alert alert-success mt-3">
-              <i class="fas fa-check-circle me-2"></i>
-              <strong>Import completed successfully!</strong> All {{ batchStatus.totalCount }} records were imported.
-            </div>
-
-            <!-- Error Message -->
+           
             <div *ngIf="batchStatus.errorMessage" class="alert alert-danger mt-3">
               <i class="fas fa-exclamation-circle me-2"></i>
               <strong>Error:</strong> {{ batchStatus.errorMessage }}
             </div>
 
-            <!-- Actions -->
+           
             <div class="d-flex gap-2 mt-4">
               <button class="btn btn-primary" routerLink="/app/employees">
                 <i class="fas fa-list me-1"></i> Back to Employee List
@@ -138,7 +109,7 @@
             </div>
           </div>
 
-          <!-- Error State -->
+        
           <div *ngIf="!batchStatus && !isLoading" class="text-center py-4">
             <div class="alert alert-danger">
               Could not load batch status. The batch ID may be invalid or the record may have been deleted.
@@ -148,6 +119,367 @@
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+<!-- <div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Batch Import Status</h4>
+          <span class="badge" [ngClass]="getStatusClass()">
+            {{ batchStatus?.status || 'Loading...' }}
+          </span>
+        </div>
+        <div class="card-body">
+        
+          <div *ngIf="isLoading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading batch status...</p>
+          </div>
+
+          <div *ngIf="batchStatus && !isLoading">
+            
+            <div class="mb-4">
+              <div class="d-flex justify-content-between mb-2">
+                <span>Processing...</span>
+                <span>{{ getProgressPercentage() }}%</span>
+              </div>
+              <div class="progress">
+                <div 
+                  class="progress-bar" 
+                  [class.bg-warning]="batchStatus.status === 'PROCESSING'"
+                  [class.bg-success]="batchStatus.status === 'COMPLETED'"
+                  [class.bg-danger]="batchStatus.status === 'FAILED'"
+                  [style.width]="getProgressPercentage() + '%'">
+                </div>
+              </div>
+            </div>
+
+           
+            <div class="row">
+              <div class="col-md-6">
+                <table class="table table-sm">
+                  <tr>
+                    <th>Batch ID:</th>
+                    <td>{{ batchStatus.id }}</td>
+                  </tr>
+                  <tr>
+                    <th>Started:</th>
+                    <td>{{ batchStatus.createdAt | date:'medium' }}</td>
+                  </tr>
+                  <tr *ngIf="batchStatus.completedAt">
+                    <th>Completed:</th>
+                    <td>{{ batchStatus.completedAt | date:'medium' }}</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-md-6">
+                <table class="table table-sm">
+                  <tr>
+                    <th>Total Records:</th>
+                    <td>{{ batchStatus.totalCount }}</td>
+                  </tr>
+                  <tr>
+                    <th>Processed:</th>
+                    <td>{{ batchStatus.processedCount }}</td>
+                  </tr>
+                  <tr>
+                    <th>Failed:</th>
+                    <td>
+                      <span [class.text-danger]="batchStatus.failedCount > 0">
+                        {{ batchStatus.failedCount }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Success Rate:</th>
+                    <td>
+                      <span *ngIf="batchStatus.totalCount > 0">
+                        {{ ((batchStatus.totalCount - batchStatus.failedCount) / batchStatus.totalCount * 100).toFixed(1) }}%
+                      </span>
+                      <span *ngIf="batchStatus.totalCount === 0">N/A</span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+           
+            <div *ngIf="batchStatus.errorMessage" class="alert alert-danger mt-3">
+              <strong>Error:</strong> {{ batchStatus.errorMessage }}
+            </div>
+
+         
+            <div class="d-flex gap-2 mt-4">
+              <button class="btn btn-primary" routerLink="/app/employees">
+                <i class="fas fa-list"></i> Back to Employee List
+              </button>
+              <button class="btn btn-outline-secondary" routerLink="/app/employees/batch/import">
+                <i class="fas fa-upload"></i> New Import
+              </button>
+            </div>
+          </div>
+
+         
+          <div *ngIf="!batchStatus && !isLoading" class="text-center py-4">
+            <div class="alert alert-danger">
+              Could not load batch status. The batch ID may be invalid or the record may have been deleted.
+            </div>
+            <button class="btn btn-primary" routerLink="/app/employees">
+              Back to Employee List
+            </button>
+          </div>
+
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+<!-- 
+
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+@@ -60,10 +183,10 @@ <h4 class="mb-0">Batch Import Status</h4>
+                    <th>Total Records:</th>
+                    <td>{{ batchStatus.totalCount }}</td>
+                  </tr>
+                  <tr>
+                
+                  <tr>
+                    <th>Failed:</th>
+                    <td>
+@@ -85,18 +208,50 @@ <h4 class="mb-0">Batch Import Status</h4>
+              </div>
+            </div>
+
+            
+            <div *ngIf="hasFailedRecords()" class="alert alert-warning mt-3">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <div class="flex-grow-1">
+                  <strong class="d-block mb-1">
+                    {{ batchStatus.failedCount }} record(s) failed to import
+                  </strong>
+                  <span class="d-block mb-2">
+                    Some records could not be processed. You can review the details and error messages.
+                  </span>
+                  <button class="btn btn-warning btn-sm" (click)="viewFailedRecords()">
+                    <i class="fas fa-list me-1"></i>View Failed Records
+                  </button>
+                </div>
+              </div>
+            </div>
+
+           
+            <div *ngIf="batchStatus.status === 'COMPLETED' && !hasFailedRecords()" class="alert alert-success mt-3">
+              <i class="fas fa-check-circle me-2"></i>
+              <strong>Import completed successfully!</strong> All {{ batchStatus.totalCount }} records were imported.
+            </div>
+
+            
+            <div *ngIf="batchStatus.errorMessage" class="alert alert-danger mt-3">
+              <i class="fas fa-exclamation-circle me-2"></i>
+              <strong>Error:</strong> {{ batchStatus.errorMessage }}
+            </div>
+
+         
+            <div class="d-flex gap-2 mt-4">
+              <button class="btn btn-primary" routerLink="/app/employees">
+                <i class="fas fa-list"></i> Back to Employee List
+                <i class="fas fa-list me-1"></i> Back to Employee List
+              </button>
+              <button class="btn btn-outline-secondary" routerLink="/app/employees/batch/import">
+                <i class="fas fa-upload"></i> New Import
+                <i class="fas fa-upload me-1"></i> New Import
+              </button>
+              
+              <button *ngIf="hasFailedRecords()" 
+                      class="btn btn-outline-danger ms-auto" 
+                      (click)="viewFailedRecords()">
+                <i class="fas fa-download me-1"></i> Export Failed Records
+              </button>
+            </div>
+          </div>
+@@ -110,10 +265,15 @@ <h4 class="mb-0">Batch Import Status</h4>
+              Back to Employee List
+            </button>
+          </div>
+
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<app-failed-records 
+  [batchLogId]="batchLogId"
+  [showModal]="showFailedModal"
+  (modalClosed)="onFailedModalClosed()">
+</app-failed-records> -->
+
+
+
+
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading batch status...</p>
+      </div>
+
+      <!-- Batch Status Content -->
+      <div *ngIf="batchStatus && !isLoading" class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Batch Import Status</h4>
+          <span class="badge" [ngClass]="getStatusClass()">
+            {{ batchStatus.status }}
+          </span>
+        </div>
+        <div class="card-body">
+          <!-- Progress Bar -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Processing...</span>
+              <span>{{ getProgressPercentage() }}%</span>
+            </div>
+            <div class="progress">
+              <div 
+                class="progress-bar" 
+                [class.bg-warning]="batchStatus.status === 'PROCESSING'"
+                [class.bg-success]="batchStatus.status === 'COMPLETED'"
+                [class.bg-danger]="batchStatus.status === 'FAILED'"
+                [style.width]="getProgressPercentage() + '%'">
+              </div>
+            </div>
+          </div>
+
+          <!-- Batch Details -->
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-sm">
+                <tbody>
+                  <tr>
+                    <th>Batch ID:</th>
+                    <td>{{ batchStatus.id }}</td>
+                  </tr>
+                  <tr>
+                    <th>Started:</th>
+                    <td>{{ batchStatus.createdAt | date:'medium' }}</td>
+                  </tr>
+                  <tr *ngIf="batchStatus.completedAt">
+                    <th>Completed:</th>
+                    <td>{{ batchStatus.completedAt | date:'medium' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <table class="table table-sm">
+                <tbody>
+                  <tr>
+                    <th>Total Records:</th>
+                    <td>{{ batchStatus.totalCount }}</td>
+                  </tr>
+                  <tr>
+                    <th>Failed:</th>
+                    <td>
+                      <span [class.text-danger]="batchStatus.failedCount > 0">
+                        {{ batchStatus.failedCount }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Success Rate:</th>
+                    <td>
+                      <span *ngIf="batchStatus.totalCount > 0">
+                        {{ ((batchStatus.totalCount - batchStatus.failedCount) / batchStatus.totalCount * 100).toFixed(1) }}%
+                      </span>
+                      <span *ngIf="batchStatus.totalCount === 0">N/A</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Failed Records Warning -->
+          <div *ngIf="hasFailedRecords()" class="alert alert-warning mt-3">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              <div class="flex-grow-1">
+                <strong class="d-block mb-1">
+                  {{ batchStatus.failedCount }} record(s) failed to import
+                </strong>
+                <span class="d-block mb-2">
+                  Some records could not be processed. You can review the details and error messages.
+                </span>
+                <button class="btn btn-warning btn-sm" (click)="viewFailedRecords()">
+                  <i class="fas fa-list me-1"></i>View Failed Records
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Success Message -->
+          <div *ngIf="batchStatus.status === 'COMPLETED' && !hasFailedRecords()" class="alert alert-success mt-3">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>Import completed successfully!</strong> All {{ batchStatus.totalCount }} records were imported.
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="batchStatus.errorMessage" class="alert alert-danger mt-3">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <strong>Error:</strong> {{ batchStatus.errorMessage }}
+          </div>
+
+          <!-- Actions -->
+          <div class="d-flex gap-2 mt-4">
+            <button class="btn btn-primary" routerLink="/app/employees">
+              <i class="fas fa-list me-1"></i> Back to Employee List
+            </button>
+            <button class="btn btn-outline-secondary" routerLink="/app/employees/batch/import">
+              <i class="fas fa-upload me-1"></i> New Import
+            </button>
+            
+            <!-- Export Failed Records Button -->
+            <button *ngIf="hasFailedRecords()" 
+                    class="btn btn-outline-danger ms-auto" 
+                    (click)="viewFailedRecords()">
+              <i class="fas fa-download me-1"></i> Export Failed Records
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Batch Status Found -->
+      <div *ngIf="!batchStatus && !isLoading" class="text-center py-4">
+        <div class="alert alert-danger">
+          Could not load batch status. The batch ID may be invalid or the record may have been deleted.
+        </div>
+        <button class="btn btn-primary" routerLink="/app/employees">
+          Back to Employee List
+        </button>
       </div>
     </div>
   </div>

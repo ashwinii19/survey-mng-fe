@@ -1,16 +1,14 @@
 <div class="layout-container">
 
-  <!-- LEFT SIDEBAR -->
-  <app-sidebar></app-sidebar>
+  <app-sidebar (collapseChange)="sidebarCollapsed = $event"></app-sidebar>
 
-  <!-- MAIN AREA -->
-  <div class="layout-content">
-    
-    <!-- TOP HEADER -->
+  <div class="layout-content" [class.collapsed]="sidebarCollapsed">
+
     <app-header></app-header>
 
-    <!-- PAGE CONTENT WILL LOAD HERE -->
-    <router-outlet></router-outlet>
+    <div class="page-wrapper">
+      <router-outlet></router-outlet>
+    </div>
 
   </div>
 

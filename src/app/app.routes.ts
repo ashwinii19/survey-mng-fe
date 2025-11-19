@@ -102,6 +102,13 @@ export const routes: Routes = [
             .then(m => m.ProfileComponent)
       },
 
+      {
+  path: 'reminders',
+  loadComponent: () => import('./pages/reminders/reminders.component/reminders.component')
+      .then(m => m.RemindersComponent)
+},
+
+
       /** DEFAULT INSIDE APP */
       
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

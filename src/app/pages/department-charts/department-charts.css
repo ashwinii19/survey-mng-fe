@@ -1,4 +1,4 @@
-.chart-card {
+/* .chart-card {
     background: #fff;
     padding: 12px;
     border-radius: 8px;
@@ -13,4 +13,11 @@
 canvas {
     flex: 1;
     max-width: 100%
-}
+} */
+
+.charts-grid { display:flex; gap:18px; align-items:flex-start; }
+.chart-card { flex:1; background:#fff; padding:16px; border-radius:10px; min-height:300px; }
+.chart-card.donut { width:320px; }
+.chart-wrapper { height:320px; }
+.chart-wrapper.small { height:280px; }
+.chart-card h6 { margin-bottom:12px; color:#0f172a; }

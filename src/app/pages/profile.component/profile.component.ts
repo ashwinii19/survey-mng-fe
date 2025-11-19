@@ -44,12 +44,29 @@ export class ProfileComponent implements OnInit {
   }
 
 
+  // changePass() {
+  //   this.auth.changePassword({
+  //     oldPassword: this.oldPassword,
+  //     newPassword: this.newPassword
+  //   }).subscribe(() => alert("Password Changed!"));
+  // }
+
   changePass() {
-    this.auth.changePassword({
-      oldPassword: this.oldPassword,
-      newPassword: this.newPassword
-    }).subscribe(() => alert("Password Changed!"));
-  }
+  this.auth.changePassword({
+    oldPassword: this.oldPassword,
+    newPassword: this.newPassword
+  }).subscribe({
+    next: () => {
+      alert("Password Changed!");
+
+      this.oldPassword = '';
+      this.newPassword = '';
+    },
+    error: (err) => {
+      alert(err.error?.error || "Failed to change password");
+    }
+  });
+}
 
   getPhotoUrl() {
     if (!this.profileImage) {

@@ -1,3 +1,8 @@
+
+
+
+
+
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-md-8">
@@ -60,10 +65,10 @@
                     <th>Total Records:</th>
                     <td>{{ batchStatus.totalCount }}</td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <th>Processed:</th>
                     <td>{{ batchStatus.processedCount }}</td>
-                  </tr>
+                  </tr> -->
                   <tr>
                     <th>Failed:</th>
                     <td>
@@ -85,18 +90,50 @@
               </div>
             </div>
 
+            <!-- Failed Records Warning -->
+            <div *ngIf="hasFailedRecords()" class="alert alert-warning mt-3">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <div class="flex-grow-1">
+                  <strong class="d-block mb-1">
+                    {{ batchStatus.failedCount }} record(s) failed to import
+                  </strong>
+                  <span class="d-block mb-2">
+                    Some records could not be processed. You can review the details and error messages.
+                  </span>
+                  <button class="btn btn-warning btn-sm" (click)="viewFailedRecords()">
+                    <i class="fas fa-list me-1"></i>View Failed Records
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Success Message -->
+            <div *ngIf="batchStatus.status === 'COMPLETED' && !hasFailedRecords()" class="alert alert-success mt-3">
+              <i class="fas fa-check-circle me-2"></i>
+              <strong>Import completed successfully!</strong> All {{ batchStatus.totalCount }} records were imported.
+            </div>
+
             <!-- Error Message -->
             <div *ngIf="batchStatus.errorMessage" class="alert alert-danger mt-3">
+              <i class="fas fa-exclamation-circle me-2"></i>
               <strong>Error:</strong> {{ batchStatus.errorMessage }}
             </div>
 
             <!-- Actions -->
             <div class="d-flex gap-2 mt-4">
               <button class="btn btn-primary" routerLink="/app/employees">
-                <i class="fas fa-list"></i> Back to Employee List
+                <i class="fas fa-list me-1"></i> Back to Employee List
               </button>
               <button class="btn btn-outline-secondary" routerLink="/app/employees/batch/import">
-                <i class="fas fa-upload"></i> New Import
+                <i class="fas fa-upload me-1"></i> New Import
+              </button>
+              
+              <!-- Export Failed Records Button -->
+              <button *ngIf="hasFailedRecords()" 
+                      class="btn btn-outline-danger ms-auto" 
+                      (click)="viewFailedRecords()">
+                <i class="fas fa-download me-1"></i> Export Failed Records
               </button>
             </div>
           </div>
@@ -110,10 +147,15 @@
               Back to Employee List
             </button>
           </div>
-
-         
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Failed Records Modal -->
+<app-failed-records 
+  [batchLogId]="batchLogId"
+  [showModal]="showFailedModal"
+  (modalClosed)="onFailedModalClosed()">
+</app-failed-records>

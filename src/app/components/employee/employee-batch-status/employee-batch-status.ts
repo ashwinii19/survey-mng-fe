@@ -1,5 +1,6 @@
 
 
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -7,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
+import { FailedRecordsComponent } from '../failed-records/failed-records'; // UNCOMMENT THIS
 
 interface BatchStatus {
   id: string;
@@ -22,7 +24,7 @@ interface BatchStatus {
 @Component({
   selector: 'app-employee-batch-status',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FailedRecordsComponent], // ADD FailedRecordsComponent HERE
   templateUrl: './employee-batch-status.html',
   styleUrl: './employee-batch-status.css'
 })
@@ -31,6 +33,7 @@ export class EmployeeBatchStatusComponent implements OnInit, OnDestroy {
   batchStatus: BatchStatus | null = null;
   isLoading: boolean = true;
   pollSubscription: Subscription | null = null;
+  showFailedModal: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,7 +51,7 @@ export class EmployeeBatchStatusComponent implements OnInit, OnDestroy {
   }
 
   startPolling(): void {
-    this.pollSubscription = interval(2000) // Poll every 2 seconds
+    this.pollSubscription = interval(2000)
       .pipe(
         switchMap(() => this.http.get<BatchStatus>(`${environment.apiBaseUrl}/employees/batch/status/${this.batchLogId}`))
       )
@@ -57,7 +60,6 @@ export class EmployeeBatchStatusComponent implements OnInit, OnDestroy {
           this.batchStatus = status;
           this.isLoading = false;
 
-          // Stop polling if job is completed
           if (status.status === 'COMPLETED' || status.status === 'FAILED') {
             this.stopPolling();
           }
@@ -98,6 +100,18 @@ export class EmployeeBatchStatusComponent implements OnInit, OnDestroy {
       default:
         return 'bg-secondary';
     }
+  }
+
+  hasFailedRecords(): boolean {
+    return (this.batchStatus?.failedCount || 0) > 0;
+  }
+
+  viewFailedRecords(): void {
+    this.showFailedModal = true;
+  }
+
+  onFailedModalClosed(): void {
+    this.showFailedModal = false;
   }
 
   ngOnDestroy(): void {

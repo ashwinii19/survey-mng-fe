@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
-import { FailedRecordsComponent } from '../failed-records/failed-records'; // UNCOMMENT THIS
+import { FailedRecordsComponent } from '../failed-records/failed-records'; 
 
 interface BatchStatus {
   id: string;

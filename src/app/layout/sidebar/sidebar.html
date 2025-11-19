@@ -1,18 +1,64 @@
-<!-- <nav class="sidebar">
-  <div class="brand">Survey Admin</div>
-  <ul>
-    <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
-    <a routerLink="/app/surveys/create" routerLinkActive="active">Create Surveys</a>
-    <li><a routerLink="/employees" routerLinkActive="active">Employees</a></li>
-    <li><a routerLink="/reminders" routerLinkActive="active">Reminders</a></li>
+<nav class="sidebar" [class.collapsed]="isCollapsed">
+
+  <!-- BRAND + TOGGLE -->
+  <div class="brand">
+    <button class="sidebar-toggle-btn" (click)="toggleSidebar()" title="Toggle Sidebar">
+      <i class="bi" [ngClass]="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'"></i>
+    </button>
+
+    <span class="brand-text">Survey Admin</span>
+  </div>
+
+  <ul class="menu-list">
+
+    <!-- Dashboard -->
+    <li>
+      <a routerLink="/app/dashboard" routerLinkActive="active">
+        <i class="bi bi-speedometer2 icon-lg"></i>
+        <span class="text">Dashboard</span>
+      </a>
+    </li>
+
+    <!-- Onboarding (NEW ITEM) -->
+    <li>
+      <a routerLink="/app/onboarding" routerLinkActive="active">
+       <i class="bi bi-person-plus icon-lg"></i>
+        <span class="text">Onboarding</span>
+      </a>
+    </li>
+
+    <!-- Create Surveys -->
+    <li>
+      <a routerLink="/app/surveys/create" routerLinkActive="active">
+        <i class="bi bi-ui-checks-grid icon-lg"></i>
+        <span class="text">Create Surveys</span>
+      </a>
+    </li>
+
+    <!-- Employees -->
+    <li>
+      <a routerLink="/app/employees" routerLinkActive="active">
+        <i class="bi bi-people-fill icon-lg"></i>
+        <span class="text">Employees</span>
+      </a>
+    </li>
+
+    <!-- Reminders -->
+    <li>
+      <a routerLink="/app/reminders" routerLinkActive="active">
+        <i class="bi bi-bell icon-lg"></i>
+        <span class="text">Reminders</span>
+      </a>
+    </li>
+
   </ul>
-</nav> -->
-<nav class="sidebar">
-  <div class="brand">Survey Admin</div>
-  <ul>
-    <li><a routerLink="/app/dashboard" routerLinkActive="active">Dashboard</a></li>
-    <li><a routerLink="/app/surveys/create" routerLinkActive="active">Create Surveys</a></li>
-    <li><a routerLink="/app/employees" routerLinkActive="active">Employees</a></li>
-    <li><a routerLink="/app/reminders" routerLinkActive="active">Reminders</a></li>
-  </ul>
+
+  <!-- LOGOUT (ALWAYS AT BOTTOM) -->
+  <div class="logout-section">
+    <a (click)="logout()">
+      <i class="bi bi-box-arrow-right icon-lg"></i>
+      <span class="text">Logout</span>
+    </a>
+  </div>
+
 </nav>

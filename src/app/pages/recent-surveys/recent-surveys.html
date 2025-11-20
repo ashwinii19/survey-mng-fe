@@ -7,95 +7,95 @@
     No surveys created yet.
   </div>
 
-  <!-- Surveys Table -->
-  <table class="survey-table" *ngIf="surveys.length > 0">
-    <thead>
-      <tr>
-        <th>Sr No.</th>
-        <th>Survey Title</th>
-        <th>Department</th>
-        <th>Questions</th>
-        <th>Created Date</th>
-        <th>Status</th>
-        <th style="width: 260px;">Action</th>
-      </tr>
-    </thead>
+  <!-- Responsive Wrapper -->
+  <div class="table-responsive" *ngIf="surveys.length > 0">
 
-    <tbody>
+    <!-- Surveys Table -->
+    <table class="survey-table">
+      <thead>
+        <tr>
+          <th>Sr No.</th>
+          <th>Survey Title</th>
+          <th>Department</th>
+          <th>Questions</th>
+          <th>Created Date</th>
+          <th>Status</th>
+          <th style="width: 260px;">Action</th>
+        </tr>
+      </thead>
 
-      <tr *ngFor="let s of pagedSurveys; let i = index">
+      <tbody>
 
-        <!-- New SR NO Column -->
-        <td>{{ i + 1 }}</td>
+        <tr *ngFor="let s of pagedSurveys; let i = index">
 
-        <td>{{ s.title }}</td>
+          <td>{{ i + 1 }}</td>
+          <td>{{ s.title }}</td>
+          <td>{{ s.targetDepartment?.name || '-' }}</td>
+          <td>{{ s.questions?.length }}</td>
+          <td>{{ s.createdAt | date:'dd MMM yyyy, hh:mm a' }}</td>
 
-        <td>{{ s.targetDepartment?.name || '-' }}</td>
-
-        <td>{{ s.questions?.length }}</td>
-
-        <td>{{ s.createdAt | date:'dd MMM yyyy, hh:mm a' }}</td>
-
-        <td>
-          <span class="status-badge"
-            [ngClass]="
+          <td>
+            <span class="status-badge"
+              [ngClass]="
                 s.published
                   ? 'published'
                   : (s.editable ? 'draft' : 'created')
-            ">
+              ">
+              {{ s.published ? 'Published' : (s.editable ? 'Draft' : 'Created') }}
+            </span>
+          </td>
 
-            {{ s.published ? 'Published' : (s.editable ? 'Draft' : 'Created') }}
+          <!-- ACTION BUTTONS -->
+          <td class="action-col">
 
-          </span>
-        </td>
-
-        <!-- ACTION BUTTONS -->
-        <td class="action-col">
-
-          <!-- EDIT (Only When editable AND not published) -->
-          <button *ngIf="s.editable && !s.published"
-                  class="btn edit-btn"
-                  (click)="editSurvey(s.id)">
-            Edit
-          </button>
-
-          <!-- PUBLISH + VIEW (editable false & not published) -->
-          <ng-container *ngIf="!s.editable && !s.published">
-            <button class="btn publish-btn" (click)="publishSurvey(s.id)">
-              Publish
+            <!-- EDIT -->
+            <button *ngIf="s.editable && !s.published"
+                    class="btn edit-btn"
+                    (click)="editSurvey(s.id)">
+              Edit
             </button>
 
-            <a class="btn view-btn"
-               [href]="openForm(s.formLink)"
-               target="_blank">
-              View
-            </a>
-          </ng-container>
+            <!-- PUBLISH + VIEW -->
+            <ng-container *ngIf="!s.editable && !s.published">
+              <button class="btn publish-btn"
+                      (click)="publishSurvey(s.id)">
+                Publish
+              </button>
 
-          <!-- VIEW (if published) -->
-          <ng-container *ngIf="s.published">
-            <a class="btn view-btn"
-               [href]="openForm(s.formLink)"
-               target="_blank">
-              View
-            </a>
-          </ng-container>
+              <a class="btn view-btn"
+                [href]="openForm(s.formLink)"
+                target="_blank">
+                View
+              </a>
+            </ng-container>
 
-          <!-- DELETE -->
-          <button class="btn delete-btn"
-                  (click)="deleteSurvey(s.id)">
-            Delete
-          </button>
+            <!-- VIEW Published -->
+            <ng-container *ngIf="s.published">
+              <a class="btn view-btn"
+                [href]="openForm(s.formLink)"
+                target="_blank">
+                View
+              </a>
+            </ng-container>
 
-        </td>
-      </tr>
+            <!-- DELETE -->
+            <button class="btn delete-btn"
+                    (click)="deleteSurvey(s.id)">
+              Delete
+            </button>
 
-    </tbody>
-  </table>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </table>
+
+  </div>
 
   <!-- Pagination Controls -->
   <div class="pagination-controls" *ngIf="totalPages > 1">
-    
+
     <button (click)="prevPage()"
             [disabled]="currentPage === 1"
             class="btn">
@@ -118,6 +118,7 @@
   </div>
 
 </div>
+
 
 <!-- FULL SCREEN LOADER -->
 <div class="loader-overlay" *ngIf="loading">

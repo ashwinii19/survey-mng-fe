@@ -188,3 +188,45 @@
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+
+/* ================= HEADER LAYOUT FIX ================= */
+/* =================== HEADER LAYOUT =================== */
+
+.header {
+  height: 70px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* LOGO | SEARCH | PROFILE */
+  align-items: center;
+  padding: 0 20px;
+  gap: 20px;
+}
+
+/* LEFT: LOGO */
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 38px;
+  width: auto;
+  display: block;
+}
+
+/* CENTER: SEARCH BAR */
+.header-center {
+  display: flex;
+  justify-content: center; /* centers the search bar */
+  align-items: center;
+}
+
+/* RIGHT: PROFILE */
+.header-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}

@@ -156,6 +156,12 @@ input:focus {
     opacity: 0.9;
 }
 
+.login-big-btn {
+    font-size: 18px;   /* increase text size */
+    letter-spacing: 0.5px;
+}
+
+
 .forgot {
   margin-top: 12px;
   text-align: right;

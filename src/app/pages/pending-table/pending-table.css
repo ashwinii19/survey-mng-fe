@@ -1,36 +1,20 @@
-/* .table-card {
-    background: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .04)
-}
+/* ===================================================== */
+/*               ADVANCED TABLE WRAPPER DESIGN           */
+/* ===================================================== */
 
-table {
-    width: 100%
-}
-
-td {
-    padding: 6px;
-    border-bottom: 1px solid #f0f0f0
-} */
-
-/* .tbl { width:100%; border-collapse:collapse; }
-.tbl th { text-align:left; padding:8px; background:#f9fafb; font-weight:600; }
-.tbl td { padding:8px; border-bottom:1px solid #f0f0f0; } */
-
-/* OUTER BOX / CARD */
 .table-wrapper {
-    max-height: 420px;       /* scroll limit */
-    overflow-y: auto;        /* vertical scrolling */
-    overflow-x: hidden;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
-    border: 1px solid #e2e8f0;
+    max-height: 420px;
+    overflow-y: auto;
+    background: #ffffffcc;
+    backdrop-filter: blur(6px); /* glass effect */
+    border-radius: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
     padding: 0;
+    transition: 0.3s ease;
 }
 
-/* BEAUTIFUL SCROLLBAR */
+/* Scrollbar */
 .table-wrapper::-webkit-scrollbar {
     width: 8px;
 }
@@ -44,74 +28,94 @@ td {
     background: #94a3b8;
 }
 
-/* TABLE */
+/* ===================================================== */
+/*                         TABLE                          */
+/* ===================================================== */
+
 .tbl {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 
-/* HEADER */
+/* Header */
 .tbl thead th {
     position: sticky;
     top: 0;
-    z-index: 2;
-    background: #f1f5f9;
+    z-index: 10;
+    background: linear-gradient(135deg, #e3f5f4, #f0fafa);
+    padding: 14px 18px;
     color: #0f172a;
-    padding: 12px 14px;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 14px;
-    border-bottom: 1px solid #e2e8f0;
-    letter-spacing: 0.4px;
+    border-bottom: 1px solid #dbe4ed;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
-/* ROWS */
+/* Rows */
 .tbl tbody tr {
-    transition: background 0.15s ease;
+    transition: 0.25s ease;
 }
 
 .tbl tbody tr:hover {
-    background: #f8fafc;
+    background: #f8fdff;
+    transform: translateX(4px);   /* subtle motion */
 }
 
-/* CELLS */
+/* Cells */
 .tbl td {
-    padding: 12px 14px;
-    font-size: 14px;
+    padding: 14px 18px;
+    font-size: 15px;
     color: #334155;
     border-bottom: 1px solid #eef2f6;
 }
 
-/* LAST ROW BORDER REMOVED */
+/* Highlight Sr No column */
+.tbl td:first-child {
+    color: #009B8C;
+    font-weight: 600;
+}
+
+/* Remove bottom border last row */
 .tbl tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* BUTTONS */
-.tbl .action-btn {
-    padding: 6px 12px;
-    font-size: 13px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s ease;
+/* No Data */
+.no-data {
+    text-align: center !important;
+    padding: 22px !important;
+    font-size: 15px;
+    font-weight: 600;
+    color: #64748b;
+    background: #f1f5f9;
+    border-radius: 0 0 16px 16px;
+    font-style: italic;
 }
 
-.tbl .action-btn.edit {
-    background: #3b82f6;
-    color: white;
+/* ===================================================== */
+/*             EXTRA ATTRACTIVE SHADOW + BORDER           */
+/* ===================================================== */
+
+.table-wrapper:hover {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    border-color: #009B8C55;
 }
 
-.tbl .action-btn.edit:hover {
-    background: #2563eb;
-}
+/* ===================================================== */
+/*                    RESPONSIVE DESIGN                   */
+/* ===================================================== */
 
-.tbl .action-btn.delete {
-    background: #ef4444;
-    color: white;
-}
+@media (max-width: 600px) {
+    .tbl td,
+    .tbl th {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
 
-.tbl .action-btn.delete:hover {
-    background: #dc2626;
+    .table-wrapper {
+        max-height: 320px;
+    }
 }

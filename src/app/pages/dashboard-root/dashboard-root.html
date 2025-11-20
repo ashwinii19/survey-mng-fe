@@ -154,95 +154,94 @@
 
   </div>
 </div> -->
-
 <div class="layout">
   <div class="content">
 
-    <div class="page-header mb-3">
-      <h1 class="h3 fw-bold text-dark mb-1">Dashboard</h1>
-      <p class="text-muted small mb-0">Overview of survey analytics and performance</p>
-    </div>
-
-    <app-filters-panel
-      [surveys]="surveys"
-      [departments]="departments"
-      [(selectedSurveyId)]="selectedSurveyId"
-      [(selectedDepartmentId)]="selectedDepartmentId"
-      (filterChanged)="onFilterChange()">
-    </app-filters-panel>
-
-    <div *ngIf="showAssignmentAlert" class="alert alert-warning mt-2">
-      <strong>No Data:</strong> This survey is not assigned to the selected department.
-    </div>
-
-    <div *ngIf="!showResults" class="alert alert-info mt-3">
-      Please apply filters to load dashboard analytics.
-    </div>
-
-    <div class="kpi-row" *ngIf="showResults && !showAssignmentAlert">
-      <div class="kpi-card">
-        <div class="kpi-title">Total Employees</div>
-        <div class="kpi-value">{{ totalEmployees }}</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-title">Submitted</div>
-        <div class="kpi-value">{{ submittedCount }}</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-title">Pending</div>
-        <div class="kpi-value">{{ remainingCount }}</div>
+    <!-- ⭐ FULL SCREEN LOADER OVERLAY ⭐ -->
+    <div class="export-loader" *ngIf="isExporting">
+      <div class="loader-box">
+        <div class="spinner"></div>
+        <p>{{ exportMessage }}</p>
       </div>
     </div>
 
-    <div *ngIf="showResults && !showAssignmentAlert" class="charts-row mt-3">
-      <app-department-charts
-        [departmentStats]="dashboard?.departmentStats || []">
-      </app-department-charts>
-    </div>
+    <!-- EXPORT SECTION -->
+    <div id="dashboard-section">
 
-    <div *ngIf="showResults && !showAssignmentAlert" class="row mt-4">
+      <!-- Hidden Logo for Export Only -->
+      <img id="export-logo"
+     src="assets/images/aurionpro-logo.jpg"
+     alt="AurionPro Logo"
+     class="export-logo" />
 
-      <div class="col-md-6">
-        <h6>Submitted Employees</h6>
-        <app-submitted-table
-          [submitted]="dashboard?.submittedEmployees || []">
-        </app-submitted-table>
+
+      <div class="page-header mb-3">
+        <h1 class="h3 fw-bold text-dark mb-1">Dashboard</h1>
+        <p class="text-muted small mb-0">Overview of survey analytics and performance</p>
       </div>
 
-      <div class="col-md-6">
-        <h6>Pending Employees</h6>
-        <app-pending-table
-          [pending]="dashboard?.pendingEmployees || []">
-        </app-pending-table>
+      <app-filters-panel
+        [surveys]="surveys"
+        [departments]="departments"
+        [(selectedSurveyId)]="selectedSurveyId"
+        [(selectedDepartmentId)]="selectedDepartmentId"
+        (filterChanged)="onFilterChange()">
+      </app-filters-panel>
+
+      <div *ngIf="showAssignmentAlert" class="alert alert-warning mt-2">
+        <strong>No Data:</strong> This survey is not assigned to the selected department.
+      </div>
+
+      <div *ngIf="!showResults" class="alert alert-info mt-3">
+        Please apply filters to load dashboard analytics.
+      </div>
+
+      <!-- KPI -->
+      <div id="ppt-kpi-section" class="kpi-row" *ngIf="showResults && !showAssignmentAlert">
+        <div class="kpi-card">
+          <div class="kpi-title">Total Employees</div>
+          <div class="kpi-value">{{ totalEmployees }}</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Submitted</div>
+          <div class="kpi-value">{{ submittedCount }}</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Pending</div>
+          <div class="kpi-value">{{ remainingCount }}</div>
+        </div>
+      </div>
+
+      <!-- CHART -->
+      <div id="ppt-chart-section" *ngIf="showResults && !showAssignmentAlert" class="charts-row mt-3">
+        <app-department-charts [departmentStats]="dashboard?.departmentStats || []"></app-department-charts>
+      </div>
+
+      <!-- SUBMITTED + PENDING TABLES -->
+      <div *ngIf="showResults && !showAssignmentAlert" class="row mt-4">
+
+        <div class="col-md-6">
+          <h6>Submitted Employees</h6>
+          <div id="ppt-submitted" class="employee-list-wrapper">
+            <app-submitted-table [submitted]="submittedEmployeesRaw"></app-submitted-table>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <h6>Pending Employees</h6>
+          <div id="ppt-pending" class="employee-list-wrapper">
+            <app-pending-table [pending]="pendingEmployeesRaw"></app-pending-table>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPORT BUTTONS -->
+      <div class="export-buttons mt-4">
+        <button class="btn btn-success me-2" (click)="exportExcel()">Export Excel</button>
+        <button class="btn btn-danger me-2" (click)="exportPDF()">Export PDF</button>
+        <button class="btn btn-primary" (click)="exportPPT()">Export PPT</button>
       </div>
 
     </div>
-
-    <div class="export-row mt-3">
-      <button class="btn btn-danger me-2"
-              (click)="exportPDF()"
-              [disabled]="!showResults || isExporting">
-        {{ isExporting ? 'Exporting…' : 'Export PDF' }}
-      </button>
-
-      <button class="btn btn-warning me-2"
-              (click)="exportPPT()"
-              [disabled]="!showResults || isExporting">
-        Export PPT
-      </button>
-
-      <button class="btn btn-info"
-              (click)="exportCSV()"
-              [disabled]="!showResults">
-        Export CSV
-      </button>
-
-      <div class="export-msg ms-3" *ngIf="exportMessage">{{ exportMessage }}</div>
-    </div>
-
   </div>
 </div>
-
-

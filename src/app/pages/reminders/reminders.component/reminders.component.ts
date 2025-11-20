@@ -278,6 +278,8 @@
 //   }
 
 // }
+
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -311,9 +313,6 @@ export class RemindersComponent implements OnInit {
   loading: boolean = false;
   sendingNow: boolean = false;
 
-  popupMessage: string = '';
-  showPopup: boolean = false;
-
   constructor(
     private reminderService: ReminderService,
     private surveyService: SurveyService,
@@ -324,14 +323,6 @@ export class RemindersComponent implements OnInit {
     this.loadSurveys();
     this.loadDepartments();
     this.loadReminders();
-  }
-
-  showPopupMsg(msg: string) {
-    this.popupMessage = msg;
-    this.showPopup = true;
-    setTimeout(() => {
-      this.showPopup = false;
-    }, 2500);
   }
 
   loadSurveys() {
@@ -365,7 +356,7 @@ export class RemindersComponent implements OnInit {
     this.nextScheduledDate = s.toISOString().slice(0, 16);
   }
 
-  // Restriction: cannot send to other dept
+  // Validate department-based restrictions
   validateDepartmentRestriction(): boolean {
     const selectedSurvey = this.surveys.find(s => s.title === this.form.surveyName);
     if (!selectedSurvey) return true;
@@ -374,10 +365,8 @@ export class RemindersComponent implements OnInit {
       const assignedDept = selectedSurvey.targetDepartment.name;
 
       if (this.form.departmentName !== assignedDept) {
-        this.showPopupMsg(
-          `This survey belongs to department: ${assignedDept}. 
-           You cannot send a reminder to another department.`
-        );
+        alert(`This survey belongs to department: ${assignedDept}.
+You cannot send a reminder to another department.`);
         return false;
       }
     }
@@ -385,7 +374,7 @@ export class RemindersComponent implements OnInit {
     return true;
   }
 
-  // SCHEDULE REMINDER
+  // Schedule Reminder
   scheduleReminder() {
     if (!this.validateDepartmentRestriction()) return;
 
@@ -394,13 +383,13 @@ export class RemindersComponent implements OnInit {
     this.reminderService.createReminder(this.form).subscribe({
       next: () => {
         this.loading = false;
-        this.showPopupMsg("Reminder Scheduled Successfully");
+        alert("Reminder Scheduled Successfully!");
         this.resetForm();
         this.loadReminders();
       },
       error: () => {
         this.loading = false;
-        this.showPopupMsg("Failed to schedule reminder");
+        alert("Failed to schedule reminder.");
       }
     });
   }
@@ -416,51 +405,33 @@ export class RemindersComponent implements OnInit {
     this.nextScheduledDate = '';
   }
 
-  // SEND IMMEDIATELY
+  // Send Immediately
   sendNow(id: number) {
     this.sendingNow = true;
 
     this.reminderService.sendReminderNow(id).subscribe({
       next: () => {
         this.sendingNow = false;
-        this.showPopupMsg("Reminder sent successfully");
+        alert("Reminder sent successfully!");
         this.loadReminders();
       },
       error: () => {
         this.sendingNow = false;
-        this.showPopupMsg("Sending failed");
+        alert("Failed to send reminder.");
       }
     });
   }
 
-  // RUN SCHEDULER NOW
-  // runScheduler() {
-  //   this.loading = true;
-
-  //   this.reminderService.runSchedulerNow().subscribe({
-  //     next: () => {
-  //       this.loading = false;
-  //       this.showPopupMsg("Scheduler executed");
-  //       this.loadReminders();
-  //     },
-  //     error: () => {
-  //       this.loading = false;
-  //       this.showPopupMsg("Scheduler failed");
-  //     }
-  //   });
-  // }
-
-  
-
+  // Delete Reminder
   deleteReminder(id: number) {
+    if (!confirm("Are you sure you want to delete this reminder?")) return;
+
     this.reminderService.deleteReminder(id).subscribe({
       next: () => {
-        this.showPopupMsg("Reminder deleted");
+        alert("Reminder deleted!");
         this.loadReminders();
       },
-      error: () => {
-        this.showPopupMsg("Delete failed");
-      }
+      error: () => alert("Delete failed.")
     });
   }
 

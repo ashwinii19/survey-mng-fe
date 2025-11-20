@@ -3,6 +3,7 @@ import { Auth } from '../../services/auth/auth';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -17,12 +18,14 @@ export class ProfileComponent implements OnInit {
   email = '';
   department = '';
   role = '';
+  confirmPassword = '';
   profileImage: string | null = null;
 
   oldPassword = '';
   newPassword = '';
 
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth, private router: Router) {}
+
 
   ngOnInit() {
     this.loadProfile();
@@ -51,7 +54,34 @@ export class ProfileComponent implements OnInit {
   //   }).subscribe(() => alert("Password Changed!"));
   // }
 
-  changePass() {
+//   changePass() {
+//   this.auth.changePassword({
+//     oldPassword: this.oldPassword,
+//     newPassword: this.newPassword
+//   }).subscribe({
+//     next: () => {
+//       alert("Password Changed!");
+
+//       this.oldPassword = '';
+//       this.newPassword = '';
+//     },
+//     error: (err) => {
+//       alert(err.error?.error || "Failed to change password");
+//     }
+//   });
+// }
+
+changePass() {
+  if (!this.oldPassword || !this.newPassword || !this.confirmPassword) {
+    alert("All password fields are required!");
+    return;
+  }
+
+  if (this.newPassword !== this.confirmPassword) {
+    alert("New Password and Rewrite Password do not match!");
+    return;
+  }
+
   this.auth.changePassword({
     oldPassword: this.oldPassword,
     newPassword: this.newPassword
@@ -61,12 +91,14 @@ export class ProfileComponent implements OnInit {
 
       this.oldPassword = '';
       this.newPassword = '';
+      this.confirmPassword = '';
     },
     error: (err) => {
       alert(err.error?.error || "Failed to change password");
     }
   });
 }
+
 
   getPhotoUrl() {
     if (!this.profileImage) {
@@ -82,4 +114,10 @@ export class ProfileComponent implements OnInit {
     this.profileImage = res.image; 
     });
   }
+
+  goToForgot() {
+  this.router.navigate(['/forgot-password']);
 }
+
+}
+

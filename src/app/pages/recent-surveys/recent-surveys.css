@@ -1,5 +1,5 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
-    
+
 /* Reset & base */
 body {
   margin: 0;
@@ -80,7 +80,6 @@ h2 {
   color: #0f172a;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  user-select: none;
   border: none;
 }
 
@@ -90,7 +89,6 @@ h2 {
   border-radius: 14px;
   box-shadow: 0 4px 14px rgb(0 0 0 / 0.05);
   transition: background-color 0.3s ease;
-  cursor: default;
 }
 
 .survey-table tbody tr:hover {
@@ -103,15 +101,12 @@ h2 {
   padding: 16px 22px;
   font-size: 16px;
   color: #334155;
-  vertical-align: middle;
   border: none;
 }
 
-/* Title emphasis */
 .survey-table td:first-child {
   font-weight: 600;
   color: #006059;
-  letter-spacing: 0.4px;
 }
 
 /* Status badges */
@@ -121,12 +116,9 @@ h2 {
   border-radius: 24px;
   font-weight: 700;
   font-size: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  user-select: none;
-  transition: 0.3s ease;
   min-width: 110px;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .status-badge.published {
@@ -149,14 +141,16 @@ h2 {
   display: flex;
   gap: 8px;
   flex-wrap: nowrap;
-  justify-content: flex-start;
   align-items: center;
-  overflow-x: auto;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-/* Buttons */
+/* ================================
+   UNIFORM BUTTON SYSTEM
+   No Color Change on Hover
+   Only LIFT animation
+   ================================ */
 .btn {
   padding: 10px 20px;
   border: none;
@@ -164,102 +158,56 @@ h2 {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  letter-spacing: 0.4px;
-  user-select: none;
-  min-width: 100px;
-  text-align: center;
-  box-shadow: 0 4px 14px rgba(0, 155, 140, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   color: white;
-  border: 1.5px solid transparent;
-  background: linear-gradient(135deg, #009B8C, #007f74);
+  user-select: none;
+  min-width: 110px;
+  text-align: center;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
 }
 
-/* Hover */
-.btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #007f74, #006059);
-  box-shadow: 0 6px 18px rgba(0, 155, 140, 0.6);
-  transform: translateY(-2px);
-  color: #f0f0ff;
+/* Hover animation only */
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
 }
 
-/* Disabled */
-.btn:disabled {
-  background: #cbd5e1;
-  cursor: not-allowed;
-  color: #64748b;
-  box-shadow: none;
-  transform: none;
+/* Active press */
+.btn:active {
+  transform: scale(0.96);
 }
 
-/* Specific buttons */
-.edit-btn {
-  background: linear-gradient(135deg, #fde68a, #fcd34d);
-  color: #78350f;
-  box-shadow: 0 3px 8px rgba(244, 208, 63, 0.6);
-}
+/* ----------- Button Colors ----------- */
 
-.edit-btn:hover {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #fff;
-}
-
-.publish-btn {
-  background: linear-gradient(135deg, #66d9ef, #009B8C);
-}
-
+/* View */
 .view-btn {
   background: linear-gradient(135deg, #86efac, #22c55e);
+  color: #064d2d;
 }
+.view-btn:hover { background: linear-gradient(135deg, #86efac, #22c55e); }
 
+/* Delete */
 .delete-btn {
   background: linear-gradient(135deg, #fca5a5, #f87171);
   color: #7f1d1d;
 }
+.delete-btn:hover { background: linear-gradient(135deg, #fca5a5, #f87171); }
 
-.delete-btn:hover {
-  color: #fff;
+/* Publish */
+.publish-btn {
+  background: linear-gradient(135deg, #66d9ef, #009B8C);
+  color: #003f3a;
 }
+.publish-btn:hover { background: linear-gradient(135deg, #66d9ef, #009B8C); }
 
-/* Responsive */
-@media (max-width: 900px) {
-  .recent-wrapper {
-    padding: 24px 10px;
-  }
-  h2 { font-size: 28px; }
-  .survey-table th, .survey-table td {
-    padding: 12px 10px;
-    font-size: 14px;
-  }
-  .survey-table-container { overflow-x: auto; }
-  .survey-table { min-width: 700px; }
-  .btn {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-  .action-col .btn {
-    font-size: 12px;
-    padding: 8px 10px;
-  }
-  .status-badge {
-    font-size: 12px;
-    padding: 6px 10px;
-    min-width: 70px;
-  }
+/* Edit */
+.edit-btn {
+  background: linear-gradient(135deg, #fde68a, #fcd34d);
+  color: #78350f;
 }
-
-/* Pagination */
-.pagination-controls {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
+.edit-btn:hover { background: linear-gradient(135deg, #fde68a, #fcd34d); }
 
 /* Loader */
 .loader-overlay {
@@ -273,14 +221,12 @@ h2 {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  backdrop-filter: blur(4px);
 }
 
 .loader-box {
   background: #fff;
   padding: 28px 48px;
   border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   text-align: center;
 }
 
@@ -293,19 +239,13 @@ h2 {
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ✅ FIX: MAKE ACTION BUTTONS SAME SIZE */
+/* Action buttons equal size */
 .action-col .btn {
   flex: 1;
   min-width: 110px;
   max-width: 110px;
   height: 40px;
-  white-space: nowrap;
-  padding: 0 12px !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0 !important;
 }

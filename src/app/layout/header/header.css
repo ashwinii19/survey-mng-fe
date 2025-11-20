@@ -1,117 +1,190 @@
-/* .app-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    background: #fff;
-    border-bottom: 1px solid #eee
-}
-
-.app-header .title {
-    font-weight: 700;
-    color: #004aad
-}
-
-.app-header button {
-    background: #e74c3c;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer
-} */
+/* ===================================================== */
+/*                     HEADER CONTAINER                   */
+/* ===================================================== */
 
 .header {
   width: 100%;
+  height: 70px;
+
   background: #ffffff;
-  padding: 14px 28px;
+  padding: 0 28px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   border-bottom: 1px solid #e5e7eb;
-  font-family: "Poppins", sans-serif;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+
+  font-family: "Inter", sans-serif;
 }
 
-/* Search box */
+
+
+/* ===================================================== */
+/*                      SEARCH BOX                        */
+/* ===================================================== */
+
 .search-box {
   display: flex;
   align-items: center;
-  background: #f3f4f6;
+
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+
   padding: 10px 16px;
-  border-radius: 10px;
   width: 360px;
+  border-radius: 10px;
+
+  transition: 0.2s ease;
+}
+
+.search-box:hover {
+  border-color: #009B8C;
+  box-shadow: 0 0 0 3px rgba(0,155,140,0.15);
 }
 
 .search-box input {
   width: 100%;
+  margin-left: 10px;
   border: none;
   background: transparent;
-  margin-left: 10px;
-  font-size: 15px;
   outline: none;
+  font-size: 15px;
+  color: #1e293b;
 }
 
-/* Profile */
+.search-icon {
+  font-size: 16px;
+  color: #64748b;
+}
+
+
+
+/* ===================================================== */
+/*                  PROFILE SECTION                       */
+/* ===================================================== */
+/* Profile Section — same hover style as search box */
 .profile-section {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   cursor: pointer;
-  position: relative;
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent; /* needed for hover */
+  transition: 0.2s ease-in-out;
 }
 
-/* Avatar image */
+/* EXACT SAME HOVER EFFECT AS SEARCH BOX */
+.profile-section:hover {
+  border-color: #009B8C;
+  box-shadow: 0 0 0 3px rgba(0, 155, 140, 0.15);
+  background: #ffffff;
+}
+
+.profile-section:hover .arrow {
+  color: #009B8C;
+}
+
+
+
+
+/* AVATAR */
 .avatar {
   width: 42px;
   height: 42px;
   border-radius: 50%;
   object-fit: cover;
+
   border: 2px solid #e5e7eb;
 }
 
-/* Profile text */
+
+
+/* TEXT */
 .info .name {
   font-weight: 600;
   font-size: 15px;
+  color: #1e293b;
 }
 
 .info .role {
   font-size: 13px;
-  color: #6b7280;
+  color: #64748b;
 }
 
+
+
+/* ARROW */
 .arrow {
   font-size: 12px;
-  opacity: 0.6;
+  color: #64748b;
+  transition: transform 0.3s ease;
 }
 
-/* Dropdown */
+.profile-section:hover .arrow {
+  color: #009B8C;
+}
+
+.profile-section.dropdown-open .arrow {
+  transform: rotate(180deg);
+}
+
+
+
+/* ===================================================== */
+/*                    DROPDOWN MENU                      */
+/* ===================================================== */
+
 .dropdown {
   position: absolute;
-  top: 58px;
+  top: 60px;
   right: 0;
-  width: 160px;
-  background: #fff;
+
+  width: 180px;
+  background: #ffffff;
+
   border-radius: 12px;
-  box-shadow: 0 2px 14px rgba(0,0,0,0.15);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+
   padding: 10px 0;
-  z-index: 10;
+  z-index: 20;
+
+  animation: fadeIn 0.12s ease-in-out;
 }
 
 .dropdown .item {
   padding: 12px 18px;
   font-size: 15px;
   color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .dropdown .item:hover {
-  background: #f3f4f6;
+  background: rgba(0,155,140,0.10);
+  color: #009B8C;
 }
 
+
+
+/* Logout item */
 .logout {
-  color: #e11d48;
+  color: #dc2626;
 }
 
 .logout:hover {
-  background: #ffe4e6;
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+}
+
+
+
+/* Fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }

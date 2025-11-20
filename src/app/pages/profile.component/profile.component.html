@@ -22,7 +22,7 @@
     <button (click)="saveProfile()">Update Profile</button>
   </div>
 
-  <div class="password-section">
+  <!-- <div class="password-section">
     <h3>Change Password</h3>
 
     <label>Old Password</label>
@@ -32,6 +32,23 @@
     <input type="password" [(ngModel)]="newPassword" />
 
     <button (click)="changePass()">Change Password</button>
-  </div>
+  </div> -->
+
+  <div class="password-section">
+  <h3>Change Password</h3>
+
+  <label>Old Password</label>
+  <input type="password" [(ngModel)]="oldPassword" />
+
+  <label>New Password</label>
+  <input type="password" [(ngModel)]="newPassword" />
+
+  <label>Confirm Password</label>
+  <input type="password" [(ngModel)]="confirmPassword" />
+
+  <button (click)="changePass()">Change Password</button>
+
+  <button class="forgot-link" (click)="goToForgot()">Forgot Password</button>
+</div>
 
 </div>

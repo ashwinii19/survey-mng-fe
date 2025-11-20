@@ -11,7 +11,7 @@
 
 
 /* ===================================================== */
-/*     FIX: REMOVE app-sidebar FROM PAGE FLOW             */
+/*     FIX: REMOVE app-sidebar FROM PAGE FLOW            */
 /* ===================================================== */
 app-sidebar {
   position: fixed !important;
@@ -41,9 +41,19 @@ app-sidebar.collapsed {
 
 /* Expanded */
 .layout-content {
+  position: relative;
+  height: 100vh;
+
   margin-left: 260px;
   width: calc(100% - 260px);
-  transition: all 0.3s ease;
+
+  display: flex;            /* FIX */
+  flex-direction: column;   /* FIX */
+
+  overflow: visible;        /* FIX: allow scroll */
+
+  background: #f5f6fa;
+  transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
 /* Collapsed */
@@ -67,8 +77,9 @@ app-header {
 /*                    PAGE WRAPPER                        */
 /* ===================================================== */
 .page-wrapper {
-  flex-grow: 1;
-  overflow-y: auto;
+  flex-grow: 1;         /* take remaining height */
+  height: 100%;         /* FIX */
+  overflow-y: auto;     /* enable scrolling */
   padding: 20px;
   background: #f7f9fc;
 }

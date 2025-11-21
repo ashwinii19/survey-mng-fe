@@ -1,36 +1,43 @@
 <header class="header">
 
-  <!-- Search Box -->
-  <div class="search-box">
-    <i class="fa fa-search search-icon"></i>
-    <input type="text" placeholder="Search surveys, departments..." />
+  <!-- LEFT = LOGO -->
+  <div class="header-left">
+    <img src="assets/images/aurionpro-logo.jpg"
+         alt="AurionPro Logo"
+         class="logo-img" />
   </div>
 
-  <!-- Profile Section -->
-  <div class="profile-section" (click)="toggleDropdown()">
-
-    <!-- Dynamic Avatar -->
-    <img 
-      class="avatar"
-      [src]="admin?.profileImage"
-      alt="User Profile"
-    />
-
-    <div class="info">
-      <div class="name">{{ admin?.name || 'Admin' }}</div>
-      <div class="role">Admin</div>
+  <!-- CENTER = SEARCH -->
+  <div class="header-center">
+    <div class="search-box">
+      <i class="fa fa-search search-icon"></i>
+      <input type="text" placeholder="Search surveys, departments..." />
     </div>
+  </div>
 
-    <i class="fa fa-chevron-down arrow"></i>
+  <!-- RIGHT = PROFILE -->
+  <div class="header-right">
 
-    <!-- Dropdown Menu -->
-    <div class="dropdown" *ngIf="dropdownOpen">
-      <div class="item" (click)="goToProfile()">
-        <i class="fa fa-user"></i> Profile
+    <div class="profile-section" (click)="toggleDropdown()">
+
+      <img class="avatar" [src]="admin?.profileImage" alt="User Profile"/>
+
+      <div class="info">
+        <div class="name">{{ admin?.name || 'Admin' }}</div>
+        <div class="role">Admin</div>
       </div>
-      <div class="item logout" (click)="logout()">
-        <i class="fa fa-sign-out"></i> Logout
+
+      <i class="fa fa-chevron-down arrow"></i>
+
+      <div class="dropdown" *ngIf="dropdownOpen">
+        <div class="item" (click)="goToProfile()">
+          <i class="fa fa-user"></i> Profile
+        </div>
+        <div class="item logout" (click)="logout()">
+          <i class="fa fa-sign-out"></i> Logout
+        </div>
       </div>
+
     </div>
 
   </div>

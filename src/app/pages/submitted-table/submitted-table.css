@@ -1,44 +1,121 @@
-/* .table-card {
-    background: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .04)
-}
+/* ===================================================== */
+/*               ADVANCED TABLE WRAPPER DESIGN           */
+/* ===================================================== */
 
-table {
-    width: 100%
-}
-
-td {
-    padding: 6px;
-    border-bottom: 1px solid #f0f0f0
-} */
-
-/* .tbl{width:100%;border-collapse:collapse}
-.tbl td{padding:8px;border-bottom:1px solid #f0f0f0}
-.tbl thead th{background:#f8fafc;padding:8px;text-align:left} */
 .table-wrapper {
-    max-height: 350px;
+    max-height: 420px;
     overflow-y: auto;
-    overflow-x: hidden;
-    background: #fff;
-    border-radius: 12px;
+    background: #ffffffcc;
+    backdrop-filter: blur(6px); /* glass effect */
+    border-radius: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
     padding: 0;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+    transition: 0.3s ease;
 }
 
-/* optional smooth scroll */
+/* Scrollbar */
 .table-wrapper::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
+
 .table-wrapper::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 10px;
 }
 
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ===================================================== */
+/*                         TABLE                          */
+/* ===================================================== */
+
+.tbl {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Header */
+.tbl thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, #e3f5f4, #f0fafa);
+    padding: 14px 18px;
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 14px;
+    border-bottom: 1px solid #dbe4ed;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Rows */
+.tbl tbody tr {
+    transition: 0.25s ease;
+}
+
+.tbl tbody tr:hover {
+    background: #f8fdff;
+    transform: translateX(4px);   /* subtle motion */
+}
+
+/* Cells */
+.tbl td {
+    padding: 14px 18px;
+    font-size: 15px;
+    color: #334155;
+    border-bottom: 1px solid #eef2f6;
+}
+
+/* Highlight Sr No column */
+.tbl td:first-child {
+    color: #009B8C;
+    font-weight: 600;
+}
+
+/* Remove bottom border last row */
+.tbl tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* No Data */
 .no-data {
-    text-align: center;
-    padding: 20px 0;
+    text-align: center !important;
+    padding: 22px !important;
+    font-size: 15px;
+    font-weight: 600;
     color: #64748b;
-    font-weight: 500;
+    background: #f1f5f9;
+    border-radius: 0 0 16px 16px;
+    font-style: italic;
+}
+
+/* ===================================================== */
+/*             EXTRA ATTRACTIVE SHADOW + BORDER           */
+/* ===================================================== */
+
+.table-wrapper:hover {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    border-color: #009B8C55;
+}
+
+/* ===================================================== */
+/*                    RESPONSIVE DESIGN                   */
+/* ===================================================== */
+
+@media (max-width: 600px) {
+    .tbl td,
+    .tbl th {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    .table-wrapper {
+        max-height: 320px;
+    }
 }

@@ -9,7 +9,7 @@ import { Toast } from './shared/toast/toast';
   standalone: true,
   imports: [
     RouterOutlet,
-    Toast     // <<< ADD THIS
+    Toast     
   ],
   templateUrl: './app.component.html'
 })
@@ -17,7 +17,8 @@ export class AppComponent implements OnInit {
 
   // private readonly INACTIVITY_LIMIT = 30 * 60 * 1000; // 30 mins
   // private readonly INACTIVITY_LIMIT = 2 * 60 * 1000; // 2 minutes
-  private readonly INACTIVITY_LIMIT = 6 * 60 * 60 * 1000;
+  private readonly INACTIVITY_LIMIT = 6 * 60 * 60 * 1000; // 6 hours in ms
+
 
 
   constructor(private auth: Auth) {}

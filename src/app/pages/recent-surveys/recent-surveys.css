@@ -1,162 +1,136 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
-    
-/* Reset & base */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", "Segoe UI", sans-serif;
-  background: linear-gradient(135deg, #f9fafb, #e0fafa);
-  color: #1e293b;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
-/* Wrapper */
+/* ===================================================== */
+/*                  PAGE WRAPPER (Like Reminder)         */
+/* ===================================================== */
+
 .recent-wrapper {
-  width: 100%;
+  padding: 24px 40px;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  color: #0f172a;
+  background: #ffffff;
   min-height: 100vh;
   box-sizing: border-box;
-  padding: 40px 40px;
-  max-width: 1400px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.1);
+
+  /* NEW → Prevent any child overflow breaking container */
+  overflow-x: hidden;
 }
 
-/* Heading */
-h2 {
-  font-size: 38px;
+/* WRAP TABLE inside RESPONSIVE CONTAINER */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;              /* Makes table scroll instead of breaking */
+  overflow-y: visible;
+  padding-bottom: 10px;
+}
+
+/* ===================================================== */
+/*                       HEADING                          */
+/* ===================================================== */
+
+.recent-wrapper h2 {
+  font-size: 32px;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 26px;
   background: linear-gradient(135deg, #009B8C, #007f74);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 1px;
-  text-shadow: 0 2px 4px rgba(0, 155, 140, 0.15);
 }
 
-/* Empty State */
+/* ===================================================== */
+/*                       EMPTY STATE                      */
+/* ===================================================== */
+
 .empty {
   text-align: center;
   color: #475569;
-  font-size: 20px;
-  letter-spacing: 0.4px;
-  margin-top: 70px;
+  font-size: 18px;
   background: #f1f5f9;
-  padding: 28px 36px;
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(148, 163, 184, 0.25);
+  padding: 20px 28px;
+  border-radius: 12px;
+  margin: 40px auto;
   width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  box-shadow: 0 4px 12px rgba(148, 163, 184, 0.25);
 }
 
-/* Survey Table */
+/* ===================================================== */
+/*                     TABLE STYLING                      */
+/* ===================================================== */
+
 .survey-table {
   width: 100%;
+  min-width: 900px;        /* NEW → prevent breaking when screen is smaller */
   border-collapse: separate;
-  border-spacing: 0 10px;
-  background: transparent;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: none;
+  border-spacing: 0 12px;
 }
 
-/* Table Headers */
+.survey-table th,
+.survey-table td {
+  white-space: nowrap;     /* NEW → keeps clean table shape */
+}
+
 .survey-table thead tr {
   background: linear-gradient(135deg, #e3f5f4, #f0fafa);
   box-shadow: 0 2px 6px rgba(107, 114, 128, 0.12);
-  border-radius: 12px;
 }
 
 .survey-table th {
-  text-align: left;
-  padding: 18px 22px;
-  font-size: 16.5px;
+  padding: 14px 20px;
+  font-size: 15px;
   font-weight: 700;
   color: #0f172a;
-  letter-spacing: 0.5px;
   text-transform: uppercase;
-  user-select: none;
-  border: none;
 }
 
-/* Table Row Styling */
+/* Row Card */
 .survey-table tbody tr {
   background: #fff;
   border-radius: 14px;
   box-shadow: 0 4px 14px rgb(0 0 0 / 0.05);
-  transition: background-color 0.3s ease;
-  cursor: default;
+  transition: 0.2s;
 }
 
 .survey-table tbody tr:hover {
   background: #f9faff;
-  box-shadow: 0 6px 20px rgb(0 155, 140 / 0.15);
+  box-shadow: 0 6px 20px rgba(0 155 140 / 0.15);
 }
 
-/* Table Cells */
 .survey-table td {
-  padding: 16px 22px;
-  font-size: 16px;
+  padding: 14px 20px;
+  font-size: 15px;
   color: #334155;
-  vertical-align: middle;
-  border: none;
 }
 
-/* Title emphasis */
 .survey-table td:first-child {
-  font-weight: 600;
   color: #006059;
-  letter-spacing: 0.4px;
+  font-weight: 600;
 }
 
-/* Status badges */
+/* ===================================================== */
+/*                     STATUS BADGES                      */
+/* ===================================================== */
+
 .status-badge {
-  display: inline-block;
   padding: 8px 20px;
   border-radius: 24px;
+  font-size: 14px;
   font-weight: 700;
-  font-size: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  user-select: none;
-  transition: 0.3s ease;
+  display: inline-block;
   min-width: 110px;
   text-align: center;
 }
 
-.status-badge.published {
-  background: #dcfce7;
-  color: #166534;
-}
+.status-badge.published { background: #dcfce7; color: #166534; }
+.status-badge.draft     { background: #fef9c3; color: #92400e; }
+.status-badge.created   { background: #c3f5f4; color: #006059; }
 
-.status-badge.draft {
-  background: #fef9c3;
-  color: #92400e;
-}
+/* ===================================================== */
+/*                     ACTION BUTTONS                     */
+/* ===================================================== */
 
-.status-badge.created {
-  background: #c3f5f4;
-  color: #006059;
-}
-
-/* Action column */
-.action-col {
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  overflow-x: auto;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-/* Buttons */
 .btn {
   padding: 10px 20px;
   border: none;
@@ -164,148 +138,133 @@ h2 {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  letter-spacing: 0.4px;
   user-select: none;
-  min-width: 100px;
+  min-width: 110px;
   text-align: center;
-  box-shadow: 0 4px 14px rgba(0, 155, 140, 0.4);
-  color: white;
-  border: 1.5px solid transparent;
-  background: linear-gradient(135deg, #009B8C, #007f74);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
+  transition: 0.3s ease;
+  transform: translateY(0);
 }
 
-/* Hover */
-.btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #007f74, #006059);
-  box-shadow: 0 6px 18px rgba(0, 155, 140, 0.6);
-  transform: translateY(-2px);
-  color: #f0f0ff;
+/* Hover animation like reminder */
+.btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  filter: brightness(1.05);
 }
 
-/* Disabled */
-.btn:disabled {
-  background: #cbd5e1;
-  cursor: not-allowed;
-  color: #64748b;
-  box-shadow: none;
-  transform: none;
+.btn:active {
+  transform: scale(0.96);
 }
 
-/* Specific buttons */
-.edit-btn {
-  background: linear-gradient(135deg, #fde68a, #fcd34d);
-  color: #78350f;
-  box-shadow: 0 3px 8px rgba(244, 208, 63, 0.6);
+/* View Button */
+.view-btn {
+  background: linear-gradient(135deg, #86efac, #22c55e);
+  color: #094221;
 }
 
-.edit-btn:hover {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+.view-btn:hover {
+  background: linear-gradient(135deg, #4ade80, #16a34a);
   color: #fff;
 }
 
-.publish-btn {
-  background: linear-gradient(135deg, #66d9ef, #009B8C);
-}
-
-.view-btn {
-  background: linear-gradient(135deg, #86efac, #22c55e);
-}
-
+/* Delete */
 .delete-btn {
   background: linear-gradient(135deg, #fca5a5, #f87171);
   color: #7f1d1d;
 }
 
 .delete-btn:hover {
+  background: linear-gradient(135deg, #f87171, #ef4444);
   color: #fff;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-  .recent-wrapper {
-    padding: 24px 10px;
-  }
-  h2 { font-size: 28px; }
-  .survey-table th, .survey-table td {
-    padding: 12px 10px;
-    font-size: 14px;
-  }
-  .survey-table-container { overflow-x: auto; }
-  .survey-table { min-width: 700px; }
-  .btn {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-  .action-col .btn {
-    font-size: 12px;
-    padding: 8px 10px;
-  }
-  .status-badge {
-    font-size: 12px;
-    padding: 6px 10px;
-    min-width: 70px;
-  }
+/* Publish */
+.publish-btn {
+  background: linear-gradient(135deg, #66d9ef, #009B8C);
+  color: #003f3a;
 }
 
-/* Pagination */
-.pagination-controls {
-  margin-top: 30px;
+.publish-btn:hover {
+  background: linear-gradient(135deg, #5ad1e7, #008f80);
+  color: #fff;
+}
+
+/* Edit */
+.edit-btn {
+  background: linear-gradient(135deg, #fde68a, #fcd34d);
+  color: #78350f;
+}
+
+.edit-btn:hover {
+  background: linear-gradient(135deg, #fcd34d, #fbbf24);
+  color: #fff;
+}
+
+/* Action Column */
+.action-col {
   display: flex;
-  justify-content: center;
+  gap: 12px !important;
   align-items: center;
-  gap: 10px;
+  white-space: nowrap;
 }
 
-/* Loader */
-.loader-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(15, 23, 42, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  backdrop-filter: blur(4px);
-}
-
-.loader-box {
-  background: #fff;
-  padding: 28px 48px;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  text-align: center;
-}
-
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 6px solid #e2e8f0;
-  border-top-color: #009B8C;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ✅ FIX: MAKE ACTION BUTTONS SAME SIZE */
 .action-col .btn {
-  flex: 1;
   min-width: 110px;
   max-width: 110px;
+  padding: 0 !important;
   height: 40px;
-  white-space: nowrap;
-  padding: 0 12px !important;
-  display: inline-flex;
-  align-items: center;
+}
+
+/* ===================================================== */
+/*                     PAGINATION                         */
+/* ===================================================== */
+
+.pagination-controls {
+  margin-top: 40px;
+  display: flex;
+  gap: 10px;
   justify-content: center;
+}
+
+.page-btn.active {
+  border: 2px solid #009B8C;
+  background: #fff !important;
+  color: #009B8C !important;
+}
+
+/* ===================================================== */
+/*               RESPONSIVE FIXES (IMPORTANT)             */
+/* ===================================================== */
+
+@media (max-width: 900px) {
+  
+  .recent-wrapper {
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  /* Table becomes scrollable */
+  .survey-table {
+    min-width: 700px;      /* prevent collapsing */
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  /* Buttons smaller */
+  .btn {
+    min-width: 100px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .action-col {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }

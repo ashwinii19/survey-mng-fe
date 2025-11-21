@@ -1,18 +1,29 @@
+/* ===================================================== */
+/*               PROFILE PAGE CONTAINER                  */
+/* ===================================================== */
+
 .profile-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 40px auto;
-  padding: 30px;
   display: flex;
-  gap: 40px;
-  background: #fafafa;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  color: #333;
+  gap: 32px;
+
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 16px;
+
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", sans-serif;
+  color: #1e293b;
 }
 
+
+/* ===================================================== */
+/*                    LEFT IMAGE SECTION                 */
+/* ===================================================== */
+
 .image-section {
-  width: 250px;
+  width: 260px;
   text-align: center;
 }
 
@@ -20,10 +31,11 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  border: 4px solid #0078ff33;
   object-fit: cover;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+
+  border: 4px solid #009B8C33;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.10);
+  transition: 0.3s ease;
 }
 
 .profile-pic:hover {
@@ -31,59 +43,121 @@
 }
 
 input[type="file"] {
-  margin-top: 15px;
+  margin-top: 16px;
   font-size: 14px;
+  cursor: pointer;
 }
+
+
+/* ===================================================== */
+/*                   RIGHT SECTIONS (CARDS)              */
+/* ===================================================== */
 
 .info-section,
 .password-section {
   flex: 1;
+
+  background: #ffffff;
+  padding: 28px;
+
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  gap: 14px;
+
+  box-shadow: 0 4px 18px rgba(0,0,0,0.04);
 }
+
+
+/* ===================================================== */
+/*                       LABEL & INPUT                   */
+/* ===================================================== */
 
 label {
   font-weight: 600;
-  color: #444;
+  color: #374151;
+  font-size: 14px;
 }
 
 input {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #f8fafc;
+  transition: all 0.25s ease;
 }
 
 input:focus {
-  border-color: #0078ff;
-  box-shadow: 0 0 5px rgba(0, 120, 255, 0.4);
+  border-color: #009B8C;
+  box-shadow: 0 0 0 3px rgba(0, 155, 140, 0.15);
   outline: none;
 }
 
+
+/* ===================================================== */
+/*                         BUTTONS                       */
+/* ===================================================== */
+
 button {
-  align-self: flex-start;
-  margin-top: 15px;
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #0078ff, #00bfff);
+  margin-top: 20px;
+  padding: 12px 24px;
+
+  background: #009B8C;
   border: none;
+
   color: white;
   font-weight: 600;
-  border-radius: 6px;
+  font-size: 15px;
+
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+
+  transition: 0.25s ease-in-out;
 }
 
 button:hover {
-  background: linear-gradient(135deg, #005fcc, #0099cc);
+  background: #007f75;
   transform: translateY(-2px);
 }
 
+
+/* ===================================================== */
+/*                     PASSWORD HEADING                  */
+/* ===================================================== */
+
 .password-section h3 {
-  margin-bottom: 10px;
-  color: #0078ff;
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #009B8C;
+}
+
+.forgot-link {
+  background: none !important;
+  border: none !important;
+
+  margin-top: 6px;
+  padding: 0 !important;
+
+  color: #2563eb; /* professional blue */
+  font-weight: 600;
+  font-size: 14px;
+
+  text-decoration: underline;
+  cursor: pointer;
+
+  /* Prevent any hover effects */
+  transition: none !important;
+}
+
+.forgot-link:hover,
+.forgot-link:focus,
+.forgot-link:active {
+  background: none !important;
+  color: #2563eb !important;   /* same color */
+  text-decoration: underline !important;
+  box-shadow: none !important;
 }

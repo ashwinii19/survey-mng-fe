@@ -1,119 +1,116 @@
 <!-- Loader -->
 <div class="overlay" *ngIf="loading || sendingNow">
-  <div class="loader-box">
-      <div class="spinner"></div>
-      <p *ngIf="loading">Processing…</p>
-      <p *ngIf="sendingNow">Sending reminder…</p>
-  </div>
+    <div class="loader-box">
+        <div class="spinner"></div>
+        <p *ngIf="loading">Processing…</p>
+        <p *ngIf="sendingNow">Sending reminder…</p>
+    </div>
 </div>
 
-<!-- Popup message -->
-<div class="popup" *ngIf="showPopup">
-  {{ popupMessage }}
-</div>
 
 
 <div class="reminder-wrapper">
-  <h2>Survey Reminder Scheduler</h2>
-  <p class="subtitle">Manage and automate survey reminders</p>
+    <h2>Survey Reminder Scheduler</h2>
+    <p class="subtitle">Manage and automate survey reminders</p>
 
-  <div class="card">
-      <h3>Configure Reminder</h3>
+    <div class="card">
+        <h3>Configure Reminder</h3>
 
-      <div class="form-grid">
-          <div>
-              <label>Department</label>
-              <select [(ngModel)]="form.departmentName">
-                  <option value="">Select Department</option>
-                  <option value="ALL">All Departments</option>
-                  <option *ngFor="let d of departments" [value]="d.name">
-                      {{ d.name }}
-                  </option>
-              </select>
-          </div>
+        <div class="form-grid">
+            <div>
+                <label>Department</label>
+                <select [(ngModel)]="form.departmentName">
+                    <option value="">Select Department</option>
+                    <option value="ALL">All Departments</option>
+                    <option *ngFor="let d of departments" [value]="d.name">
+                        {{ d.name }}
+                    </option>
+                </select>
+            </div>
 
-          <div>
-              <label>Select Survey</label>
-              <select [(ngModel)]="form.surveyName">
-                  <option *ngFor="let s of surveys" [value]="s.title">
-                      {{ s.title }}
-                  </option>
-              </select>
-          </div>
+            <div>
+                <label>Select Survey</label>
+                <select [(ngModel)]="form.surveyName">
+                    <option *ngFor="let s of surveys" [value]="s.title">
+                        {{ s.title }}
+                    </option>
+                </select>
+            </div>
 
-          <div>
-              <label>Interval (days)</label>
-              <input type="number" [(ngModel)]="form.intervalInDays"
-                     (input)="updateNextDate()">
-          </div>
-      </div>
+            <div>
+                <label>Interval (days)</label>
+                <input type="number" [(ngModel)]="form.intervalInDays" (input)="updateNextDate()">
+            </div>
+        </div>
 
-      <div class="form-grid">
-          <div>
-              <label>Send Reminder On</label>
-              <input type="datetime-local" [(ngModel)]="form.scheduledAt"
-                     (change)="updateNextDate()">
-          </div>
+        <div class="form-grid">
+            <div>
+                <label>Send Reminder On</label>
+                <input type="datetime-local" [(ngModel)]="form.scheduledAt" (change)="updateNextDate()">
+            </div>
 
-          <div>
-              <label>Next Send</label>
-              <input type="datetime-local" [value]="nextScheduledDate" disabled>
-          </div>
-      </div>
+            <div>
+                <label>Next Send</label>
+                <input type="datetime-local" [value]="nextScheduledDate" disabled>
+            </div>
+        </div>
 
-      <label>Message</label>
-      <textarea [(ngModel)]="form.message"></textarea>
+        <label>Message</label>
+        <textarea [(ngModel)]="form.message"></textarea>
 
-      <div class="btn-row">
-          <button class="schedule" (click)="scheduleReminder()">
-              Schedule Reminder
-          </button>
+        <div class="btn-row">
+            <button class="schedule" (click)="scheduleReminder()">
+                Schedule Reminder
+            </button>
+        </div>
+    </div>
 
-          <!-- <button class="run-now" (click)="runScheduler()" [disabled]="loading">
-              Run Scheduler Now
-          </button> -->
-      </div>
-  </div>
+    <!-- Reminders Table -->
+    <h3 class="table-title">Scheduled Reminders</h3>
 
+    <table class="reminder-table">
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>Department</th>
+                <th>Survey</th>
+                <th>Interval</th>
+                <th>Next Schedule</th>
+                <th>Sent Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
 
-  <!-- Reminders Table -->
-  <h3 class="table-title">Scheduled Reminders</h3>
+        <tbody>
+            <tr *ngFor="let r of reminders; let i = index">
+                <td>{{ i + 1 }}</td>
 
-  <table class="reminder-table">
-      <thead>
-          <tr>
-              <th>Department</th>
-              <th>Survey</th>
-              <th>Interval</th>
-              <th>Next Schedule</th>
-              <th>Sent Status</th>
-              <th>Action</th>
-          </tr>
-      </thead>
+                <td>{{ r.departmentName }}</td>
+                <td>{{ r.surveyTitle }}</td>
+                <td>{{ r.intervalInDays ? r.intervalInDays + ' days' : '-' }}</td>
+                <td>{{ r.nextScheduledAt | date:'MMM d, yyyy hh:mm a' }}</td>
 
-      <tbody>
-          <tr *ngFor="let r of reminders">
-              <td>{{ r.departmentName }}</td>
-              <td>{{ r.surveyTitle }}</td>
-              <td>{{ r.intervalInDays ? r.intervalInDays + ' days' : '-' }}</td>
-              <td>{{ r.nextScheduledAt | date:'MMM d, yyyy hh:mm a' }}</td>
-
-              <td>
-                  <span class="status"
-                        [ngClass]="{
+                <td>
+                    <span class="status" [ngClass]="{
                           'active': r.status === 'Pending',
                           'completed': r.status === 'Completed'
                         }">
-                      {{ r.status }}
-                  </span>
-              </td>
+                        {{ r.status }}
+                    </span>
+                </td>
 
-              <td>
-                  <button class="send-btn" (click)="sendNow(r.id)">Send Now</button>
-                  <button class="delete-btn" (click)="deleteReminder(r.id)">Delete</button>
-              </td>
-          </tr>
-      </tbody>
-  </table>
+                <td>
+                    <button class="btn view-btn send-now-btn" (click)="sendNow(r.id)">
+                        Send Now
+                    </button>
+
+                    <button class="btn delete-btn reminder-delete-btn" (click)="deleteReminder(r.id)">
+                        Delete
+                    </button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
 
 </div>

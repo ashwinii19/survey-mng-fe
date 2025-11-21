@@ -1,11 +1,318 @@
-.layout { display:flex; }
-.content { flex:1; padding:18px; background:#f4f6fb; min-height:100vh; }
-.page-header h1 { font-size:24px; }
-.kpi-row { display:flex; gap:16px; margin-top:16px; }
-.kpi-card { flex:1; background:#fff; padding:18px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.04); }
-.kpi-title { color:#64748b; font-weight:700; }
-.kpi-value { font-size:26px; font-weight:700; margin-top:6px; }
-.kpi-sub { color:#94a3b8; margin-top:6px; }
-.charts-row { margin-top:18px; }
-.export-row { margin-top:18px; display:flex; align-items:center; }
-.export-msg { margin-left:12px; color:#0f172a; }
+.layout {
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  padding: 28px 34px;
+  min-height: 100vh;
+  background: #f5f7fb;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  color: #0f172a;
+}
+
+/* Page header / title */
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #009B8C, #007f74);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* KPI cards */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 20px;
+}
+
+.kpi-card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 155, 140, 0.12);
+}
+
+.kpi-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: #64748b;
+}
+
+.kpi-value {
+  margin-top: 10px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #009B8C;
+}
+
+/* Charts container */
+.charts-row {
+  margin-top: 26px;
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* Submitted/Pending headings */
+h6 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #0f172a;
+}
+
+/* Export row */
+.export-row {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.20);
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* Specific button colors */
+.btn-danger {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+  color: #fff;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #fde68a, #fcd34d);
+  color: #78350f;
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #66d9ef, #009B8C);
+  color: #003f3a;
+}
+
+/* Export message */
+.export-msg {
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.alert-info {
+  background: #e0fafa;
+  color: #006059;
+  border: 1px solid #b2ebe8;
+}
+
+.alert-warning {
+  background: #fff7d6;
+  color: #8a6200;
+  border: 1px solid #f5e4a3;
+}
+
+/* Helper hidden */
+.export-hide {
+  display: none !important;
+}
+
+/* Employee list wrapper */
+.employee-list-wrapper {
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #e6eef0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+/* Table wrapper */
+.table-wrapper {
+  max-height: 420px;
+  overflow-y: auto;
+  background: #ffffffcc;
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  padding: 0;
+}
+
+/* PDF adjustments */
+.pdf-capture .export-buttons {
+  display: none !important;
+}
+
+.pdf-capture .page-header h1 {
+  background: none !important;
+  -webkit-text-fill-color: #006059 !important;
+  color: #006059 !important;
+}
+
+.pdf-capture {
+  background: #ffffff !important;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .kpi-row {
+    grid-template-columns: 1fr;
+  }
+
+  .export-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-header h1 { font-size: 22px; }
+  .kpi-card { padding: 18px; }
+  .btn { width: 100%; }
+}
+
+/* ------------------------------------------------------------ */
+/*  UNIFORM EXPORT BUTTON STYLE (USING MAIN THEME COLOR)        */
+/* ------------------------------------------------------------ */
+.export-buttons .btn {
+  background: linear-gradient(135deg, #009B8C, #007f74);
+  color: #ffffff;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+  letter-spacing: 0.3px;
+}
+
+.export-buttons .btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0px 8px 20px rgba(0, 155, 140, 0.25);
+}
+
+.export-buttons .btn:active {
+  transform: scale(0.95);
+}
+
+/* ------------------------------------------------------------ */
+/*  HIDE EXPORT BUTTONS DURING EXPORT CAPTURE                   */
+/* ------------------------------------------------------------ */
+.pdf-capture .export-buttons,
+.ppt-capture .export-buttons {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------ */
+/*        EXPORT LOGO — ALWAYS HIDDEN IN UI                     */
+/* ------------------------------------------------------------ */
+.export-logo {
+  width: 150px;
+  margin-bottom: 20px;
+  display: none !important;    /* UI me NEVER show */
+}
+
+/* SHOW ONLY DURING PDF EXPORT */
+#dashboard-section.pdf-capture #export-logo {
+  display: block !important;
+}
+
+/* SHOW ONLY DURING PPT EXPORT */
+#dashboard-section.ppt-capture #export-logo {
+  display: block !important;
+}
+
+/* ------------------------------------------------------------ */
+/*               FULL SCREEN EXPORT LOADER                      */
+/* ------------------------------------------------------------ */
+.export-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+
+.loader-box {
+  text-align: center;
+  padding: 30px 40px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.15);
+}
+
+.spinner {
+  width: 45px;
+  height: 45px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #009B8C;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.loader-box p {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #003f3a;
+}

@@ -1,23 +1,88 @@
-/* .filters {
-    display: flex;
+/* ===================================================== */
+/*                     FILTER PANEL CARD                  */
+/* ===================================================== */
+
+.filters-card {
+  background: #ffffff;
+  padding: 20px 22px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  margin-bottom: 20px;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+/* Label styling (unified with Create Survey & Reminder) */
+.filters-card .form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+/* Select fields unified */
+.filters-card .form-select {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.filters-card .form-select:focus {
+  border-color: #009B8C;
+  box-shadow: 0 0 0 3px rgba(0, 155, 140, 0.18);
+}
+
+/* ===================================================== */
+/*                      APPLY BUTTON                      */
+/* ===================================================== */
+
+.filters-card .btn-success {
+  background: linear-gradient(135deg, #00b592, #009B8C);
+  color: white;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 0;
+  border: none !important;
+  transition: 0.3s ease;
+}
+
+/* Same hover animation from Reminder & Recent Survey */
+.filters-card .btn-success:hover {
+  background: linear-gradient(135deg, #009B8C, #007f74);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(0, 155, 140, 0.35);
+  filter: brightness(1.05);
+}
+
+.filters-card .btn-success:active {
+  transform: scale(0.96);
+  box-shadow: 0 3px 10px rgba(0, 155, 140, 0.25);
+}
+
+
+/* ===================================================== */
+/*                  RESPONSIVE BEHAVIOR                   */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+  
+  .filters-card {
+    padding: 16px;
+  }
+
+  .filters-card .row {
     gap: 12px;
-    align-items: center;
-    margin: 14px 0
+  }
+
+  /* Make button full width and go to next row */
+  .filters-card .col-md-2 {
+    width: 100%;
+  }
+
+  .filters-card .btn-success {
+    width: 100%;
+  }
 }
-
-select {
-    padding: 8px;
-    border-radius: 6px
-}
-
-button {
-    padding: 8px 12px;
-    background: #004aad;
-    color: #fff;
-    border: none;
-    border-radius: 6px
-} */
-
-
-.filters-card { background:#fff; border-radius:8px; }
-.form-label.small { font-weight:600; color:#4b5563; }

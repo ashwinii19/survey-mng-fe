@@ -268,3 +268,52 @@
     gap: 10px;
   }
 }
+/* Dimmed background */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);   /* dim background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* Popup box */
+.popup-loader-box {
+  background: white;
+  padding: 25px 35px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  min-width: 250px;
+}
+
+/* Spinner */
+.popup-spinner {
+  width: 45px;
+  height: 45px;
+  border: 5px solid #d1d5db;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 12px auto;
+}
+
+/* Spin animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Text inside loader */
+.popup-loader-box p {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+}

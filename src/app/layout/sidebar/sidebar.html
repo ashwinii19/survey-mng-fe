@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 <nav class="sidebar" [class.collapsed]="isCollapsed">
 
   <!-- BRAND + TOGGLE -->
@@ -19,12 +32,82 @@
       </a>
     </li>
 
-    <!-- Onboarding (NEW ITEM) -->
-    <li>
-      <a routerLink="/app/onboarding" routerLinkActive="active">
-       <i class="bi bi-person-plus icon-lg"></i>
+    <!-- Onboarding with Sub-Menu -->
+    <li class="has-submenu" [class.expanded]="isOnboardingExpanded">
+      <a (click)="toggleOnboardingMenu()" class="menu-toggle">
+        <i class="bi bi-person-plus icon-lg"></i>
         <span class="text">Onboarding</span>
+        <i class="bi submenu-arrow" [ngClass]="isOnboardingExpanded ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
       </a>
+      
+      <!-- Sub-menu Items - MATCHING YOUR ACTUAL FILES -->
+      <ul class="sub-menu" *ngIf="isOnboardingExpanded">
+        <!-- Batch Import - WITH ONBOARDING PARAMETER -->
+        <li>
+          <a [routerLink]="['/app/employees/batch/import']" 
+             [queryParams]="{onboarding: 'true'}" 
+             routerLinkActive="active">
+            <i class="bi bi-cloud-upload icon-sm"></i>
+            <span class="text">Batch Import</span>
+          </a>
+        </li>
+
+        <!-- Send Emails -->
+        <li>
+          <a routerLink="/app/onboarding/send-emails" routerLinkActive="active">
+            <i class="bi bi-send icon-sm"></i>
+            <span class="text">Send Emails</span>
+          </a>
+        </li>
+
+        <!-- Employee Eligibility -->
+        <!-- <li>
+          <a routerLink="/app/onboarding/employee-eligibility" routerLinkActive="active">
+            <i class="bi bi-person-check icon-sm"></i>
+            <span class="text">Employee Eligibility</span>
+          </a>
+        </li> -->
+
+        <!-- Email Logs -->
+        <li>
+          <a routerLink="/app/onboarding/email-logs" routerLinkActive="active">
+            <i class="bi bi-journal-text icon-sm"></i>
+            <span class="text">Email Logs</span>
+          </a>
+        </li>
+
+        <!-- Batch Email Logs -->
+        <!-- <li>
+          <a routerLink="/app/onboarding/batch-email-logs" routerLinkActive="active">
+            <i class="bi bi-list-check icon-sm"></i>
+            <span class="text">Batch Logs</span>
+          </a>
+        </li> -->
+
+        <!-- Email Log Details -->
+        <!-- <li>
+          <a routerLink="/app/onboarding/email-log-details" routerLinkActive="active">
+            <i class="bi bi-eye icon-sm"></i>
+            <span class="text">Log Details</span>
+          </a>
+        </li> -->
+
+        <!-- Statistics -->
+        <!-- <li>
+          <a routerLink="/app/onboarding/statistics" routerLinkActive="active">
+            <i class="bi bi-bar-chart icon-sm"></i>
+            <span class="text">Statistics</span>
+          </a>
+        </li> -->
+
+        <!-- Settings -->
+        <!-- <li>
+          <a routerLink="/app/onboarding/settings" routerLinkActive="active">
+            <i class="bi bi-gear icon-sm"></i>
+            <span class="text">Settings</span>
+          </a>
+        </li> -->
+      </ul>
     </li>
 
     <!-- Create Surveys -->

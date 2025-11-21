@@ -1,0 +1,128 @@
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="p-4 rounded-3 mb-4" style="background: linear-gradient(135deg, rgba(0, 155, 140, 0.1) 0%, rgba(0, 155, 140, 0.05) 100%); border: 1px solid rgba(0, 155, 140, 0.2);">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="h3 mb-1" style="color: #009B8C">
+          <i class="bi bi-send me-2"></i>Send Onboarding Emails
+        </h1>
+        <p class="text-muted mb-0">Trigger welcome emails for employee batches</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Alert -->
+  <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle me-2"></i>
+    <div style="white-space: pre-line">{{ success }}</div>
+    <button type="button" class="btn-close" (click)="success = ''"></button>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i>
+    {{ error }}
+    <button type="button" class="btn-close" (click)="error = ''"></button>
+  </div>
+
+  <!-- Simple Form -->
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card border-0">
+        <div class="card-header bg-white border-bottom py-3">
+          <h5 class="card-title mb-0 text-dark">
+            <i class="bi bi-send me-2 text-primary"></i>Send Batch Emails
+          </h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="sendEmails()">
+            <!-- Batch ID Input -->
+            <div class="mb-4">
+              <label for="batchId" class="form-label fw-semibold">
+                Batch ID <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                class="form-control form-control-lg"
+                id="batchId"
+                [(ngModel)]="batchId"
+                name="batchId"
+                placeholder="Enter batch ID (e.g., 1, 2, 3...)"
+                required
+                min="1">
+              <div class="form-text">
+                Enter the batch ID to trigger onboarding emails for all eligible employees
+              </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="alert alert-info border-0">
+              <h6 class="alert-heading mb-2">
+                <i class="bi bi-info-circle me-2"></i>How it works
+              </h6>
+              <ul class="mb-0 small">
+                <li>System will automatically send welcome emails to eligible employees</li>
+                <li>Only employees who joined within the last 15 days will receive emails</li>
+                <li>Emails are sent asynchronously in the background</li>
+                <li>Check email logs for detailed results</li>
+              </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2">
+              <button
+                type="submit"
+                class="btn text-white flex-fill"
+                [disabled]="sending || !batchId"
+                style="background-color: #009B8C; border-color: #009B8C">
+                <span *ngIf="sending" class="spinner-border spinner-border-sm me-2"></span>
+                <i class="bi" [class]="sending ? '' : 'bi-send me-1'"></i>
+                {{ sending ? 'Triggering Emails...' : 'Trigger Onboarding Emails' }}
+              </button>
+              
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="resetForm()"
+                [disabled]="sending">
+                <i class="bi bi-arrow-clockwise me-1"></i>
+                Reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Quick Tips -->
+      <div class="card border-0 mt-4">
+        <div class="card-body">
+          <h6 class="text-muted mb-3">
+            <i class="bi bi-lightbulb me-2"></i>Quick Tips
+          </h6>
+          <div class="row small">
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-2">
+                <i class="bi bi-check-circle text-success me-2 mt-1"></i>
+                <span>Batch ID should be a positive number</span>
+              </div>
+              <div class="d-flex align-items-start mb-2">
+                <i class="bi bi-check-circle text-success me-2 mt-1"></i>
+                <span>Emails are sent automatically to eligible employees</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-2">
+                <i class="bi bi-check-circle text-success me-2 mt-1"></i>
+                <span>Check logs for sent/failed emails</span>
+              </div>
+              <div class="d-flex align-items-start mb-2">
+                <i class="bi bi-check-circle text-success me-2 mt-1"></i>
+                <span>Process runs asynchronously</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

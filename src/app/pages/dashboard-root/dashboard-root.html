@@ -154,10 +154,12 @@
 
   </div>
 </div> -->
+
+
 <div class="layout">
   <div class="content">
 
-    <!-- ⭐ FULL SCREEN LOADER OVERLAY ⭐ -->
+    <!-- FULL SCREEN LOADER -->
     <div class="export-loader" *ngIf="isExporting">
       <div class="loader-box">
         <div class="spinner"></div>
@@ -165,39 +167,42 @@
       </div>
     </div>
 
-    <!-- EXPORT SECTION -->
     <div id="dashboard-section">
-
-      <!-- Hidden Logo for Export Only -->
-      <img id="export-logo"
-     src="assets/images/aurionpro-logo.jpg"
-     alt="AurionPro Logo"
-     class="export-logo" />
-
+      <img id="export-logo" src="assets/images/aurionpro-logo.jpg"
+           alt="AurionPro Logo" class="export-logo" />
 
       <div class="page-header mb-3">
         <h1 class="h3 fw-bold text-dark mb-1">Dashboard</h1>
         <p class="text-muted small mb-0">Overview of survey analytics and performance</p>
       </div>
 
+      <!-- FILTER PANEL -->
       <app-filters-panel
         [surveys]="surveys"
         [departments]="departments"
-        [(selectedSurveyId)]="selectedSurveyId"
-        [(selectedDepartmentId)]="selectedDepartmentId"
-        (filterChanged)="onFilterChange()">
+        [selectedSurveyId]="selectedSurveyId"
+        [selectedDepartmentId]="selectedDepartmentId"
+        (selectedSurveyIdChange)="selectedSurveyId = $event"
+        (selectedDepartmentIdChange)="selectedDepartmentId = $event"
+        (filterChanged)="onFilterChange($event)">
       </app-filters-panel>
 
-      <div *ngIf="showAssignmentAlert" class="alert alert-warning mt-2">
-        <strong>No Data:</strong> This survey is not assigned to the selected department.
+      <!-- WRONG DEPARTMENT ALERT -->
+      <div *ngIf="showAssignmentAlert" class="alert alert-warning mt-3">
+        <strong>Invalid Selection:</strong>
+        This survey is not assigned to the selected department.
       </div>
 
-      <div *ngIf="!showResults" class="alert alert-info mt-3">
+      <!-- DEFAULT MESSAGE -->
+      <div *ngIf="!showResults && !showAssignmentAlert"
+           class="alert alert-info mt-3">
         Please apply filters to load dashboard analytics.
       </div>
 
       <!-- KPI -->
-      <div id="ppt-kpi-section" class="kpi-row" *ngIf="showResults && !showAssignmentAlert">
+      <div id="ppt-kpi-section"
+           class="kpi-row"
+           *ngIf="showResults && !showAssignmentAlert">
         <div class="kpi-card">
           <div class="kpi-title">Total Employees</div>
           <div class="kpi-value">{{ totalEmployees }}</div>
@@ -213,33 +218,46 @@
       </div>
 
       <!-- CHART -->
-      <div id="ppt-chart-section" *ngIf="showResults && !showAssignmentAlert" class="charts-row mt-3">
-        <app-department-charts [departmentStats]="dashboard?.departmentStats || []"></app-department-charts>
+      <div id="ppt-chart-section"
+           *ngIf="showResults && !showAssignmentAlert"
+           class="charts-row mt-3">
+        <app-department-charts
+          [departmentStats]="dashboard?.departmentStats || []">
+        </app-department-charts>
       </div>
 
-      <!-- SUBMITTED + PENDING TABLES -->
+      <!-- TABLES -->
       <div *ngIf="showResults && !showAssignmentAlert" class="row mt-4">
-
         <div class="col-md-6">
           <h6>Submitted Employees</h6>
           <div id="ppt-submitted" class="employee-list-wrapper">
-            <app-submitted-table [submitted]="submittedEmployeesRaw"></app-submitted-table>
+            <app-submitted-table
+              [submitted]="submittedEmployeesRaw">
+            </app-submitted-table>
           </div>
         </div>
 
         <div class="col-md-6">
           <h6>Pending Employees</h6>
           <div id="ppt-pending" class="employee-list-wrapper">
-            <app-pending-table [pending]="pendingEmployeesRaw"></app-pending-table>
+            <app-pending-table
+              [pending]="pendingEmployeesRaw">
+            </app-pending-table>
           </div>
         </div>
       </div>
 
       <!-- EXPORT BUTTONS -->
       <div class="export-buttons mt-4">
-        <button class="btn btn-success me-2" (click)="exportExcel()">Export Excel</button>
-        <button class="btn btn-danger me-2" (click)="exportPDF()">Export PDF</button>
-        <button class="btn btn-primary" (click)="exportPPT()">Export PPT</button>
+        <button class="btn btn-success me-2" (click)="exportExcel()">
+          Export Excel
+        </button>
+        <button class="btn btn-danger me-2" (click)="exportPDF()">
+          Export PDF
+        </button>
+        <button class="btn btn-primary" (click)="exportPPT()">
+          Export PPT
+        </button>
       </div>
 
     </div>

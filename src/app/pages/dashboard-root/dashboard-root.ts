@@ -1421,6 +1421,8 @@
 
 // }
 
+
+/* --- IMPORTS --- */
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -1438,6 +1440,8 @@ import html2canvas from 'html2canvas';
 import PptxGenJS from 'pptxgenjs';
 import * as XLSX from 'xlsx';
 
+/* ------------------------------------------------------------- */
+
 @Component({
   selector: 'app-dashboard-root',
   standalone: true,
@@ -1447,6 +1451,7 @@ import * as XLSX from 'xlsx';
 })
 export default class DashboardRoot implements OnInit {
 
+  /* ------------------ DATA ------------------ */
   dashboard?: DashboardResponse;
   surveys: any[] = [];
   departments: any[] = [];
@@ -1457,11 +1462,12 @@ export default class DashboardRoot implements OnInit {
   submittedEmployees: Array<{ employeeId: string, employeeName: string }> = [];
   pendingEmployees: Array<{ employeeId: string, employeeName: string }> = [];
 
-  selectedSurveyId?: number | null = null;
-  selectedDepartmentId?: number | null = null;
+  selectedSurveyId: number | null = null;
+  selectedDepartmentId: number | null = null;
 
   showResults = false;
-  showAssignmentAlert = false;
+  showAssignmentAlert = false;  // 👈 alert for NOT_ASSIGNED or invalid department selection
+  assignmentMessage = "";       // 👈 show message like “Survey not assigned to HR”
 
   totalEmployees = 0;
   submittedCount = 0;
@@ -1473,102 +1479,161 @@ export default class DashboardRoot implements OnInit {
 
   constructor(private svc: DashboardService) {}
 
+  /* ------------------ INIT ------------------ */
   ngOnInit(): void {
     this.loadFilters();
   }
 
-  loadFilters() {
+  /* =============================================================
+      LOAD SURVEYS + DEPARTMENTS
+  ============================================================= */
+  private loadFilters(): void {
+
+    // ---------------- Surveys ----------------
     this.svc.getSurveys().subscribe({
-      next: (res) => {
+      next: (res: any[]) => {
         this.surveys = res ?? [];
+
         if (this.surveys.length > 0) {
           const sorted = [...this.surveys].sort((a, b) => {
             const aDate = new Date(a.createdAt ?? a.publishedAt ?? 0).getTime();
             const bDate = new Date(b.createdAt ?? b.publishedAt ?? 0).getTime();
             return aDate - bDate;
           });
-          const first = sorted[0];
-          this.selectedSurveyId = first?.id ?? first?.surveyId ?? null;
+          this.selectedSurveyId = sorted[0]?.id ?? null;
         }
       },
-      error: err => console.error('Failed to load surveys', err)
+      error: () => {
+        console.warn("Failed to load surveys (401)");
+      }
     });
 
+    // ---------------- Departments ----------------
     this.svc.getDepartments().subscribe({
-      next: (res) => this.departments = res ?? [],
-      error: err => console.error('Failed to load departments', err)
+      next: (res: any[]) => {
+        this.departments = res ?? [];
+      },
+      error: () => {
+        console.warn("Failed to load departments (401)");
+      }
     });
   }
 
-  onFilterChange() {
+  /* =============================================================
+      HANDLES FILTER VALIDATION FROM FILTER-PANEL (Frontend)
+  ============================================================= */
+  onFilterChange(canApply: boolean) {
+    if (!canApply) {
+      this.showResults = false;
+      this.dashboard = undefined;
+
+      this.showAssignmentAlert = true;
+      this.assignmentMessage = "This survey is not assigned to the selected department.";
+
+      return;
+    }
+
+    this.showAssignmentAlert = false;
+    this.assignmentMessage = "";
+
     this.showResults = true;
     this.loadDashboard();
   }
 
-  loadDashboard() {
+  /* =============================================================
+      LOAD DASHBOARD DATA  → FIXED ERROR HANDLING
+  ============================================================= */
+  private loadDashboard(): void {
+
     const sId = this.selectedSurveyId ?? undefined;
     const dId = this.selectedDepartmentId ?? undefined;
 
     this.svc.getDashboard(sId as any, dId as any).subscribe({
-      next: (res) => {
+      next: (res: any) => {
+
+        // Backend might send: { error: "NOT_ASSIGNED" }
+        if (res?.error) {
+          this.showResults = false;
+          this.showAssignmentAlert = true;
+
+          if (res.error === "NOT_ASSIGNED") {
+            this.assignmentMessage = "This survey is not assigned to the selected department.";
+          } else {
+            this.assignmentMessage = res.error;
+          }
+
+          return;
+        }
+
+        // NO ERROR → NORMAL FLOW
+        this.showAssignmentAlert = false;
+        this.assignmentMessage = "";
+
         this.dashboard = res;
 
-        // RAW arrays from backend
         this.submittedEmployeesRaw = res?.submittedEmployees ?? [];
         this.pendingEmployeesRaw = res?.pendingEmployees ?? [];
 
-        // Parse to structured objects for internal usage & Excel
         this.submittedEmployees = this.parseList(this.submittedEmployeesRaw);
         this.pendingEmployees = this.parseList(this.pendingEmployeesRaw);
 
         this.computeKPIs();
-        this.checkSurveyDepartmentMatch();
+        this.showResults = true;
       },
+
+      /* ------------------ SERVER 500 FIX ------------------ */
       error: (err) => {
-        console.error('Dashboard API error', err);
+        console.warn("Backend Dashboard Error: ", err);
+
+        this.showResults = false;
         this.dashboard = undefined;
-        this.submittedEmployeesRaw = [];
-        this.pendingEmployeesRaw = [];
-        this.submittedEmployees = [];
-        this.pendingEmployees = [];
-        this.computeKPIs();
-        this.checkSurveyDepartmentMatch();
+        this.showAssignmentAlert = true;
+
+        const msg = err?.error?.message ?? err?.error?.error ?? "";
+
+        if (typeof msg === "string" && msg.toLowerCase().includes("assigned")) {
+          this.assignmentMessage = "This survey is not assigned to the selected department.";
+        } else {
+          this.assignmentMessage = "Failed to load dashboard. Please check assignments.";
+        }
       }
     });
   }
 
-  private parseList(list: string[]) {
-    return (list || []).map(s => {
-      if (typeof s !== 'string') return { employeeId: '', employeeName: String(s ?? '') };
-      const parts = s.split('-').map(p => p.trim()).filter(Boolean);
+  /* =============================================================
+      Parse Employee List
+  ============================================================= */
+  private parseList(list: string[]): Array<{ employeeId: string, employeeName: string }> {
+    return list.map(s => {
+      const parts = s.split('-').map(p => p.trim());
+
       if (parts.length >= 2) {
-        return { employeeId: parts[0], employeeName: parts.slice(1).join(' - ') };
+        return { employeeId: parts[1], employeeName: parts[0] };
       }
-      return { employeeId: '', employeeName: s.trim() };
+      return { employeeId: '', employeeName: s };
     });
   }
 
+  /* =============================================================
+      COMPUTE KPIs
+  ============================================================= */
   private computeKPIs() {
     if (!this.dashboard) {
-      this.totalEmployees = 0; this.submittedCount = 0; this.remainingCount = 0; this.submissionRate = 0;
+      this.totalEmployees = 0;
+      this.submittedCount = 0;
+      this.remainingCount = 0;
+      this.submissionRate = 0;
       return;
     }
+
     this.totalEmployees = Number(this.dashboard.totalEmployees ?? 0);
     this.submittedCount = Number(this.dashboard.totalSubmitted ?? 0);
     this.remainingCount = Number(this.dashboard.totalPending ?? 0);
-    this.submissionRate = this.totalEmployees > 0 ? Math.round((this.submittedCount / this.totalEmployees) * 100) : 0;
-  }
 
-  private checkSurveyDepartmentMatch() {
-    this.showAssignmentAlert = false;
-    if (!this.selectedSurveyId || !this.selectedDepartmentId) return;
-    const survey = this.surveys.find(s => (s.id ?? s.surveyId) === this.selectedSurveyId);
-    if (!survey) return;
-    const target = survey.targetDepartment?.id ?? survey.targetDepartmentId ?? survey.target_department_id;
-    if (!target) return;
-    const targetId = typeof target === 'object' ? Number(target.id ?? target.departmentId ?? target) : Number(target);
-    if (!isNaN(targetId) && targetId !== Number(this.selectedDepartmentId)) this.showAssignmentAlert = true;
-    else this.showAssignmentAlert = false;
+    this.submissionRate =
+      this.totalEmployees > 0
+        ? Math.round((this.submittedCount / this.totalEmployees) * 100)
+        : 0;
   }
 
   /* ---------------------------
@@ -1728,7 +1793,62 @@ export default class DashboardRoot implements OnInit {
   /* ---------------------------
      EXPORT: PDF (ONLY dashboard, hide buttons, no gradient)
   --------------------------- */
-  async exportPDF() {
+//   async exportPDF() {
+//   if (!this.dashboard) return;
+
+//   this.isExporting = true;
+//   this.exportMessage = "Exporting PDF...";
+
+//   const dashboardEl = document.getElementById("dashboard-section")!;
+//   dashboardEl.classList.add("pdf-capture");
+
+//   const backups = this.expandForExport([
+//     ".table-wrapper",
+//     ".employee-list-wrapper",
+//     ".row",
+//     ".col-md-6",
+//     "#dashboard-section",
+//   ]);
+
+//   try {
+//     const canvas = await html2canvas(dashboardEl, {
+//       scale: 2.4,
+//       backgroundColor: "#ffffff"
+//     });
+
+//     this.restoreAfterExport(backups);
+//     dashboardEl.classList.remove("pdf-capture");
+
+//     const pdf = new jsPDF("p", "mm", "a4");
+//     const imgData = canvas.toDataURL("image/png");
+
+//     const pageWidth = pdf.internal.pageSize.getWidth();
+//     const imgHeight = (canvas.height * pageWidth) / canvas.width;
+//     let heightLeft = imgHeight;
+//     let position = 0;
+
+//     pdf.addImage(imgData, "PNG", 0, 0, pageWidth, imgHeight);
+//     heightLeft -= pdf.internal.pageSize.height;
+
+//     while (heightLeft > 0) {
+//       pdf.addPage();
+//       position -= pdf.internal.pageSize.height;
+//       pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
+//       heightLeft -= pdf.internal.pageSize.height;
+//     }
+
+//     pdf.save(`Dashboard-${Date.now()}.pdf`);
+//     this.exportSuccess();
+
+//   } catch (err) {
+//     console.error(err);
+//     alert("PDF Export Failed");
+//   }
+
+//   this.isExporting = false;
+// }
+
+async exportPDF() {
   if (!this.dashboard) return;
 
   this.isExporting = true;
@@ -1755,21 +1875,62 @@ export default class DashboardRoot implements OnInit {
     dashboardEl.classList.remove("pdf-capture");
 
     const pdf = new jsPDF("p", "mm", "a4");
-    const imgData = canvas.toDataURL("image/png");
 
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const imgHeight = (canvas.height * pageWidth) / canvas.width;
-    let heightLeft = imgHeight;
-    let position = 0;
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
 
-    pdf.addImage(imgData, "PNG", 0, 0, pageWidth, imgHeight);
-    heightLeft -= pdf.internal.pageSize.height;
+    const margin = 10;
+    const usableW = pageW - margin * 2;
+    const usableH = pageH - margin * 2;
 
-    while (heightLeft > 0) {
-      pdf.addPage();
-      position -= pdf.internal.pageSize.height;
-      pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
-      heightLeft -= pdf.internal.pageSize.height;
+    const imgWidth = usableW;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    const fullImg = canvas;
+
+    let remainingHeight = imgHeight;
+    let currentY = 0;
+
+    // Create temporary canvas for slicing
+    const sliceCanvas = document.createElement("canvas");
+    const sliceCtx = sliceCanvas.getContext("2d")!;
+    sliceCanvas.width = fullImg.width;
+    sliceCanvas.height = (usableH * fullImg.width) / usableW;
+
+    let pageIndex = 0;
+
+    while (remainingHeight > 0) {
+      const sliceHeight = sliceCanvas.height / 1.0;
+      sliceCtx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+
+      sliceCtx.drawImage(
+        fullImg,
+        0,
+        currentY,
+        fullImg.width,
+        sliceHeight,
+        0,
+        0,
+        sliceCanvas.width,
+        sliceCanvas.height
+      );
+
+      const slicedImg = sliceCanvas.toDataURL("image/png");
+
+      if (pageIndex > 0) pdf.addPage();
+
+      pdf.addImage(
+        slicedImg,
+        "PNG",
+        margin,
+        margin,
+        usableW,
+        usableH
+      );
+
+      currentY += sliceHeight;
+      remainingHeight -= usableH;
+      pageIndex++;
     }
 
     pdf.save(`Dashboard-${Date.now()}.pdf`);

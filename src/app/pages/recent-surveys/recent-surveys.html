@@ -2,21 +2,18 @@
 
   <h2>Recent Surveys</h2>
 
-  <!-- Empty State -->
   <div *ngIf="surveys.length === 0" class="empty">
     No surveys created yet.
   </div>
 
-  <!-- Responsive Wrapper -->
   <div class="table-responsive" *ngIf="surveys.length > 0">
 
-    <!-- Surveys Table -->
     <table class="survey-table">
       <thead>
         <tr>
           <th>Sr No.</th>
           <th>Survey Title</th>
-          <th>Department</th>
+          <th>Department(s)</th>
           <th>Questions</th>
           <th>Created Date</th>
           <th>Status</th>
@@ -30,7 +27,14 @@
 
           <td>{{ i + 1 }}</td>
           <td>{{ s.title }}</td>
-          <td>{{ s.targetDepartment?.name || '-' }}</td>
+
+          <!-- MULTIPLE DEPARTMENTS SUPPORT -->
+          <td>
+            {{ s.targetDepartments?.includes('ALL')
+                ? 'ALL'
+                : s.targetDepartments?.join(', ') }}
+          </td>
+
           <td>{{ s.questions?.length }}</td>
           <td>{{ s.createdAt | date:'dd MMM yyyy, hh:mm a' }}</td>
 
@@ -45,17 +49,14 @@
             </span>
           </td>
 
-          <!-- ACTION BUTTONS -->
           <td class="action-col">
 
-            <!-- EDIT -->
             <button *ngIf="s.editable && !s.published"
                     class="btn edit-btn"
                     (click)="editSurvey(s.id)">
               Edit
             </button>
 
-            <!-- PUBLISH + VIEW -->
             <ng-container *ngIf="!s.editable && !s.published">
               <button class="btn publish-btn"
                       (click)="publishSurvey(s.id)">
@@ -69,7 +70,6 @@
               </a>
             </ng-container>
 
-            <!-- VIEW Published -->
             <ng-container *ngIf="s.published">
               <a class="btn view-btn"
                 [href]="openForm(s.formLink)"
@@ -78,7 +78,6 @@
               </a>
             </ng-container>
 
-            <!-- DELETE -->
             <button class="btn delete-btn"
                     (click)="deleteSurvey(s.id)">
               Delete
@@ -93,7 +92,6 @@
 
   </div>
 
-  <!-- Pagination Controls -->
   <div class="pagination-controls" *ngIf="totalPages > 1">
 
     <button (click)="prevPage()"
@@ -120,10 +118,10 @@
 </div>
 
 
-<!-- FULL SCREEN LOADER -->
-<div class="loader-overlay" *ngIf="loading">
-  <div class="loader-box">
-    <div class="spinner"></div>
-    <p>Publishing the survey…</p>
+<!-- POPUP LOADER (MODAL STYLE) -->
+<div class="popup-overlay" *ngIf="loading">
+  <div class="popup-loader-box">
+    <div class="popup-spinner"></div>
+    <p>{{ loadingMessage }}</p>
   </div>
 </div>

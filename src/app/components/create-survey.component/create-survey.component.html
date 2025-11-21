@@ -11,18 +11,30 @@
       <label>Description</label>
       <textarea formControlName="description"></textarea>
 
-      <label>Target Department</label>
+      <!-- <label>Target Department</label>
       <select formControlName="targetDepartmentName">
         <option value="" disabled>Select department</option>
 
-        <!-- NEW: ALL departments option -->
         <option value="ALL">All Departments</option>
 
-        <!-- Existing departments -->
         <option *ngFor="let d of departments" [value]="d.name">
           {{ d.name }}
         </option>
+      </select> -->
+
+      <label>Target Department</label>
+      <select formControlName="targetDepartments">
+        <option value="" disabled>Select department</option>
+
+        <!-- ALL Option -->
+        <option [value]="0">ALL Departments</option>
+
+        <!-- Real Departments -->
+        <option *ngFor="let d of departments" [value]="d.id">
+          {{ d.name }}
+        </option>
       </select>
+
 
     </div>
 

@@ -4,6 +4,7 @@
 
   <form [formGroup]="surveyForm">
 
+    <!-- ===================== BASIC DETAILS ===================== -->
     <div class="card">
       <label>Survey Title</label>
       <input type="text" formControlName="title" />
@@ -11,20 +12,10 @@
       <label>Description</label>
       <textarea formControlName="description"></textarea>
 
-      <!-- <label>Target Department</label>
-      <select formControlName="targetDepartmentName">
-        <option value="" disabled>Select department</option>
-
-        <option value="ALL">All Departments</option>
-
-        <option *ngFor="let d of departments" [value]="d.name">
-          {{ d.name }}
-        </option>
-      </select> -->
-
+      <!-- Department -->
       <label>Target Department</label>
       <select formControlName="targetDepartments">
-        <option value="" disabled>Select department</option>
+        <option value="">Select department</option>
 
         <!-- ALL Option -->
         <option [value]="0">ALL Departments</option>
@@ -35,13 +26,38 @@
         </option>
       </select>
 
+      <!-- Position -->
+      <label>Target Position</label>
+
+      <select formControlName="targetPosition">
+        <option value="">Select Position</option>
+
+        <ng-container *ngIf="!loadingPositions; else loadingSpinner">
+          <option *ngFor="let p of positions" [value]="p">
+            {{ p }}
+          </option>
+        </ng-container>
+      </select>
+
+      <!-- Spinner -->
+      <ng-template #loadingSpinner>
+        <div class="loading-text">Loading positions...</div>
+      </ng-template>
+
+      <!-- Validation Error -->
+      <p *ngIf="validationError" class="error-text">
+        {{ validationError }}
+      </p>
 
     </div>
 
+    <!-- ===================== QUESTIONS ===================== -->
     <div class="card">
       <div class="row-between">
         <h3>Questions</h3>
-        <button type="button" class="add-btn" (click)="addQuestion()">+ Add Question</button>
+        <button type="button" class="add-btn" (click)="addQuestion()">
+          + Add Question
+        </button>
       </div>
 
       <div formArrayName="questions">
@@ -50,9 +66,11 @@
 
           <div class="head">
             <h4>Question {{ i + 1 }}</h4>
+
             <button type="button" class="icon-delete" aria-label="Delete Question" title="Delete Question"
               (click)="deleteQuestion(i)">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                fill="currentColor" viewBox="0 0 16 16">
                 <path
                   d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0A.5.5 0 0 1 8.5 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                 <path fill-rule="evenodd"
@@ -61,19 +79,23 @@
             </button>
           </div>
 
+          <!-- Question Text -->
           <label>Question Text</label>
           <input type="text" formControlName="text" />
 
+          <!-- Question Type -->
           <label>Question Type</label>
           <select formControlName="type" (change)="handleTypeChange(i)">
             <option *ngFor="let t of questionTypes" [value]="t">{{ t }}</option>
           </select>
 
+          <!-- Required Checkbox -->
           <div class="req-check">
             <input type="checkbox" formControlName="required" />
             <span>Required</span>
           </div>
 
+          <!-- Options Section -->
           <div class="options-section" *ngIf="showOptions(i)">
             <label>Options</label>
 
@@ -86,20 +108,21 @@
 
             <button type="button" (click)="addOption(i)">+ Add Option</button>
           </div>
-        </div>
 
+        </div>
       </div>
     </div>
 
+    <!-- ===================== ACTION BUTTONS ===================== -->
     <div class="actions">
       <button type="button" class="draft" (click)="saveAsDraft()">Save as Draft</button>
-      <button type="button" class="publish" (click)="createSurveyFinal()">
-        Create Survey
-      </button>
+      <button type="button" class="publish" (click)="createSurveyFinal()">Create Survey</button>
     </div>
+
   </form>
 </div>
 
-<hr style="margin: 40px 0; opacity: 0.3" />
+<hr style="margin:40px 0;opacity:0.3;" />
 
+<!-- Recent Surveys Component (KEEP AS IS) -->
 <app-recent-surveys></app-recent-surveys>

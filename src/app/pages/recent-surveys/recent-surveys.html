@@ -14,10 +14,11 @@
           <th>Sr No.</th>
           <th>Survey Title</th>
           <th>Department(s)</th>
+          <th>Position</th>
           <th>Questions</th>
           <th>Created Date</th>
           <th>Status</th>
-          <th style="width: 260px;">Action</th>
+          <th style="width: 360px;">Action</th>
         </tr>
       </thead>
 
@@ -28,19 +29,20 @@
           <td>{{ i + 1 }}</td>
           <td>{{ s.title }}</td>
 
-          <!-- MULTIPLE DEPARTMENTS SUPPORT -->
           <td>
             {{ s.targetDepartments?.includes('ALL')
-                ? 'ALL'
-                : s.targetDepartments?.join(', ') }}
+            ? 'ALL'
+            : s.targetDepartments?.join(', ') }}
           </td>
+
+          <!-- ⭐ NEW: POSITION -->
+          <td>{{ s.targetPosition || '—' }}</td>
 
           <td>{{ s.questions?.length }}</td>
           <td>{{ s.createdAt | date:'dd MMM yyyy, hh:mm a' }}</td>
 
           <td>
-            <span class="status-badge"
-              [ngClass]="
+            <span class="status-badge" [ngClass]="
                 s.published
                   ? 'published'
                   : (s.editable ? 'draft' : 'created')
@@ -51,35 +53,39 @@
 
           <td class="action-col">
 
-            <button *ngIf="s.editable && !s.published"
-                    class="btn edit-btn"
-                    (click)="editSurvey(s.id)">
+            <!-- ENABLE EDIT ONLY BEFORE PUBLISH -->
+            <button *ngIf="s.editable && !s.published" class="btn edit-btn" (click)="editSurvey(s.id)">
               Edit
             </button>
 
+            <!-- PUBLISH + VIEW PREVIEW -->
             <ng-container *ngIf="!s.editable && !s.published">
-              <button class="btn publish-btn"
-                      (click)="publishSurvey(s.id)">
+              <button class="btn publish-btn" (click)="publishSurvey(s.id)">
                 Publish
               </button>
 
-              <a class="btn view-btn"
-                [href]="openForm(s.formLink)"
-                target="_blank">
+              <a class="btn view-btn" [href]="openForm(s.formLink)" target="_blank">
                 View
               </a>
             </ng-container>
 
+            <!-- AFTER PUBLISHED -->
             <ng-container *ngIf="s.published">
-              <a class="btn view-btn"
-                [href]="openForm(s.formLink)"
-                target="_blank">
-                View
+
+              <!-- ⭐ NEW: VIEW RESPONSES BUTTON -->
+              <!-- add this inside action-col alongside other buttons -->
+              <button class="btn view-response-btn" *ngIf="s.published" (click)="viewResponses(s.id)">
+                View Responses
+              </button>
+
+
+
+              <a class="btn view-btn" [href]="openForm(s.formLink)" target="_blank">
+                View Form
               </a>
             </ng-container>
 
-            <button class="btn delete-btn"
-                    (click)="deleteSurvey(s.id)">
+            <button class="btn delete-btn" (click)="deleteSurvey(s.id)">
               Delete
             </button>
 
@@ -94,22 +100,16 @@
 
   <div class="pagination-controls" *ngIf="totalPages > 1">
 
-    <button (click)="prevPage()"
-            [disabled]="currentPage === 1"
-            class="btn">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="btn">
       Previous
     </button>
 
-    <button *ngFor="let page of pages"
-            (click)="goToPage(page)"
-            [class.active]="page === currentPage"
-            class="btn page-btn">
+    <button *ngFor="let page of pages" (click)="goToPage(page)" [class.active]="page === currentPage"
+      class="btn page-btn">
       {{ page }}
     </button>
 
-    <button (click)="nextPage()"
-            [disabled]="currentPage === totalPages"
-            class="btn">
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="btn">
       Next
     </button>
 
@@ -118,7 +118,7 @@
 </div>
 
 
-<!-- POPUP LOADER (MODAL STYLE) -->
+<!-- POPUP LOADER -->
 <div class="popup-overlay" *ngIf="loading">
   <div class="popup-loader-box">
     <div class="popup-spinner"></div>

@@ -317,3 +317,13 @@
   font-weight: 600;
   color: #333;
 }
+/* View Responses Button (same style as view-btn) */
+.response-btn {
+   background: linear-gradient(135deg, #66d9ef, #009B8C);
+  color: #003f3a;
+}
+
+.response-btn:hover {
+ background: linear-gradient(135deg, #5ad1e7, #008f80);
+  color: #fff;
+}

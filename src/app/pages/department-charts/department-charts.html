@@ -14,7 +14,7 @@
 </div> -->
 
 
-<div class="charts-grid">
+<!-- <div class="charts-grid">
   <div class="chart-card">
     <h6>Response Rate</h6>
     <div class="chart-wrapper">
@@ -36,4 +36,34 @@
       </canvas>
     </div>
   </div>
+</div> -->
+
+<div class="charts-grid">
+
+  <!-- LEFT SIDE: BAR -->
+  <div class="chart-card equal-card">
+    <h6>Response Breakdown</h6>
+    <div class="chart-equal-wrapper">
+      <canvas baseChart
+        [data]="barData"
+        [options]="barOptions"
+        [type]="'bar'">
+      </canvas>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE: DONUT -->
+  <div class="chart-card equal-card">
+    <h6>Submission Summary</h6>
+    <div class="chart-equal-wrapper">
+      <canvas baseChart
+        [data]="donutData"
+        [options]="donutOptions"
+        [type]="'doughnut'">
+      </canvas>
+    </div>
+  </div>
+
 </div>
+
+

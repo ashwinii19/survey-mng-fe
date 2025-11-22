@@ -15,9 +15,46 @@ canvas {
     max-width: 100%
 } */
 
-.charts-grid { display:flex; gap:18px; align-items:flex-start; }
+/* .charts-grid { display:flex; gap:18px; align-items:flex-start; }
 .chart-card { flex:1; background:#fff; padding:16px; border-radius:10px; min-height:300px; }
 .chart-card.donut { width:320px; }
 .chart-wrapper { height:320px; }
 .chart-wrapper.small { height:280px; }
-.chart-card h6 { margin-bottom:12px; color:#0f172a; }
+.chart-card h6 { margin-bottom:12px; color:#0f172a; } */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* equal width */
+  gap: 20px;
+}
+
+/* SAME HEIGHT + WIDTH FOR BOTH SIDE CARDS */
+.equal-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  height: 340px;    /* 🔥 equal height */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.equal-card h6 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* CHART EXACT SAME SIZE */
+.chart-equal-wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 260px;    /* 🔥 same height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.chart-equal-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}

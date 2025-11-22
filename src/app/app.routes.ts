@@ -196,6 +196,8 @@
 
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth-guard';
+import { ResponseSummaryComponent } from './components/response-summary.component/response-summary.component';
+import { RecentSurveys } from './pages/recent-surveys/recent-surveys';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -337,7 +339,10 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./components/create-survey.component/create-survey.component')
                 .then(m => m.CreateSurveyComponent)
-          }
+          },
+          { path: '', component: RecentSurveys },
+          { path: ':surveyId/responses', component: ResponseSummaryComponent },
+
         ]
       },
 

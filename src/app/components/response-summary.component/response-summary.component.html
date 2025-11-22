@@ -1,0 +1,114 @@
+<div class="summary-wrapper" *ngIf="summary">
+
+  <h2>{{ summary.surveyTitle }} - Response Summary</h2>
+
+  <div class="stats-row">
+
+    <div class="stat-box">
+      <h3>Total Employees</h3>
+      <p>{{ summary.totalEmployees }}</p>
+    </div>
+
+    <div class="stat-box">
+      <h3>Submitted</h3>
+      <p>{{ summary.submittedCount }}</p>
+    </div>
+
+    <div class="stat-box">
+      <h3>Pending</h3>
+      <p>{{ summary.pendingCount }}</p>
+    </div>
+
+    <div class="stat-box">
+      <h3>Submission %</h3>
+      <p>
+        {{
+          summary.totalEmployees > 0
+            ? ((summary.submittedCount / summary.totalEmployees) * 100
+              | number:'1.0-1')
+            : 0
+        }}%
+      </p>
+    </div>
+
+  </div>
+
+  <hr />
+
+  <!-- QUESTION LOOP -->
+  <div *ngFor="let q of questionStats" class="question-card">
+
+    <h3>{{ q.questionText }}</h3>
+    <p class="type">Type: {{ q.questionType }}</p>
+    <p>Total Responses: {{ q.totalResponses }}</p>
+
+    <!-- OPTION-BASED QUESTIONS ONLY -->
+    <div *ngIf="q.questionType !== 'TEXT' && q.questionType !== 'TEXTAREA'">
+
+      <div *ngIf="q.optionCounts | keyvalue as opts">
+
+        <div class="chart-row">
+
+  <div class="chart-box">
+    <div class="chart-canvas-wrapper">
+      <canvas baseChart
+        [data]="buildPieData(q)"
+        [type]="'pie'"
+        [options]="pieOptions">
+      </canvas>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="chart-canvas-wrapper">
+      <canvas baseChart
+        [data]="buildBarData(q)"
+        [type]="'bar'"
+        [options]="barOptions">
+      </canvas>
+    </div>
+  </div>
+
+</div>
+
+        <table class="option-table">
+          <thead>
+            <tr>
+              <th>Option</th>
+              <th>Count</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let opt of opts">
+              <td>{{ opt.key }}</td>
+              <td>{{ opt.value }}</td>
+              <td>
+                {{
+                  q.totalResponses > 0
+                    ? ((castToNumber(opt.value) / q.totalResponses * 100)
+                        | number:'1.0-1')
+                    : 0
+                }}%
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+
+    <!-- TEXT / TEXTAREA QUESTIONS (NO GRAPHS) -->
+    <div *ngIf="q.questionType === 'TEXT' || q.questionType === 'TEXTAREA'">
+      <h4>Text Responses</h4>
+
+      <ul class="text-list">
+        <li *ngFor="let t of q.textAnswers">{{ t }}</li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>

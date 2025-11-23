@@ -319,11 +319,13 @@
 }
 /* View Responses Button (same style as view-btn) */
 .response-btn {
-   background: linear-gradient(135deg, #66d9ef, #009B8C);
-  color: #003f3a;
+  background: linear-gradient(135deg, #66d9ef, #009B8C) !important;
+  color: #003f3a !important;
+  border: none !important;
 }
 
 .response-btn:hover {
- background: linear-gradient(135deg, #5ad1e7, #008f80);
-  color: #fff;
+  background: linear-gradient(135deg, #5ad1e7, #008f80) !important;
+  color: #fff !important;
 }
+

@@ -1,18 +1,3 @@
-<!-- <div class="filters">
-  <select [(ngModel)]="selectedSurveyId" (ngModelChange)="surveyChanged($event)">
-    <option [ngValue]="undefined">All Surveys</option>
-    <option *ngFor="let s of surveys" [ngValue]="s.id">{{ s.title }}</option>
-  </select>
-
-  <select [(ngModel)]="selectedDepartmentId" (ngModelChange)="deptChanged($event)">
-    <option [ngValue]="undefined">All Departments</option>
-    <option *ngFor="let d of departments" [ngValue]="d.id">{{ d.name }}</option>
-  </select>
-
-  <button (click)="apply()">Apply</button>
-</div> -->
-
-
 <div class="filters-container">
 
   <div class="filters-row">
@@ -40,7 +25,8 @@
         [(ngModel)]="selectedDepartmentId"
         (ngModelChange)="deptChanged($event)"
       >
-        <option [ngValue]="null">-- All Departments --</option>
+        <!-- <option [ngValue]="null">-- All Departments --</option> -->
+         <option [ngValue]="null">ALL Departments</option>
         <option *ngFor="let d of departments" [ngValue]="d.id ?? d.departmentId">
           {{ d.name }}
         </option>

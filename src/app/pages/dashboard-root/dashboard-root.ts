@@ -41,8 +41,8 @@ export default class DashboardRoot implements OnInit {
   selectedDepartmentId: number | null = null;
 
   showResults = false;
-  showAssignmentAlert = false;  // 👈 alert for NOT_ASSIGNED or invalid department selection
-  assignmentMessage = "";       // 👈 show message like “Survey not assigned to HR”
+  showAssignmentAlert = false;  
+  assignmentMessage = "";       
 
   totalEmployees = 0;
   submittedCount = 0;
@@ -98,82 +98,85 @@ export default class DashboardRoot implements OnInit {
       HANDLES FILTER VALIDATION FROM FILTER-PANEL (Frontend)
   ============================================================= */
   onFilterChange(canApply: boolean) {
-    if (!canApply) {
-      this.showResults = false;
-      this.dashboard = undefined;
 
-      this.showAssignmentAlert = true;
-      this.assignmentMessage = "This survey is not assigned to the selected department.";
-
-      return;
-    }
-
-    this.showAssignmentAlert = false;
+  // If FiltersPanel says "invalid" → hide dashboard
+  if (!canApply) {
+    this.showResults = false;
+    this.dashboard = undefined;
+    this.showAssignmentAlert = false;   // ❗ FIX: do NOT show invalid here
     this.assignmentMessage = "";
-
-    this.showResults = true;
-    this.loadDashboard();
+    return;
   }
+
+  // If valid → load dashboard
+  this.showAssignmentAlert = false;
+  this.assignmentMessage = "";
+
+  this.showResults = true;
+  this.loadDashboard();
+}
+
 
   /* =============================================================
       LOAD DASHBOARD DATA  → FIXED ERROR HANDLING
   ============================================================= */
   private loadDashboard(): void {
 
-    const sId = this.selectedSurveyId ?? undefined;
-    const dId = this.selectedDepartmentId ?? undefined;
+  const sId =
+  this.selectedSurveyId === null ||
+  this.selectedSurveyId === undefined
+    ? undefined
+    : Number(this.selectedSurveyId);
 
-    this.svc.getDashboard(sId as any, dId as any).subscribe({
-      next: (res: any) => {
+const dId =
+  this.selectedDepartmentId === null ||
+  this.selectedDepartmentId === undefined
+    ? undefined
+    : Number(this.selectedDepartmentId);
 
-        // Backend might send: { error: "NOT_ASSIGNED" }
-        if (res?.error) {
-          this.showResults = false;
-          this.showAssignmentAlert = true;
 
-          if (res.error === "NOT_ASSIGNED") {
-            this.assignmentMessage = "This survey is not assigned to the selected department.";
-          } else {
-            this.assignmentMessage = res.error;
-          }
-
-          return;
-        }
-
-        // NO ERROR → NORMAL FLOW
-        this.showAssignmentAlert = false;
-        this.assignmentMessage = "";
-
-        this.dashboard = res;
-
-        this.submittedEmployeesRaw = res?.submittedEmployees ?? [];
-        this.pendingEmployeesRaw = res?.pendingEmployees ?? [];
-
-        this.submittedEmployees = this.parseList(this.submittedEmployeesRaw);
-        this.pendingEmployees = this.parseList(this.pendingEmployeesRaw);
-
-        this.computeKPIs();
-        this.showResults = true;
-      },
-
-      /* ------------------ SERVER 500 FIX ------------------ */
-      error: (err) => {
-        console.warn("Backend Dashboard Error: ", err);
-
+  this.svc.getDashboard(sId, dId).subscribe({
+    next: (res: any) => {
+      if (res?.error) {
         this.showResults = false;
-        this.dashboard = undefined;
         this.showAssignmentAlert = true;
 
-        const msg = err?.error?.message ?? err?.error?.error ?? "";
+        this.assignmentMessage =
+          res.error === 'NOT_ASSIGNED'
+            ? "This survey is not assigned to the selected department."
+            : res.error;
 
-        if (typeof msg === "string" && msg.toLowerCase().includes("assigned")) {
-          this.assignmentMessage = "This survey is not assigned to the selected department.";
-        } else {
-          this.assignmentMessage = "Failed to load dashboard. Please check assignments.";
-        }
+        return;
       }
-    });
-  }
+
+      this.showAssignmentAlert = false;
+      this.assignmentMessage = "";
+
+      this.dashboard = res;
+
+      this.submittedEmployeesRaw = res?.submittedEmployees ?? [];
+      this.pendingEmployeesRaw = res?.pendingEmployees ?? [];
+
+      this.submittedEmployees = this.parseList(this.submittedEmployeesRaw);
+      this.pendingEmployees = this.parseList(this.pendingEmployeesRaw);
+
+      this.computeKPIs();
+      this.showResults = true;
+    },
+
+    error: (err) => {
+      this.showResults = false;
+      this.dashboard = undefined;
+      this.showAssignmentAlert = true;
+
+      const msg = err?.error?.message ?? err?.error?.error ?? "";
+
+      this.assignmentMessage = msg.toLowerCase().includes("assigned")
+        ? "This survey is not assigned to the selected department."
+        : "Failed to load dashboard. Please check assignments.";
+    }
+  });
+}
 
   /* =============================================================
       Parse Employee List

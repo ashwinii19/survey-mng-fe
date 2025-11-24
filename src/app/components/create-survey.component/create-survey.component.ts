@@ -106,7 +106,6 @@ export class CreateSurveyComponent implements OnInit {
       next: (s: any) => {
         this.currentSurveyEditable = !!s.editable;
 
-        // Department mapping (convert name → id)
         let selectedDeptId: number | null = null;
         if (s.targetDepartments?.includes("ALL")) {
           selectedDeptId = 0;
@@ -122,7 +121,6 @@ export class CreateSurveyComponent implements OnInit {
           targetPosition: s.targetPosition || ''
         });
 
-        // Load questions
         this.questions.clear();
 
         (s.questions || []).forEach((q: any) => {
@@ -202,22 +200,6 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   // =================================================================
-  // VALIDATION → DEPARTMENT OR POSITION REQUIRED
-  // =================================================================
-  validateTargetFields(): boolean {
-    const dept = this.surveyForm.value.targetDepartments;
-    const pos = this.surveyForm.value.targetPosition?.trim();
-
-    if ((dept === null || dept === '') && (!pos || pos.length === 0)) {
-      this.validationError = "Please select at least one: Department or Position.";
-      return false;
-    }
-
-    this.validationError = null;
-    return true;
-  }
-
-  // =================================================================
   // PAYLOAD NORMALIZATION
   // =================================================================
   normalizePayload(payload: any) {
@@ -241,159 +223,121 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   // =================================================================
+  // MAIN VALIDATION (UPDATED)
+  // =================================================================
+  validateDeptPosition(): boolean {
+    const dept = this.surveyForm.value.targetDepartments;
+    const pos = this.surveyForm.value.targetPosition?.trim();
+
+    if (!dept || !pos) return true; // nothing to validate
+
+    const deptId = Number(dept);
+    const posNormalized = pos.toLowerCase();
+
+    const employeesInDept = this.employees.filter(
+      e => e.department?.id === deptId
+    );
+
+    const exists = employeesInDept.some(
+      e => e.position?.trim().toLowerCase() === posNormalized
+    );
+
+    if (!exists) {
+      alert(`The position "${pos}" does NOT exist inside selected department.`);
+      return false;
+    }
+
+    return true;
+  }
+
+  // =================================================================
   // SAVE FINAL SURVEY
   // =================================================================
-  // createSurveyFinal() {
-
-  //   if (!this.validateTargetFields()) return;
-
-  //   if (this.surveyForm.invalid) {
-  //     this.validationError = "Please fill all required fields.";
-  //     return;
-  //   }
-
-  //   let payload = this.normalizePayload({
-  //     ...this.surveyForm.value,
-  //     draft: false
-  //   });
-
-  //   if (this.isEditMode && this.currentSurveyId) {
-  //     this.surveyService.updateSurvey(this.currentSurveyId, payload).subscribe({
-  //       next: () => {
-  //         alert("Survey updated successfully!");
-  //         this.router.navigate(['/app/surveys']);
-  //       }
-  //     });
-  //     return;
-  //   }
-
-  //   this.surveyService.createSurvey(payload).subscribe({
-  //     next: () => {
-  //       alert("Survey created successfully!");
-  //       this.router.navigate(['/app/surveys']);
-  //     }
-  //   });
-  // }
-
   createSurveyFinal() {
 
-  // ---- VALIDATION: Department/Position ----
-  const dept = this.surveyForm.value.targetDepartments;
-  const pos  = this.surveyForm.value.targetPosition;
+    const dept = this.surveyForm.value.targetDepartments;
+    const pos  = this.surveyForm.value.targetPosition;
 
-  if ((!dept || dept === '') && (!pos || pos.trim() === '')) {
-    alert("Please select at least one department or position.");
-    return;
-  }
+    if ((!dept || dept === '') && (!pos || pos.trim() === '')) {
+      alert("Please select at least one department or position.");
+      return;
+    }
 
-  // ---- VALIDATION: At least one question ----
-  if (this.questions.length === 0) {
-    alert("Please add at least one question before creating the survey.");
-    return;
-  }
+    if (!this.validateDeptPosition()) return;
 
-  // ---- Form validation ----
-  if (this.surveyForm.invalid) {
-    alert("Please fill all required fields.");
-    return;
-  }
+    if (this.questions.length === 0) {
+      alert("Please add at least one question before creating the survey.");
+      return;
+    }
 
-  let payload = this.normalizePayload({ 
-    ...this.surveyForm.value, 
-    draft: false 
-  });
+    if (this.surveyForm.invalid) {
+      alert("Please fill all required fields.");
+      return;
+    }
 
-  if (this.isEditMode && this.currentSurveyId) {
-    this.surveyService.updateSurvey(this.currentSurveyId, payload).subscribe({
+    let payload = this.normalizePayload({
+      ...this.surveyForm.value,
+      draft: false
+    });
+
+    if (this.isEditMode && this.currentSurveyId) {
+      this.surveyService.updateSurvey(this.currentSurveyId, payload).subscribe({
+        next: () => {
+          alert("Survey updated successfully!");
+          this.router.navigate(['/app/surveys']);
+        }
+      });
+      return;
+    }
+
+    this.surveyService.createSurvey(payload).subscribe({
       next: () => {
-        alert("Survey updated successfully!");
+        alert("Survey created successfully!");
         this.router.navigate(['/app/surveys']);
       }
     });
-    return;
   }
-
-  this.surveyService.createSurvey(payload).subscribe({
-    next: () => {
-      alert("Survey created successfully!");
-      this.router.navigate(['/app/surveys']);
-    }
-  });
-}
-
 
   // =================================================================
   // SAVE AS DRAFT
   // =================================================================
-  // saveAsDraft() {
-  //   let payload = this.normalizePayload({
-  //     ...this.surveyForm.getRawValue(),
-  //     draft: true
-  //   });
-
-  //   if (!payload.questions.length) {
-  //     payload.questions = [
-  //       { text: 'Draft Placeholder', type: 'text', required: false, options: [] }
-  //     ];
-  //   }
-
-  //   if (this.isEditMode && this.currentSurveyId) {
-  //     this.surveyService.updateSurvey(this.currentSurveyId, payload).subscribe({
-  //       next: () => {
-  //         alert("Draft updated successfully!");
-  //         this.router.navigate(['/app/surveys']);
-  //       }
-  //     });
-  //     return;
-  //   }
-
-  //   this.surveyService.createSurvey(payload).subscribe({
-  //     next: () => {
-  //       alert("Survey saved as draft!");
-  //       this.router.navigate(['/app/surveys']);
-  //     }
-  //   });
-  // }
-
   saveAsDraft() {
 
-  // ---- VALIDATION: Department OR Position required ----
-  const dept = this.surveyForm.value.targetDepartments;
-  const pos  = this.surveyForm.value.targetPosition;
+    const dept = this.surveyForm.value.targetDepartments;
+    const pos  = this.surveyForm.value.targetPosition;
 
-  if ((!dept || dept === '') && (!pos || pos.trim() === '')) {
-    alert("Please select at least one department or position.");
-    return;
-  }
+    if ((!dept || dept === '') && (!pos || pos.trim() === '')) {
+      alert("Please select at least one department or position.");
+      return;
+    }
 
-  const raw = this.surveyForm.getRawValue();
-  let payload = this.normalizePayload({ ...raw, draft: true });
+    if (!this.validateDeptPosition()) return;
 
-  // ---- Draft: allow empty but still require at least placeholder question ----
-  if (!payload.questions.length) {
-    payload.questions = [
-      { text: 'Draft Placeholder', type: 'text', required: false, options: [] }
-    ];
-  }
+    const raw = this.surveyForm.getRawValue();
+    let payload = this.normalizePayload({ ...raw, draft: true });
 
-  if (this.isEditMode && this.currentSurveyId) {
-    this.surveyService.updateSurvey(this.currentSurveyId, payload).subscribe({
+    if (!payload.questions.length) {
+      payload.questions = [
+        { text: 'Draft Placeholder', type: 'text', required: false, options: [] }
+      ];
+    }
+
+    if (this.isEditMode && this.currentSurveyId) {
+      this.surveyService.updateSurvey(this.currentSurveyId, payload).subscribe({
+        next: () => {
+          alert("Draft updated successfully!");
+          this.router.navigate(['/app/surveys']);
+        }
+      });
+      return;
+    }
+
+    this.surveyService.createSurvey(payload).subscribe({
       next: () => {
-        alert("Draft updated successfully!");
+        alert("Survey saved as draft!");
         this.router.navigate(['/app/surveys']);
       }
     });
-    return;
   }
 
-  this.surveyService.createSurvey(payload).subscribe({
-    next: () => {
-      alert("Survey saved as draft!");
-      this.router.navigate(['/app/surveys']);
-    }
-  });
 }
-
-}
-
-

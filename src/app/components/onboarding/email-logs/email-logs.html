@@ -1,11 +1,15 @@
+
+
+
+
 <div class="container-fluid py-4">
-    <!-- Header with Transparent Teal Shade -->
+   
     <div class="row mb-4">
         <div class="col">
             <div class="p-4 rounded-3 position-relative overflow-hidden" 
                  style="background: linear-gradient(135deg, rgba(0, 155, 140, 0.15) 0%, rgba(0, 155, 140, 0.08) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(0, 155, 140, 0.2);">
                 
-                <!-- Subtle teal accent lines -->
+                
                 <div class="position-absolute top-0 start-0 w-100 h-1" style="background: linear-gradient(90deg, #009B8C, transparent);"></div>
                 <div class="position-absolute bottom-0 start-0 w-100 h-1" style="background: linear-gradient(90deg, transparent, #009B8C);"></div>
                 
@@ -28,7 +32,7 @@
         </div>
     </div>
 
-    <!-- Summary Cards -->
+  
     <div class="row mb-4">
         <div class="col-xl-3 col-md-4 col-6 mb-3">
             <div class="card border-0" style="background-color: rgba(0, 155, 140, 0.1)">
@@ -64,7 +68,7 @@
         </div>
     </div>
 
-    <!-- Main Table -->
+   
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-white border-0 py-3">
             <div class="row align-items-center">
@@ -76,7 +80,11 @@
                         <span class="input-group-text bg-light border-0">
                             <i class="bi bi-search text-muted"></i>
                         </span>
-                        <input type="text" class="form-control border-0 bg-light" placeholder="Search logs...">
+                        <input type="text" 
+                               class="form-control border-0 bg-light" 
+                               placeholder="Search logs..."
+                               [(ngModel)]="searchTerm"
+                               (input)="onSearchChange()">
                     </div>
                 </div>
             </div>
@@ -104,7 +112,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let log of emailLogs" class="border-bottom">
+                        <tr *ngFor="let log of displayedEmailLogs" class="border-bottom">
                             <td class="ps-4">
                                 <span class="fw-bold text-dark">#{{log.id}}</span>
                             </td>
@@ -151,7 +159,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="emailLogs.length === 0">
+                        <tr *ngIf="displayedEmailLogs.length === 0">
                             <td colspan="8" class="text-center py-5">
                                 <div class="py-4">
                                     <i class="bi bi-inbox display-1 text-muted opacity-25 mb-3"></i>
@@ -165,34 +173,125 @@
             </div>
         </div>
         
-        <!-- Pagination -->
-        <div class="card-footer bg-white border-0 py-3">
+      
+        <!-- <div class="card-footer bg-white border-0 py-3">
             <div class="row align-items-center">
                 <div class="col">
-                    <p class="text-muted mb-0 small">Showing {{emailLogs.length}} of {{getTotalLogs()}} logs</p>
+                    <p class="text-muted mb-0 small">
+                        Showing {{displayedEmailLogs.length}} of {{totalItems}} logs
+                        (Page {{currentPage}} of {{totalPages}})
+                    </p>
                 </div>
                 <div class="col-auto">
                     <nav>
                         <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item">
-                                <a class="page-link text-muted" href="#">Previous</a>
+                           
+                            <li class="page-item" [class.disabled]="currentPage === 1">
+                                <a class="page-link text-muted" 
+                                   href="javascript:void(0)"
+                                   (click)="previousPage()"
+                                   [class.text-muted]="currentPage === 1">
+                                    Previous
+                                </a>
                             </li>
-                            <li class="page-item active">
-                                <a class="page-link text-white" href="#" style="background-color: #009B8C; border-color: #009B8C">1</a>
+                            
+                           
+                            <li class="page-item" 
+                                *ngFor="let page of getPageNumbers()"
+                                [class.active]="page === currentPage">
+                                <a class="page-link" 
+                                   href="javascript:void(0)"
+                                   (click)="goToPage(page)"
+                                   [class.text-white]="page === currentPage"
+                                   [class.text-muted]="page !== currentPage"
+                                   [style.background-color]="page === currentPage ? '#009B8C' : ''"
+                                   [style.border-color]="page === currentPage ? '#009B8C' : ''">
+                                    {{page}}
+                                </a>
                             </li>
-                            <li class="page-item">
-                                <a class="page-link text-muted" href="#">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link text-muted" href="#">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link text-muted" href="#">Next</a>
+                          
+                            <li class="page-item" [class.disabled]="currentPage === totalPages">
+                                <a class="page-link text-muted" 
+                                   href="javascript:void(0)"
+                                   (click)="nextPage()"
+                                   [class.text-muted]="currentPage === totalPages">
+                                    Next
+                                </a>
                             </li>
                         </ul>
                     </nav>
                 </div>
             </div>
+        </div> -->
+
+
+
+
+
+        <!-- Pagination -->
+<div class="card-footer bg-white border-0 py-3">
+    <div class="row align-items-center">
+        <div class="col-md-4">
+            <div class="d-flex align-items-center">
+                <span class="text-muted small me-2">Show</span>
+                <select class="form-select form-select-sm" 
+                        style="width: 80px;"
+                        [(ngModel)]="itemsPerPage"
+                        (change)="onItemsPerPageChange()">
+                    <option *ngFor="let option of itemsPerPageOptions" [value]="option">
+                        {{option}}
+                    </option>
+                </select>
+                <span class="text-muted small ms-2">entries</span>
+            </div>
         </div>
+        <div class="col-md-4 text-center">
+            <p class="text-muted mb-0 small">
+                Showing {{displayedEmailLogs.length}} of {{totalItems}} logs
+                (Page {{currentPage}} of {{totalPages}})
+            </p>
+        </div>
+        <div class="col-md-4">
+            <nav>
+                <ul class="pagination pagination-sm mb-0 justify-content-end">
+                    <!-- Previous Button -->
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                        <a class="page-link text-muted" 
+                           href="javascript:void(0)"
+                           (click)="previousPage()"
+                           [class.text-muted]="currentPage === 1">
+                            Previous
+                        </a>
+                    </li>
+                    
+                    <!-- Page Numbers -->
+                    <li class="page-item" 
+                        *ngFor="let page of getPageNumbers()"
+                        [class.active]="page === currentPage">
+                        <a class="page-link" 
+                           href="javascript:void(0)"
+                           (click)="goToPage(page)"
+                           [class.text-white]="page === currentPage"
+                           [class.text-muted]="page !== currentPage"
+                           [style.background-color]="page === currentPage ? '#009B8C' : ''"
+                           [style.border-color]="page === currentPage ? '#009B8C' : ''">
+                            {{page}}
+                        </a>
+                    </li>
+                    
+                    <!-- Next Button -->
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <a class="page-link text-muted" 
+                           href="javascript:void(0)"
+                           (click)="nextPage()"
+                           [class.text-muted]="currentPage === totalPages">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
     </div>
 </div>

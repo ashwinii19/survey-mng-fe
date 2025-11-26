@@ -371,33 +371,73 @@ export class EmployeeBatchImportComponent {
   }
 
   // ... rest of your methods remain the same
-  downloadTemplate(): void {
-    const template = `employeeId,name,email,position,department,status,joinDate
-EMP001,John Doe,john.doe@company.com,Software Engineer,Engineering,Active,2024-01-15
-EMP002,Jane Smith,jane.smith@company.com,Product Manager,Product,Active,2024-01-20
-EMP003,Bob Johnson,bob.johnson@company.com,HR Specialist,HR,Active,2024-02-01
-EMP004,Alice Brown,alice.brown@company.com,UX Designer,Design,Active,2024-02-10
-EMP005,Charlie Wilson,charlie.wilson@company.com,Data Analyst,Analytics,Inactive,2024-02-15
+//   downloadTemplate(): void {
+//     const template = `employeeId,name,email,position,department,status,joinDate
+// EMP001,John Doe,john.doe@company.com,Software Engineer,Engineering,Active,2024-01-15
+// EMP002,Jane Smith,jane.smith@company.com,Product Manager,Product,Active,2024-01-20
+// EMP003,Bob Johnson,bob.johnson@company.com,HR Specialist,HR,Active,2024-02-01
+// EMP004,Alice Brown,alice.brown@company.com,UX Designer,Design,Active,2024-02-10
+// EMP005,Charlie Wilson,charlie.wilson@company.com,Data Analyst,Analytics,Inactive,2024-02-15
+
+// # Instructions:
+// # - Keep the header row as is
+// # - employeeId must be unique
+// # - status must be either "Active" or "Inactive"
+// # - joinDate format: YYYY-MM-DD
+// # - department must match existing departments in system
+// # - email must be valid and unique
+// # - All fields are required`;
+
+//     const blob = new Blob([template], { type: 'text/csv;charset=utf-8;' });
+//     const url = window.URL.createObjectURL(blob);
+//     const link = document.createElement('a');
+//     link.href = url;
+//     link.download = 'employee_import_template.csv';
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+//     window.URL.revokeObjectURL(url);
+//   }
+
+downloadTemplate(): void {
+  const template = `employeeId,name,email,position,status,joinDate,departmentName
+EMP001,John Doe,john.doe@company.com,Developer,ACTIVE,2024-01-15,IT
+EMP002,Jane Smith,jane.smith@company.com,Manager,ACTIVE,2024-01-16,HR
+EMP003,Mike Johnson,mike.johnson@company.com,Analyst,ACTIVE,2024-01-17,Finance
+EMP004,Sarah Wilson,sarah.wilson@company.com,Developer,ACTIVE,2024-01-18,IT
+EMP005,David Lee,david.lee@company.com,HR Specialist,ACTIVE,2024-01-19,HR
 
 # Instructions:
-# - Keep the header row as is
-# - employeeId must be unique
-# - status must be either "Active" or "Inactive"
-# - joinDate format: YYYY-MM-DD
-# - department must match existing departments in system
-# - email must be valid and unique
-# - All fields are required`;
+# - Keep the header row exactly as shown
+# - employeeId: Unique identifier (required, e.g., EMP001)
+# - name: Full name of employee (required)
+# - email: Valid email address (required, must be unique)
+# - position: Job position (required)
+# - status: Must be "ACTIVE" or "INACTIVE" (required)
+# - joinDate: Date in YYYY-MM-DD format (required)
+# - departmentName: Must match existing department names (required)
 
-    const blob = new Blob([template], { type: 'text/csv;charset=utf-8;' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'employee_import_template.csv';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-  }
+# Available Department Names:
+# - HR (Human Resources)
+# - IT (Information Technology) 
+# - Finance
+# - Marketing
+# - Operations
+# - Sales
+
+# Example:
+# EMP7966,jagriti,pragatipandey4810@gmail.com,HR,ACTIVE,2025-11-20,HR`;
+
+  const blob = new Blob([template], { type: 'text/csv;charset=utf-8;' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'employee_import_template.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+}
 
   // Clear the selected file
   clearFile(): void {

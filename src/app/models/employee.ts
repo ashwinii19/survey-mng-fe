@@ -1,3 +1,30 @@
+// export interface Employee {
+//   id: number;
+//   employeeId: string;
+//   name: string;
+//   email: string;
+//   position: string;
+//   status: string;
+//   joinDate: string;
+//  departmentName: string;
+// }
+
+// export interface Department {
+//   id: number;
+//   name: string;
+// }
+
+// export interface EmployeeRequest {
+//   employeeId: string;
+//   name: string;
+//   email: string;
+//   position: string;
+//   status: string;
+//   joinDate: string;
+//   departmentId: number;
+// }
+
+
 export interface Employee {
   id: number;
   employeeId: string;
@@ -6,6 +33,7 @@ export interface Employee {
   position: string;
   status: string;
   joinDate: string;
+  //departmentName: string;
   department: Department;
 }
 
@@ -21,5 +49,5 @@ export interface EmployeeRequest {
   position: string;
   status: string;
   joinDate: string;
-  departmentId: number;
+  departmentName: string; // Change from departmentId to departmentName
 }

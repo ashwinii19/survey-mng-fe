@@ -1,0 +1,217 @@
+/* ============================
+   GLOBAL WRAPPER — CLEAN & UNIFORM
+============================ */
+.container-fluid {
+  padding: 48px 64px;
+  background: #f5f7fa;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  box-sizing: border-box;
+}
+
+/* ============================
+   PAGE TITLE (Optional)
+============================ */
+h1 {
+  font-size: 34px;
+  font-weight: 700;
+  color: #009B8C;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* ============================
+   HEADER BOX — RECTANGULAR
+============================ */
+.page-header {
+  background: #ffffff;
+  border: 1px solid #e5eaf1;
+  padding: 26px 32px;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+  margin-bottom: 32px;
+}
+
+/* ============================
+   CARD — SAME AS CREATE SURVEY
+============================ */
+.card {
+  background: #ffffff;
+  border: 1px solid #e5eaf1 !important;
+  padding: 32px 36px;
+  border-radius: 12px !important; /* ✅ rectangular */
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
+  transition: 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.12);
+}
+
+.card-header {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 0 18px 0 !important;
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* ============================
+   FORM FIELDS — UNIFORM INPUTS
+============================ */
+label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  transition: 0.25s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #009B8C;
+  box-shadow: 0 0 8px rgba(0, 155, 140, 0.3);
+  outline: none;
+}
+
+/* ============================
+   ALERT STYLING — UNIFORM
+============================ */
+.alert {
+  border-radius: 12px !important;
+  padding: 18px 22px;
+  font-size: 15px;
+  border: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.alert-success {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+.alert-danger {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+
+.alert-info {
+  background: #e0f7f5 !important;
+  color: #006059 !important;
+}
+
+/* ============================
+   BUTTONS — SAME AS CREATE SURVEY
+============================ */
+button {
+  font-weight: 600 !important;
+  padding: 12px 22px !important;
+  border-radius: 10px !important;
+  transition: 0.25s ease;
+}
+
+/* Primary CTA */
+.btn-primary,
+.send-btn {
+  background: linear-gradient(135deg, #009B8C, #007f74) !important;
+  border: none !important;
+  color: white !important;
+  box-shadow: 0 6px 20px rgba(0, 155, 140, 0.35);
+}
+
+.btn-primary:hover,
+.send-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0, 155, 140, 0.45);
+}
+
+/* Outline Button */
+.btn-outline-secondary,
+.reset-btn {
+  border: 2px solid #009B8C !important;
+  color: #009B8C !important;
+  background: transparent !important;
+}
+
+.btn-outline-secondary:hover,
+.reset-btn:hover {
+  background: #009B8C !important;
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+/* Disabled */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ============================
+   LIST / TIPS BOX
+============================ */
+.card-body ul li {
+  margin-bottom: 6px;
+  color: #475569;
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 900px) {
+  .container-fluid {
+    padding: 24px;
+  }
+  .card {
+    padding: 24px;
+  }
+}
+/* Center aligning box like Create Survey */
+.row.justify-content-center {
+  display: flex;
+  justify-content: center;
+}
+
+/* Make the card wide & rectangular */
+.card {
+  width: 100%;
+  padding: 36px 40px;
+  border-radius: 14px;
+  border: 1px solid #e5eaf1 !important;
+  background: #ffffff;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
+}
+
+/* Smooth hover like Create Survey */
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.12);
+}
+
+/* Header spacing fix */
+.page-header,
+.card-header {
+  width: 100%;
+  margin-bottom: 24px;
+}
+.page-subtitle {
+  font-size: 17px;
+  color: #6b7280; /* keep same muted tone */
+  font-weight: 400;
+}

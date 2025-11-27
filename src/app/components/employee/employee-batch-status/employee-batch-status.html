@@ -1,7 +1,3 @@
-
-
-
-
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-md-8">
@@ -29,12 +25,9 @@
               <span>{{ getProgressPercentage() }}%</span>
             </div>
             <div class="progress">
-              <div 
-                class="progress-bar" 
-                [class.bg-warning]="batchStatus.status === 'PROCESSING'"
+              <div class="progress-bar" [class.bg-warning]="batchStatus.status === 'PROCESSING'"
                 [class.bg-success]="batchStatus.status === 'COMPLETED'"
-                [class.bg-danger]="batchStatus.status === 'FAILED'"
-                [style.width]="getProgressPercentage() + '%'">
+                [class.bg-danger]="batchStatus.status === 'FAILED'" [style.width]="getProgressPercentage() + '%'">
               </div>
             </div>
           </div>
@@ -78,7 +71,8 @@
                     <th>Success Rate:</th>
                     <td>
                       <span *ngIf="batchStatus.totalCount > 0">
-                        {{ ((batchStatus.totalCount - batchStatus.failedCount) / batchStatus.totalCount * 100).toFixed(1) }}%
+                        {{ ((batchStatus.totalCount - batchStatus.failedCount) / batchStatus.totalCount *
+                        100).toFixed(1) }}%
                       </span>
                       <span *ngIf="batchStatus.totalCount === 0">N/A</span>
                     </td>
@@ -99,9 +93,13 @@
                 <span class="d-block mb-2">
                   Some records could not be processed. You can review the details and error messages.
                 </span>
-                <button class="btn btn-warning btn-sm" (click)="viewFailedRecords()">
+                <!-- <button class="btn btn-warning btn-sm" (click)="viewFailedRecords()">
                   <i class="fas fa-list me-1"></i>View Failed Records
+                </button> -->
+                <button class="btn btn-view-failed" (click)="viewFailedRecords()">
+                  <i class="fas fa-list me-1"></i> View Failed Records
                 </button>
+
               </div>
             </div>
           </div>
@@ -126,11 +124,9 @@
             <button class="btn btn-outline-secondary" routerLink="/app/employees/batch/import">
               <i class="fas fa-upload me-1"></i> New Import
             </button>
-            
+
             <!-- Export Failed Records Button -->
-            <button *ngIf="hasFailedRecords()" 
-                    class="btn btn-outline-danger ms-auto" 
-                    (click)="viewFailedRecords()">
+            <button *ngIf="hasFailedRecords()" class="btn btn-outline-danger ms-auto" (click)="viewFailedRecords()">
               <i class="fas fa-download me-1"></i> Export Failed Records
             </button>
           </div>
@@ -151,8 +147,5 @@
 </div>
 
 <!-- Failed Records Modal -->
-<app-failed-records 
-  [batchLogId]="batchLogId"
-  [showModal]="showFailedModal"
-  (modalClosed)="onFailedModalClosed()">
+<app-failed-records [batchLogId]="batchLogId" [showModal]="showFailedModal" (modalClosed)="onFailedModalClosed()">
 </app-failed-records>

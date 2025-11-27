@@ -1,12 +1,13 @@
 <div class="container-fluid py-4">
   <!-- Header -->
-  <div class="p-4 rounded-3 mb-4" style="background: linear-gradient(135deg, rgba(0, 155, 140, 0.1) 0%, rgba(0, 155, 140, 0.05) 100%); border: 1px solid rgba(0, 155, 140, 0.2);">
+  <div class="p-4 rounded-3 mb-4"
+    style="background: linear-gradient(135deg, rgba(0, 155, 140, 0.1) 0%, rgba(0, 155, 140, 0.05) 100%); border: 1px solid rgba(0, 155, 140, 0.2);">
     <div class="d-flex justify-content-between align-items-center">
       <div>
-        <h1 class="h3 mb-1" style="color: #009B8C">
-          <i class="bi bi-send me-2"></i>Send Onboarding Emails
+        <h1 class="h3 mb-1" style="color: #041413">
+          <i></i>Send Onboarding Emails
         </h1>
-        <p class="text-muted mb-0">Trigger welcome emails for employee batches</p>
+        <p class="page-subtitle mb-0">Trigger welcome emails for employee batches</p>
       </div>
     </div>
   </div>
@@ -27,11 +28,11 @@
 
   <!-- Simple Form -->
   <div class="row justify-content-center">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
       <div class="card border-0">
         <div class="card-header bg-white border-bottom py-3">
           <h5 class="card-title mb-0 text-dark">
-            <i class="bi bi-send me-2 text-primary"></i>Send Batch Emails
+            <i></i>Send Batch Emails
           </h5>
         </div>
         <div class="card-body">
@@ -41,15 +42,8 @@
               <label for="batchId" class="form-label fw-semibold">
                 Batch ID <span class="text-danger">*</span>
               </label>
-              <input
-                type="number"
-                class="form-control form-control-lg"
-                id="batchId"
-                [(ngModel)]="batchId"
-                name="batchId"
-                placeholder="Enter batch ID (e.g., 1, 2, 3...)"
-                required
-                min="1">
+              <input type="number" class="form-control form-control-lg" id="batchId" [(ngModel)]="batchId"
+                name="batchId" placeholder="Enter batch ID (e.g., 1, 2, 3...)" required min="1">
               <div class="form-text">
                 Enter the batch ID to trigger onboarding emails for all eligible employees
               </div>
@@ -70,22 +64,14 @@
 
             <!-- Action Buttons -->
             <div class="d-flex gap-2">
-              <button
-                type="submit"
-                class="btn text-white flex-fill"
-                [disabled]="sending || !batchId"
+              <button type="submit" class="btn text-white flex-fill" [disabled]="sending || !batchId"
                 style="background-color: #009B8C; border-color: #009B8C">
                 <span *ngIf="sending" class="spinner-border spinner-border-sm me-2"></span>
-                <i class="bi" [class]="sending ? '' : 'bi-send me-1'"></i>
                 {{ sending ? 'Triggering Emails...' : 'Trigger Onboarding Emails' }}
               </button>
-              
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                (click)="resetForm()"
-                [disabled]="sending">
-                <i class="bi bi-arrow-clockwise me-1"></i>
+
+
+              <button type="button" class="btn btn-outline-secondary" (click)="resetForm()" [disabled]="sending">
                 Reset
               </button>
             </div>

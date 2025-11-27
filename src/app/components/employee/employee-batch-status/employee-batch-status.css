@@ -1,0 +1,95 @@
+/* MAIN PRIMARY BUTTON — BRAND GRADIENT */
+.btn-primary {
+  background: linear-gradient(135deg, #009B8C, #007a6f) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 12px 28px !important;
+  border-radius: 14px !important;
+  transition: 0.3s ease !important;
+  box-shadow: 0 6px 20px rgba(0, 155, 140, 0.35) !important;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 28px rgba(0, 155, 140, 0.45) !important;
+}
+
+/* SECONDARY OUTLINE — NEUTRAL */
+.btn-outline-secondary {
+  background: transparent !important;
+  border: 2px solid #64748b !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
+  padding: 12px 28px !important;
+  border-radius: 14px !important;
+  transition: 0.3s ease !important;
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 18px rgba(71, 85, 105, 0.25) !important;
+}
+
+/* OUTLINE DANGER — FOR EXPORT FAILED RECORDS */
+.btn-outline-danger {
+  background: transparent !important;
+  border: 2px solid #ef4444 !important;
+  color: #b91c1c !important;
+  font-weight: 600 !important;
+  padding: 12px 28px !important;
+  border-radius: 14px !important;
+  transition: 0.3s ease !important;
+}
+
+.btn-outline-danger:hover:not(:disabled) {
+  background: #ef4444 !important;
+  color: white !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* DISABLED STATE — UNIFORM */
+.btn:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+/* Uniform brand action button */
+.btn-view-failed {
+  background: linear-gradient(135deg, #fcd34d, #fbbf24) !important;
+  color: #78350f !important;
+  border: none !important;
+  font-weight: 600 !important;
+  border-radius: 14px !important;
+  padding: 10px 22px !important;
+  transition: 0.28s ease !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 6px 18px rgba(251, 191, 36, 0.35);
+}
+
+/* Hover animation — same as system buttons */
+.btn-view-failed:hover {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 28px rgba(251, 191, 36, 0.45);
+  color: #fff !important;
+}
+
+/* Active press effect */
+.btn-view-failed:active {
+  transform: scale(0.96);
+}
+
+/* Disabled state */
+.btn-view-failed:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

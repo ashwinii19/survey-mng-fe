@@ -1,0 +1,172 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* Page Wrapper — Same as Create Survey */
+.create-survey-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  padding: 48px 64px;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: #f5f7fa;
+  box-sizing: border-box;
+}
+
+/* Page Title */
+.create-survey-wrapper h2 {
+  font-size: 36px;
+  text-align: center;
+  color: #0f172a;
+  margin-bottom: 40px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+/* Card — Same Glow & Hover */
+.form-card {
+  background: #ffffff;
+  padding: 32px 36px;
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
+  border: 1px solid #e5eaf1;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+}
+
+/* Labels */
+label {
+  display: block;
+  color: #475569;
+  font-size: 15px;
+  margin: 14px 0 6px;
+  font-weight: 500;
+}
+
+/* Inputs, Selects, Textarea — Uniform */
+input,
+select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 15px;
+  transition: all 0.25s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: #009B8C;
+  box-shadow: 0 0 8px rgba(0, 155, 140, 0.3);
+  outline: none;
+}
+
+/* Dropdown arrow — primary color */
+select {
+  appearance: none;
+  background: #ffffff
+    url("data:image/svg+xml,%3Csvg fill='%23009B8C' width='20' height='20' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E")
+    no-repeat right 16px center;
+  background-size: 16px;
+}
+
+/* -------- BUTTONS — SAME AS CREATE SURVEY -------- */
+
+button {
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Primary — Create/Update Employee */
+.btn-primary {
+  background: linear-gradient(135deg, #009B8C, #007f74);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 155, 140, 0.35);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #007f74, #006059);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 155, 140, 0.6);
+}
+
+/* Secondary — Cancel */
+.btn-secondary {
+  background: #f0fafa;
+  color: #009B8C;
+  border: 1px solid #009B8C;
+}
+
+.btn-secondary:hover {
+  background: #e3f5f4;
+  transform: translateY(-2px);
+}
+
+/* Button Group Alignment */
+.d-flex.gap-2 {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+  margin-top: 32px;
+}
+
+/* Disable state */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+  .create-survey-wrapper {
+    padding: 24px;
+  }
+  .d-flex.gap-2 {
+    flex-direction: column;
+  }
+  button {
+    width: 100%;
+  }
+}
+/* Outer container same look as Create Survey */
+.employee-form-container {
+  width: 100%;
+  max-width: 1050px; /* wider rectangular card */
+  margin: 0 auto;
+}
+
+/* Main card — same shape & radius as create survey */
+.form-card, 
+.card {
+  border-radius: 14px !important;
+  width: 100%;
+}
+/* Center full header like Create Survey */
+.card-header {
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+  text-align: center;
+  padding: 26px !important;
+  border-bottom: 1px solid #e5eaf1;
+  background: #ffffff;
+  border-radius: 14px 14px 0 0 !important;
+}
+
+/* Title same as Create Survey heading */
+.card-header h4 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.5px;
+  margin: 0;
+}

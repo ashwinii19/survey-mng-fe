@@ -13,9 +13,9 @@
 
 /* Page header / title */
 .page-header h1 {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
-  background: linear-gradient(135deg, #009B8C, #007f74);
+  background: linear-gradient(135deg, #011210, #021b19);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -23,7 +23,7 @@
 }
 
 .page-header p {
-  font-size: 14px;
+  font-size: 17px;
   color: #64748b;
 }
 

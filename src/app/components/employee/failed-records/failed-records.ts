@@ -265,7 +265,8 @@ export interface FailedRecord {
   selector: 'app-failed-records',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './failed-records.html'
+  templateUrl: './failed-records.html',
+  styleUrls: ['./failed-records.css']
 })
 export class FailedRecordsComponent implements OnInit {
   @Input() batchLogId: string = '';

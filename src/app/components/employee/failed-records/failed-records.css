@@ -1,0 +1,325 @@
+/* Fullscreen dark overlay */
+.modal {
+  background: rgba(0, 0, 0, 0.55) !important;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+/* Modal container look — like employee list card */
+.modal-content {
+  background: #ffffff !important;
+  border-radius: 18px !important;
+  border: 1px solid #e3e8ef !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18) !important;
+  padding: 6px 4px;
+  overflow: hidden;
+}
+
+/* Header styling — clean, modern */
+.modal-header {
+  background: #f9fafb !important;
+  border-bottom: 1px solid #e3e8ef !important;
+  padding: 18px 26px !important;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a !important;
+}
+
+/* Close icon */
+.btn-close {
+  filter: brightness(0.3) !important;
+  opacity: 0.6 !important;
+}
+
+.btn-close:hover {
+  opacity: 1 !important;
+}
+
+/* Modal body spacing */
+.modal-body {
+  padding: 28px 30px !important;
+  color: #334155 !important;
+}
+
+/* Info alert matches brand */
+.alert-info {
+  background: #e0f7f5 !important;
+  color: #006059 !important;
+  border: none !important;
+  border-radius: 12px !important;
+}
+
+/* Warning alert */
+.alert-warning {
+  background: #fff7d6 !important;
+  border-radius: 12px !important;
+}
+
+/* Error alert */
+.alert-danger {
+  background: #ffe5e5 !important;
+  border-radius: 12px !important;
+}
+
+/* Table uniform like employee list */
+.table-bordered {
+  border-color: #e2e8f0 !important;
+}
+
+.table-hover tbody tr:hover {
+  background: #f1fffb !important;
+}
+
+.table-dark {
+  background: linear-gradient(135deg, #009B8C, #007a6f) !important;
+  border: none !important;
+}
+
+/* Badge styling uniform */
+.badge {
+  font-size: 13px !important;
+  padding: 6px 12px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+}
+
+/* Export CSV button */
+.btn-outline-primary.btn-sm {
+  border: 2px solid #009B8C !important;
+  color: #009B8C !important;
+  font-weight: 600 !important;
+  border-radius: 14px !important;
+  padding: 8px 20px !important;
+  transition: 0.3s ease;
+}
+
+.btn-outline-primary.btn-sm:hover:not(:disabled) {
+  background: #009B8C !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 155, 140, 0.35);
+}
+
+/* Close button - uniform secondary CTA */
+.modal-footer .btn-secondary {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+  border-radius: 14px !important;
+  padding: 10px 24px !important;
+  font-weight: 600 !important;
+  transition: 0.3s ease;
+}
+
+.modal-footer .btn-secondary:hover {
+  background: #cbd5e1 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(71, 85, 105, 0.25);
+}
+
+/* Footer */
+.modal-footer {
+  border-top: 1px solid #e3e8ef !important;
+  padding: 18px 26px !important;
+}
+
+/* Scroll behavior — inside body only */
+.modal-dialog-scrollable .modal-body {
+  max-height: 70vh !important;
+  overflow-y: auto !important;
+}
+
+/* Rounded scrollbars */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #009B8C;
+  border-radius: 10px;
+}
+/* ===============================
+   GLOBAL UNIFORM THEME
+=============================== */
+:root {
+  --brand-primary: #009B8C;
+  --brand-primary-dark: #007a6f;
+  --brand-bg: #F6F9FC;
+  --brand-surface: #ffffff;
+  --brand-border: #e3e8ef;
+  --radius: 14px;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  --shadow: 0px 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* ===============================
+   MODAL OVERLAY
+=============================== */
+.modal {
+  background: rgba(0, 0, 0, 0.55) !important;
+}
+
+/* ===============================
+   MODAL CONTAINER — LIKE EMP LIST
+=============================== */
+.modal-content {
+  border-radius: var(--radius);
+  border: 1px solid var(--brand-border);
+  box-shadow: var(--shadow);
+  background: var(--brand-surface);
+  padding: 5px;
+}
+
+/* ===============================
+   MODAL HEADER
+=============================== */
+.modal-header {
+  border-bottom: 1px solid var(--brand-border);
+  background: linear-gradient(135deg, #e3f5f4, #f0fafa);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* ===============================
+   TABLE WRAPPER — SCROLLABLE
+=============================== */
+.table-responsive {
+  max-height: 520px;
+  overflow-y: auto;
+  overflow-x: auto;
+  margin-top: 12px;
+  border-radius: var(--radius);
+}
+
+/* ===============================
+   TABLE — SAME AS EMPLOYEE LIST
+=============================== */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+
+thead tr {
+  background: var(--brand-primary);
+  color: white;
+}
+
+thead th {
+  padding: 14px 20px;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+tbody tr {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+tbody tr:hover {
+  background: #eafffa;
+  transition: 0.25s ease;
+}
+
+td,
+th {
+  padding: 14px 20px;
+  white-space: nowrap;
+}
+
+/* First Column */
+th {
+  color: #006059;
+  font-weight: 600;
+}
+
+/* ===============================
+   BADGES — MATCH EMPLOYEE LIST
+=============================== */
+.bg-danger {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+  padding: 6px 10px;
+}
+
+.bg-warning {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+  padding: 6px 10px;
+}
+
+/* ===============================
+   BUTTONS — SAME UI AS SYSTEM
+=============================== */
+button.btn {
+  border-radius: var(--radius) !important;
+  font-weight: 600 !important;
+  padding: 10px 18px !important;
+  transition: 0.3s;
+}
+
+/* Export button */
+.btn-outline-primary {
+  border: 2px solid var(--brand-primary) !important;
+  color: var(--brand-primary) !important;
+  background: transparent !important;
+}
+
+.btn-outline-primary:hover {
+  background: var(--brand-primary) !important;
+  color: white !important;
+  transform: translateY(-3px);
+}
+
+/* Close button */
+.btn-secondary {
+  background: #e2e8f0 !important;
+  color: #475569 !important;
+  border: none !important;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e1 !important;
+  transform: translateY(-3px);
+}
+
+/* Try Again button */
+.btn-outline-danger {
+  border-radius: var(--radius) !important;
+  font-weight: 600 !important;
+}
+
+/* ===============================
+   EMPTY STATE
+=============================== */
+.empty-state {
+  text-align: center;
+  padding: 50px 0;
+  color: var(--text-muted);
+}
+
+/* ===============================
+   SCROLLBAR STYLE (Optional)
+=============================== */
+.table-responsive::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--brand-primary);
+  border-radius: 8px;
+}

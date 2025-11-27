@@ -1,0 +1,70 @@
+/* Override Bootstrap green button to match system theme */
+.btn-success {
+  background: linear-gradient(135deg, #009B8C, #007a6f) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 14px !important;
+  box-shadow: 0 6px 22px rgba(0, 155, 140, 0.35) !important;
+  transition: 0.3s ease !important;
+  transform: translateY(0) !important;
+}
+
+.btn-success:hover:not(:disabled) {
+  transform: translateY(-3px) !important;
+  background: linear-gradient(135deg, #00b7a4, #006459) !important;
+  box-shadow: 0 10px 30px rgba(0, 155, 140, 0.45) !important;
+}
+
+.btn-success:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+/* ===============================
+   TEMPLATE BUTTON — BRAND OUTLINE
+=============================== */
+.btn-outline-primary {
+  border: 2px solid #009B8C !important;
+  color: #009B8C !important;
+  background: transparent !important;
+  border-radius: 14px !important;
+  padding: 12px 28px !important;
+  font-weight: 600 !important;
+  transition: 0.3s ease !important;
+}
+
+.btn-outline-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #009B8C, #007a6f) !important;
+  color: #ffffff !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 20px rgba(0, 155, 140, 0.35) !important;
+}
+
+/* ===============================
+   BACK BUTTON — SOFT NEUTRAL OUTLINE
+=============================== */
+.btn-outline-secondary {
+  border: 2px solid #64748b !important;
+  color: #475569 !important;
+  background: transparent !important;
+  border-radius: 14px !important;
+  padding: 12px 28px !important;
+  font-weight: 600 !important;
+  transition: 0.3s ease !important;
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 18px rgba(71, 85, 105, 0.25) !important;
+}
+
+/* Disabled state — consistent */
+.btn-outline-primary:disabled,
+.btn-outline-secondary:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}

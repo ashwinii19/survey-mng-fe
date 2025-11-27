@@ -28,7 +28,8 @@ interface OnboardingEmailLog {
   selector: 'app-email-logs',
   standalone: true,
   imports: [CommonModule, JsonPipe, FormsModule],
-  templateUrl: './email-logs.html'
+  templateUrl: './email-logs.html',
+  styleUrls: ['./email-logs.css']
 })
 export class EmailLogs implements OnInit {
   // Data
@@ -39,7 +40,7 @@ export class EmailLogs implements OnInit {
   // Pagination properties
   currentPage: number = 1;
   itemsPerPage: number = 10; // Default value
-  itemsPerPageOptions: number[] = [5, 10, 20, 50, 100]; // Options for user to select
+  // itemsPerPageOptions: number[] = [5, 10, 20, 50, 100]; // Options for user to select
   totalItems: number = 0;
   totalPages: number = 0;
   
@@ -107,10 +108,10 @@ export class EmailLogs implements OnInit {
   }
 
   // Items per page change handler
-  onItemsPerPageChange() {
-    this.currentPage = 1; // Reset to first page when changing items per page
-    this.applyFilters();
-  }
+  // onItemsPerPageChange() {
+  //   this.currentPage = 1; // Reset to first page when changing items per page
+  //   this.applyFilters();
+  // }
 
   // Pagination methods
   goToPage(page: number) {

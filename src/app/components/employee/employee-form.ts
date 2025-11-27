@@ -118,6 +118,7 @@ import { EmployeeRequest, Department } from '../../models/employee';
 @Component({
   selector: 'app-employee-form',
   templateUrl: './employee-form.html',
+  styleUrls: ['./employee-form.css'],
   standalone: true,
   imports: [CommonModule, FormsModule]
 })

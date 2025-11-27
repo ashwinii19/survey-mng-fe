@@ -1,0 +1,565 @@
+/* PAGE WRAPPER — EXACT MATCH */
+.emaillogs-wrapper {
+  padding: 40px 50px;
+  background: #F6F9FC;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  min-height: 100vh;
+}
+
+/* HEADER BOX — SAME AS EMPLOYEE FILTER CARD */
+.header-box {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e3e8ef;
+  margin-bottom: 36px;
+}
+
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title {
+  font-size: 35px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: #64748b;
+}
+
+/* REFRESH BUTTON = EMPLOYEE PRIMARY BUTTON */
+.refresh-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 13px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #009B8C, #007a6f);
+  color: #fff;
+  transition: 0.3s ease;
+  box-shadow: 0 6px 22px rgba(0, 155, 140, 0.35);
+}
+.refresh-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 155, 140, 0.45);
+}
+
+/* STATS GRID — SAME DIMENSIONS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  margin-bottom: 38px;
+}
+
+.stats-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 26px 30px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e3e8ef;
+  text-align: left;
+  transition: 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 10px 28px rgba(0, 0, 0, 0.14);
+}
+
+.stats-card h3 {
+  font-size: 34px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.stats-card small {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* MAIN TABLE CONTAINER — SAME AS RECENT WRAPPER CARD */
+.table-container {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 32px;
+  border: 1px solid #e3e8ef;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* TABLE HEADER ALIGNMENT */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.table-header h2 {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #009B8C, #007f74);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* SEARCH BOX — EXACT MATCH */
+.search-box {
+  background: #f1f5f9;
+  border: 1px solid #d8e3ec;
+  padding: 10px 16px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  width: 260px;
+}
+
+.search-box input {
+  background: transparent;
+  border: none;
+  width: 100%;
+  outline: none;
+}
+
+/* TABLE — SAME AS EMPLOYEE LIST */
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  min-width: 1200px;
+}
+
+.custom-table thead tr {
+  background: linear-gradient(135deg, #e3f5f4, #f0fafa);
+  box-shadow: 0 2px 6px rgba(107, 114, 128, 0.12);
+}
+
+.custom-table th {
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.custom-table tbody tr {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: 0.2s ease;
+}
+
+.custom-table tbody tr:hover {
+  background: #f9faff;
+  box-shadow: 0 6px 20px rgba(0, 155, 140, 0.15);
+}
+
+.custom-table td {
+  padding: 14px 20px;
+  font-size: 15px;
+  white-space: nowrap;
+  color: #334155;
+}
+
+/* FIRST COLUMN BOLD LIKE EMPLOYEES */
+.custom-table td.bold {
+  color: #006059;
+  font-weight: 700;
+}
+
+/* BADGES — EXACT SAME STYLE */
+.badge {
+  padding: 7px 16px;
+  border-radius: 22px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.badge-green { background: #dcfce7; color: #166534; }
+.badge-red { background: #fee2e2; color: #991b1b; }
+.badge-yellow { background: #fef9c3; color: #92400e; }
+
+/* STATUS BADGE */
+.status-badge {
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ACTION BUTTONS — EXACT EMPLOYEE STYLE */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.view-btn,
+.resend-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* View Button = Edit */
+.view-btn {
+  background: linear-gradient(135deg, #fde68a, #fcd34d);
+  color: #78350f;
+}
+.view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* Resend Button = Secondary CTA */
+.resend-btn {
+  background: linear-gradient(135deg, #6366f1, #4338ca);
+  color: #fff;
+}
+.resend-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* EMPTY STATE */
+.no-data {
+  text-align: center;
+  padding: 48px 0;
+  color: #64748b;
+}
+
+.empty-icon {
+  font-size: 52px;
+  opacity: 0.35;
+  margin-bottom: 8px;
+}
+
+/* PAGINATION — EXACT SAME */
+.pagination-box {
+  margin-top: 34px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.entries-select {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.entries-select select {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+}
+
+.page-info {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.pagination-buttons button {
+  padding: 10px 22px;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: 0.25s ease;
+  min-width: 70px;
+}
+
+.pagination-buttons button:hover:not(:disabled) {
+  background: #e0f7f5;
+  border-color: #009B8C;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.pagination-buttons button.active {
+  background: #009B8C;
+  color: #ffffff;
+  border-color: #007a6f;
+  box-shadow: 0 6px 20px rgba(0, 155, 140, 0.35);
+}
+
+.pagination-buttons button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+/* WRAPPER SAME AS EMPLOYEE LIST */
+.emaillogs-table-wrapper {
+  padding: 24px 40px;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  color: #0f172a;
+  background: #ffffff;
+  min-height: auto;
+  border-radius: 14px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e3e8ef;
+  margin-top: 32px;
+}
+
+/* Heading same style */
+.emaillogs-table-wrapper h2 {
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 26px;
+  background: linear-gradient(135deg, #009B8C, #007f74);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Ensure full scroll like employee list */
+.emaillogs-table-wrapper .table-scroll {
+  overflow-x: auto;
+  overflow-y: visible;
+  padding-bottom: 10px;
+}
+/* ================================
+   RECENT EMAIL LOGS MAIN WRAPPER
+================================ */
+.recent-wrapper {
+  width: 100%;
+  max-width: 1250px;
+  background: white;
+  padding: 32px 38px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e3e8ef;
+  margin: 0 auto;
+}
+
+/* Heading same as Recent Surveys */
+.recent-wrapper h2 {
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 26px;
+  background: linear-gradient(135deg, #009B8C, #007f74);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+
+/* ================================
+   TABLE — EXACT SAME AS SURVEY TABLE
+================================ */
+.table-scroll {
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.survey-table {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+
+.survey-table thead tr {
+  background: linear-gradient(135deg, #e3f5f4, #f0fafa);
+  box-shadow: 0 2px 6px rgba(107, 114, 128, 0.12);
+}
+
+.survey-table th {
+  padding: 14px 20px;
+  font-size: 15px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.survey-table tbody tr {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: 0.2s;
+}
+
+.survey-table tbody tr:hover {
+  background: #f9faff;
+  box-shadow: 0 6px 20px rgba(0, 155, 140, 0.15);
+}
+
+.survey-table td {
+  padding: 14px 20px;
+  font-size: 15px;
+  color: #334155;
+  white-space: nowrap;
+}
+
+/* First column highlight */
+.survey-table td.bold {
+  color: #006059;
+  font-weight: 700;
+}
+
+/* ================================
+   BADGES — SAME STYLE
+================================ */
+.badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.badge-green { background: #dcfce7; color: #166534; }
+.badge-red { background: #fee2e2; color: #991b1b; }
+.badge-yellow { background: #fef3c7; color: #92400e; }
+
+.status-badge {
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-block;
+  min-width: 110px;
+  text-align: center;
+}
+
+/* Remove icons inside status */
+.status-badge i {
+  display: none !important;
+}
+
+/* ================================
+   ACTION BUTTONS — SAME ANIMATION
+================================ */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 110px;
+  transition: 0.3s ease;
+}
+
+/* Remove icons */
+.action-buttons button i {
+  display: none;
+}
+
+/* Hover effect */
+.btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  filter: brightness(1.05);
+}
+
+/* View button */
+.view-btn {
+  background: linear-gradient(135deg, #73c1f1, #009b8c);
+  color: #003f3a;
+}
+
+.view-btn:hover {
+  background: linear-gradient(135deg, #1789e6, #007f74);
+  color: white;
+}
+
+/* Resend button */
+.resend-btn {
+  background: linear-gradient(135deg, #fde68a, #fcd34d);
+  color: #78350f;
+}
+
+.resend-btn:hover {
+  background: linear-gradient(135deg, #fcd34d, #fbbf24);
+  color: white;
+}
+
+/* ================================
+   EMPTY STATE
+================================ */
+.no-data {
+  text-align: center;
+  padding: 45px 0;
+  color: #64748b;
+}
+
+.empty-icon {
+  font-size: 48px;
+  opacity: 0.35;
+  margin-bottom: 10px;
+}
+
+/* ================================
+   PAGINATION — IDENTICAL
+================================ */
+.pagination-controls {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.page-btn.active {
+  border: 2px solid #009B8C;
+  background: #fff !important;
+  color: #009B8C !important;
+}
+
+.pagination-buttons button {
+  padding: 10px 22px;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  background: white;
+  font-weight: 600;
+  transition: 0.25s ease;
+}
+
+.pagination-buttons button:hover:not(:disabled) {
+  background: #e0f7f5;
+  border-color: #009B8C;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.pagination-buttons button.active {
+  background: #009B8C;
+  color: white;
+  border-color: #007a6f;
+  box-shadow: 0 6px 20px rgba(0, 155, 140, 0.35);
+}
+
+.pagination-buttons button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

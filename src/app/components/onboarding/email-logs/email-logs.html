@@ -1,297 +1,145 @@
+<div class="emaillogs-wrapper">
 
-
-
-
-<div class="container-fluid py-4">
-   
-    <div class="row mb-4">
-        <div class="col">
-            <div class="p-4 rounded-3 position-relative overflow-hidden" 
-                 style="background: linear-gradient(135deg, rgba(0, 155, 140, 0.15) 0%, rgba(0, 155, 140, 0.08) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(0, 155, 140, 0.2);">
-                
-                
-                <div class="position-absolute top-0 start-0 w-100 h-1" style="background: linear-gradient(90deg, #009B8C, transparent);"></div>
-                <div class="position-absolute bottom-0 start-0 w-100 h-1" style="background: linear-gradient(90deg, transparent, #009B8C);"></div>
-                
-                <div class="position-relative z-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h1 class="h3 text-dark mb-2">
-                                <i class="bi bi-envelope-check me-2" style="color: #009B8C"></i>Email Logs
-                            </h1>
-                            <p class="text-muted mb-0">Monitor email delivery status and performance</p>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-outline-secondary" (click)="loadEmailLogs()">
-                                <i class="bi bi-arrow-clockwise"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    <!-- PAGE HEADER -->
+    <div class="header-box">
+        <div class="header-flex">
+            <div>
+                <h1 class="page-title">
+                    <i></i>Email Logs
+                </h1>
+                <p class="subtitle">Monitor email delivery status and performance</p>
             </div>
+
+            <button class="refresh-btn" (click)="loadEmailLogs()">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
         </div>
     </div>
 
-  
-    <div class="row mb-4">
-        <div class="col-xl-3 col-md-4 col-6 mb-3">
-            <div class="card border-0" style="background-color: rgba(0, 155, 140, 0.1)">
-                <div class="card-body text-center py-3">
-                    <h3 class="mb-1" style="color: #009B8C">{{getTotalLogs()}}</h3>
-                    <small class="text-muted">Total Logs</small>
-                </div>
-            </div>
+    <!-- STAT CARDS -->
+    <div class="stats-grid">
+
+        <div class="stats-card teal-bg">
+            <small>Total Logs</small>
+            <h3>{{getTotalLogs()}}</h3>
         </div>
-        <div class="col-xl-3 col-md-4 col-6 mb-3">
-            <div class="card border-0" style="background-color: rgba(25, 135, 84, 0.1)">
-                <div class="card-body text-center py-3">
-                    <h3 class="mb-1 text-success">{{getCompletedCount()}}</h3>
-                    <small class="text-muted">Completed</small>
-                </div>
-            </div>
+
+        <div class="stats-card green-bg">
+            <small>Completed</small>
+            <h3>{{getCompletedCount()}}</h3>
         </div>
-        <div class="col-xl-3 col-md-4 col-6 mb-3">
-            <div class="card border-0" style="background-color: rgba(220, 53, 69, 0.1)">
-                <div class="card-body text-center py-3">
-                    <h3 class="mb-1 text-danger">{{getFailedCount()}}</h3>
-                    <small class="text-muted">Failed</small>
-                </div>
-            </div>
+
+        <div class="stats-card red-bg">
+            <small>Failed</small>
+            <h3>{{getFailedCount()}}</h3>
         </div>
-        <div class="col-xl-3 col-md-4 col-6 mb-3">
-            <div class="card border-0" style="background-color: rgba(0, 155, 140, 0.1)">
-                <div class="card-body text-center py-3">
-                    <h3 class="mb-1" style="color: #009B8C">{{getTotalSent()}}</h3>
-                    <small class="text-muted">Total Sent</small>
-                </div>
-            </div>
+
+        <div class="stats-card teal-bg">
+            <small>Total Sent</small>
+            <h3>{{getTotalSent()}}</h3>
         </div>
+
     </div>
 
-   
-    <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white border-0 py-3">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h5 class="card-title mb-0 text-dark">Recent Email Logs</h5>
-                </div>
-                <div class="col-auto">
-                    <div class="input-group input-group-sm" style="width: 250px;">
-                        <span class="input-group-text bg-light border-0">
-                            <i class="bi bi-search text-muted"></i>
-                        </span>
-                        <input type="text" 
-                               class="form-control border-0 bg-light" 
-                               placeholder="Search logs..."
-                               [(ngModel)]="searchTerm"
-                               (input)="onSearchChange()">
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="bg-light">
-                        <tr>
-                            <th class="border-0 ps-4 fw-semibold text-muted small">ID</th>
-                            <th class="border-0 fw-semibold text-muted small">BATCH ID</th>
-                            <th class="border-0 fw-semibold text-muted small text-center">TOTAL</th>
-                            <th class="border-0 fw-semibold text-muted small text-center">
-                                <i class="bi bi-check-circle text-success me-1"></i>SENT
-                            </th>
-                            <th class="border-0 fw-semibold text-muted small text-center">
-                                <i class="bi bi-x-circle text-danger me-1"></i>FAILED
-                            </th>
-                            <th class="border-0 fw-semibold text-muted small text-center">
-                                <i class="bi bi-calendar-x text-warning me-1"></i>INELIGIBLE
-                            </th>
-                            <th class="border-0 fw-semibold text-muted small text-center">STATUS</th>
-                            <th class="border-0 pe-4 fw-semibold text-muted small text-center">ACTIONS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let log of displayedEmailLogs" class="border-bottom">
-                            <td class="ps-4">
-                                <span class="fw-bold text-dark">#{{log.id}}</span>
-                            </td>
-                            <td>
-                                <span class="text-muted">BATCH-{{log.employeeBatchLogId}}</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="fw-semibold">{{log.totalEmployees}}</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3">
-                                    {{log.emailsSent}}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3">
-                                    {{log.emailsFailed}}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill px-3">
-                                    {{log.ineligibleDueToDate}}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <span [class]="'badge rounded-pill px-3 py-2 ' + getStatusBadgeClass(log.status)">
-                                    <i [class]="'bi ' + getStatusIcon(log.status) + ' me-1'"></i>
-                                    {{log.status}}
-                                </span>
-                            </td>
-                            <td class="pe-4 text-center">
-                                <div class="d-flex justify-content-center gap-2">
-                                    <button class="btn btn-sm rounded-pill px-3" 
-                                            (click)="viewDetails(log.id)"
-                                            title="View Details"
-                                            style="background-color: rgba(0, 155, 140, 0.1); color: #009B8C; border-color: #009B8C">
-                                        <i class="bi bi-eye me-1"></i>View
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" 
-                                            *ngIf="log.emailsFailed > 0"
-                                            title="Resend Failed">
-                                        <i class="bi bi-send me-1"></i>Resend
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr *ngIf="displayedEmailLogs.length === 0">
-                            <td colspan="8" class="text-center py-5">
-                                <div class="py-4">
-                                    <i class="bi bi-inbox display-1 text-muted opacity-25 mb-3"></i>
-                                    <h5 class="text-muted">No email logs found</h5>
-                                    <p class="text-muted mb-0">Email logs will appear here once available</p>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-      
-        <!-- <div class="card-footer bg-white border-0 py-3">
-            <div class="row align-items-center">
-                <div class="col">
-                    <p class="text-muted mb-0 small">
-                        Showing {{displayedEmailLogs.length}} of {{totalItems}} logs
-                        (Page {{currentPage}} of {{totalPages}})
-                    </p>
-                </div>
-                <div class="col-auto">
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0">
-                           
-                            <li class="page-item" [class.disabled]="currentPage === 1">
-                                <a class="page-link text-muted" 
-                                   href="javascript:void(0)"
-                                   (click)="previousPage()"
-                                   [class.text-muted]="currentPage === 1">
-                                    Previous
-                                </a>
-                            </li>
-                            
-                           
-                            <li class="page-item" 
-                                *ngFor="let page of getPageNumbers()"
-                                [class.active]="page === currentPage">
-                                <a class="page-link" 
-                                   href="javascript:void(0)"
-                                   (click)="goToPage(page)"
-                                   [class.text-white]="page === currentPage"
-                                   [class.text-muted]="page !== currentPage"
-                                   [style.background-color]="page === currentPage ? '#009B8C' : ''"
-                                   [style.border-color]="page === currentPage ? '#009B8C' : ''">
-                                    {{page}}
-                                </a>
-                            </li>
-                          
-                            <li class="page-item" [class.disabled]="currentPage === totalPages">
-                                <a class="page-link text-muted" 
-                                   href="javascript:void(0)"
-                                   (click)="nextPage()"
-                                   [class.text-muted]="currentPage === totalPages">
-                                    Next
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+    <!-- MAIN TABLE BOX -->
+    <div class="recent-wrapper">
+
+        <!-- Heading same style as Employee List -->
+        <h2>Recent Email Logs</h2>
+
+        <!-- Top row: search on the right -->
+        <!-- <div class="table-header">
+            <div class="search-box">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" placeholder="Search logs..." [(ngModel)]="searchTerm" (input)="onSearchChange()">
             </div>
         </div> -->
 
+        <div class="table-scroll">
+            <!-- use survey-table to reuse Employee List table styling -->
+            <table class="survey-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>BATCH ID</th>
+                        <th class="text-center">TOTAL</th>
+                        <th class="text-center">SENT</th>
+                        <th class="text-center">FAILED</th>
+                        <th class="text-center">INELIGIBLE</th>
+                        <th class="text-center">STATUS</th>
+                        <th class="text-center">ACTIONS</th>
+                    </tr>
+                </thead>
 
+                <tbody>
 
+                    <tr *ngFor="let log of displayedEmailLogs">
+                        <td class="bold">{{log.id}}</td>
+                        <td>BATCH-{{log.employeeBatchLogId}}</td>
 
+                        <td class="text-center">{{log.totalEmployees}}</td>
 
-        <!-- Pagination -->
-<div class="card-footer bg-white border-0 py-3">
-    <div class="row align-items-center">
-        <div class="col-md-4">
-            <div class="d-flex align-items-center">
-                <span class="text-muted small me-2">Show</span>
-                <select class="form-select form-select-sm" 
-                        style="width: 80px;"
-                        [(ngModel)]="itemsPerPage"
-                        (change)="onItemsPerPageChange()">
-                    <option *ngFor="let option of itemsPerPageOptions" [value]="option">
-                        {{option}}
-                    </option>
-                </select>
-                <span class="text-muted small ms-2">entries</span>
-            </div>
+                        <td class="text-center">
+                            <span class="badge badge-green">{{log.emailsSent}}</span>
+                        </td>
+
+                        <td class="text-center">
+                            <span class="badge badge-red">{{log.emailsFailed}}</span>
+                        </td>
+
+                        <td class="text-center">
+                            <span class="badge badge-yellow">{{log.ineligibleDueToDate}}</span>
+                        </td>
+
+                        <td class="text-center">
+                            <span class="status-badge" [ngClass]="getStatusBadgeClass(log.status)">
+                                <i [class]="'bi ' + getStatusIcon(log.status)"></i> {{log.status}}
+                            </span>
+                        </td>
+
+                        <td class="text-center action-buttons">
+                            <button class="btn view-btn" (click)="viewDetails(log.id)">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+
+                            <button class="btn resend-btn" *ngIf="log.emailsFailed > 0">
+                                <i class="bi bi-send"></i> Resend
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="displayedEmailLogs.length === 0">
+                        <td colspan="8" class="no-data">
+                            <i class="bi bi-inbox empty-icon"></i>
+                            <h4>No email logs found</h4>
+                            <p>Email logs will appear here once available</p>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
         </div>
-        <div class="col-md-4 text-center">
-            <p class="text-muted mb-0 small">
-                Showing {{displayedEmailLogs.length}} of {{totalItems}} logs
-                (Page {{currentPage}} of {{totalPages}})
-            </p>
+
+        <!-- PAGINATION (reusing pagination-controls like Employee List) -->
+        <div class="pagination-controls" *ngIf="totalPages > 1">
+
+            <button class="btn" (click)="previousPage()" [disabled]="currentPage === 1">
+                Previous
+            </button>
+
+            <button class="btn page-btn" *ngFor="let page of getPageNumbers()" (click)="goToPage(page)"
+                [class.active]="page === currentPage">
+                {{page}}
+            </button>
+
+            <button class="btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+                Next
+            </button>
+
         </div>
-        <div class="col-md-4">
-            <nav>
-                <ul class="pagination pagination-sm mb-0 justify-content-end">
-                    <!-- Previous Button -->
-                    <li class="page-item" [class.disabled]="currentPage === 1">
-                        <a class="page-link text-muted" 
-                           href="javascript:void(0)"
-                           (click)="previousPage()"
-                           [class.text-muted]="currentPage === 1">
-                            Previous
-                        </a>
-                    </li>
-                    
-                    <!-- Page Numbers -->
-                    <li class="page-item" 
-                        *ngFor="let page of getPageNumbers()"
-                        [class.active]="page === currentPage">
-                        <a class="page-link" 
-                           href="javascript:void(0)"
-                           (click)="goToPage(page)"
-                           [class.text-white]="page === currentPage"
-                           [class.text-muted]="page !== currentPage"
-                           [style.background-color]="page === currentPage ? '#009B8C' : ''"
-                           [style.border-color]="page === currentPage ? '#009B8C' : ''">
-                            {{page}}
-                        </a>
-                    </li>
-                    
-                    <!-- Next Button -->
-                    <li class="page-item" [class.disabled]="currentPage === totalPages">
-                        <a class="page-link text-muted" 
-                           href="javascript:void(0)"
-                           (click)="nextPage()"
-                           [class.text-muted]="currentPage === totalPages">
-                            Next
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+
+
     </div>
-</div>
-    </div>
+
+
 </div>

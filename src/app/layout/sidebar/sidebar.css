@@ -297,3 +297,37 @@ app-header {
 .logout-section a:hover .icon-lg {
   color: #b91c1c;
 }
+/* Submenu Styling (adjusted indentation) */
+.sub-menu {
+  list-style: none !important;
+  padding-left: 18px !important;   /* was too much — now perfect */
+  margin: 0;
+}
+
+.sub-menu li {
+  list-style: none !important;
+}
+
+.sub-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  margin-left: 23px;                /* slight indent */
+  margin-right: 10px;
+
+  color: #1e293b;
+  text-decoration: none;
+}
+
+.sub-menu li a:hover {
+  background: rgba(0, 155, 140, 0.12);
+  color: #009B8C;
+}
+
+.submenu-arrow {
+  transition: transform 0.2s ease;
+}

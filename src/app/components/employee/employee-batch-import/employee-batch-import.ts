@@ -426,7 +426,7 @@ EMP005,David Lee,david.lee@company.com,HR Specialist,ACTIVE,2024-01-19,HR
 # - Sales
 
 # Example:
-# EMP7966,jagriti,pragatipandey4810@gmail.com,HR,ACTIVE,2025-11-20,HR`;
+# EMP7966,Ashwini Dagale,ashdagale@gmail.com,HR,ACTIVE,2025-11-20,HR`;
 
   const blob = new Blob([template], { type: 'text/csv;charset=utf-8;' });
   const url = window.URL.createObjectURL(blob);

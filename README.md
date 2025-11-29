@@ -3,6 +3,10 @@
 
 This project is the **Frontend Application** for the Survey Management System, built using **Angular**. It provides an interactive dashboard, employee and survey management screens, onboarding email UI, reminder triggering, and secure admin authentication. The frontend is fully integrated with the Spring Boot backend and uses modern UI components with responsive design.
 
+## Backend Repository:
+The Backend of this project is built using Core Java, Spring Boot, MySQL.
+Backend GitHub Repo: https://github.com/ashwinii19/survey-mng-be
+
 ## Features
 
 - ✅ **Admin Login Page** with JWT token authentication
